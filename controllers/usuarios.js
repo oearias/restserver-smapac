@@ -1,8 +1,16 @@
 const { response } = require('express');
+const { getConnection } = require('../database/connection');
 
-const usuariosGet = (req, res= response ) => {
+const usuariosGet = async (req, res= response ) => {
+
+        const pool = await getConnection();
+        
+        //const result = await pool.request().query('SELECT 1')
+        //console.log(result);
+    
+
     res.json({
-        msg: 'get API - Controlador'
+        msg: 'Hay que trabajar las consultas de los usuarios'
     });
 }
 

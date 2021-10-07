@@ -7,6 +7,7 @@ class Server {
         this.app = express();
         this.port = process.env.PORT
         this.usuariosPath = '/api/usuarios'
+        this.contratosPath = '/api/contratos'
 
         //Middlewares
         this.middlewares();
@@ -30,7 +31,8 @@ class Server {
 
     routes() {
 
-        this.app.use(this.usuariosPath, require('../routes/usuarios'))
+        this.app.use(this.usuariosPath, require('../routes/usuarios'));
+        this.app.use(this.contratosPath, require('../routes/contratos'))
 
     }
 
