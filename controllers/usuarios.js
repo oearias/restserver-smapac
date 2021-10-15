@@ -74,6 +74,28 @@ const usuarioGet = async (req, res = response) => {
 
 }
 
+const usuarioGetByEmail = async (req, res = response) => {
+
+    try {
+        const { email } = req.params;
+
+        const pool = await getConnection();
+
+        const result = await pool.request().input("email", email).query('SELECT nombre, email FROM usuario where email = @email')
+
+        if (result.recordset.length == 0) {
+            result.recordset[0] = "No existe registro con tal email"
+        }
+
+        res.json(
+            result.recordset[0]
+        );
+    } catch (error) {
+        res.json(error.message)
+    }
+
+}
+
 const usuariosPut = async (req, res = response) => {
 
     const { id } = req.params
@@ -120,5 +142,6 @@ module.exports = {
     usuarioGet,
     usuariosPost,
     usuariosPut,
-    usuariosDelete
+    usuariosDelete,
+    usuarioGetByEmail
 }

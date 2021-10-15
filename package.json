@@ -19,6 +19,9 @@
     "express": "^4.17.1",
     "express-validator": "^6.12.2",
     "jsonwebtoken": "^8.5.1",
-    "mssql": "^7.2.1"
+    "mssql": "^7.2.1",
+    "nodemailer": "^6.7.0",
+    "stripe": "^8.181.0",
+    "uuid": "^8.3.2"
   }
 }

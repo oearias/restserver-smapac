@@ -1,10 +1,23 @@
 const sql = require('mssql');
 
-const dbSettings = {
+/*const dbSettings = {
     user: 'admin',
     password: '19890234',
     server: 'localhost',
     database: 'SMAPAC_TEST',
+    options: {
+        encrypt: true,
+        trustServerCertificate: true,
+    },
+};*/
+
+//db_production
+
+const dbSettings = {
+    user: 'admin',
+    password: '19890234',
+    server: 'test.cfeeipqmpzlg.us-east-2.rds.amazonaws.com',
+    database: 'db_test',
     options: {
         encrypt: true,
         trustServerCertificate: true,
