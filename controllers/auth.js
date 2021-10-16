@@ -85,7 +85,7 @@ const forgotPassword = async (req, res = response) => {
 
             const token = await genTokenPassword(id, email);
 
-            verificationLink = process.env.URL_API+`new-password/${token}`;
+            verificationLink = process.env.URL_API+`auth/new-password/${token}`;
 
             //inserto en la tabla usuario colum resetToken el token
             const inserta = await pool
