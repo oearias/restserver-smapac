@@ -173,7 +173,7 @@ const newPassword = async (req, res = response) => {
 
         //
 
-        const id = result.recordset[0]['id'];
+        //const id = result.recordset[0]['id'];
         const email = result.recordset[0]['email'];
 
 
