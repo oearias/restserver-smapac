@@ -96,8 +96,7 @@ const forgotPassword = async (req, res = response) => {
 
             res.json({
                 message,
-                info: emailStatus,
-                //test: verificationLink
+                info: emailStatus
             })
 
         }else{
