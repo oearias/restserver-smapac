@@ -87,7 +87,7 @@ const forgotPassword = async (req, res = response) => {
 
             //verificationLink = process.env.URL_API+`auth/new-password/${token}`;
 
-            verificationLink = 'http://smapac-client.s3-website.us-east-2.amazonaws.com/'+`#/reset?t=${token}`;
+            verificationLink = process.env.URL_CLIENT+`#/reset?t=${token}`;
 
             //inserto en la tabla usuario colum resetToken el token
             const inserta = await pool
@@ -153,6 +153,7 @@ const forgotPassword = async (req, res = response) => {
 const newPassword = async (req, res = response) => {
 
     console.log(req.headers);
+    console.log(req.body);
 
     const {newPassword} = req.body;
     const resetToken = req.headers.reset.toString();    //as string, en dado caso que no funcione el toString instalamos y configuramos babel
