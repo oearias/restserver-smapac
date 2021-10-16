@@ -85,7 +85,7 @@ const forgotPassword = async (req, res = response) => {
 
             const token = await genTokenPassword(id, email);
 
-            verificationLink = `http://localhost:3000/new-password/${token}`;
+            verificationLink = process.env.URL_API+`new-password/${token}`;
 
             //inserto en la tabla usuario colum resetToken el token
             const inserta = await pool
@@ -115,12 +115,12 @@ const forgotPassword = async (req, res = response) => {
         let destinatario = email;
         
         let transporter = nodemailer.createTransport({
-            host: "c0580355.ferozo.com",
+            host: process.env.HOST_FEROZO,
             port: 465,
             secure: true, // true for 465, false for other ports
             auth: {
-              user: 'noreply@smapac.gob.mx', // generated ethereal user
-              pass: '9IPTRZ@7wL', // generated ethereal password
+              user: process.env.USER_FEROZO, // generated ethereal user
+              pass: process.env.PASSWORD_FEROZO, // generated ethereal password
             },
           });
 
