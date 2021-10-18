@@ -11,13 +11,24 @@ const sql = require('mssql');
     },
 };*/
 
-//db_production
 
-const dbSettings = {
+//db_production RDS Amazon
+/*const dbSettings = {
     user: 'admin',
     password: '19890234',
     server: 'test.cfeeipqmpzlg.us-east-2.rds.amazonaws.com',
     database: 'db_test',
+    options: {
+        encrypt: true,
+        trustServerCertificate: true,
+    },
+};*/
+
+const dbSettings = {
+    user: 'usuarionode',
+    password: '19890234',
+    server: '18.118.36.40',
+    database: 'SMAPAC_DB',
     options: {
         encrypt: true,
         trustServerCertificate: true,
