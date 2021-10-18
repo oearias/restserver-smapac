@@ -13,7 +13,7 @@ const sql = require('mssql');
 
 
 //db_production RDS Amazon
-const dbSettings = {
+/*const dbSettings = {
     user: 'admin',
     password: '19890234',
     server: 'test.cfeeipqmpzlg.us-east-2.rds.amazonaws.com',
@@ -22,18 +22,18 @@ const dbSettings = {
         encrypt: true,
         trustServerCertificate: true,
     },
-};
+};*/
 
-/*const dbSettings = {
-    user: 'usuarionode',
-    password: '19890234',
-    server: 'http://18.118.36.40',
+const dbSettings = {
+    user: 'sa',
+    password: '1989023aB9.',
+    server: '18.118.36.40',
     database: 'SMAPAC_DB',
     options: {
         encrypt: true,
         trustServerCertificate: true,
     },
-};*/
+};
 
 async function  getConnection() {
 
