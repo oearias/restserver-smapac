@@ -10,7 +10,7 @@ const postItem = async (req, res = response) => {
 
         console.log(req.body);
 
-        const { amount, contrato, nombre } = req.body;
+        const { amount, contrato, nombre, email } = req.body;
 
         const localizator = uuidv4();
 
@@ -19,10 +19,11 @@ const postItem = async (req, res = response) => {
         await pool.request()
             .input("amount", sql.Float, amount)
             .input("name", sql.VarChar, nombre)
+            .input("email", sql.VarChar, email)
             .input("contrato", sql.Int, contrato)
             .input("localizator", sql.VarChar, localizator)
             .input("status", sql.VarChar, 'Wait')
-            .query('INSERT into orden (name, amount, contrato, localizator, status) values (@name, @amount, @contrato, @localizator, @status )');
+            .query('INSERT into orden (name, amount, contrato, localizator, status, email) values (@name, @amount, @contrato, @localizator, @status, @email)');
 
 
         const result = await pool.request()
@@ -141,6 +142,10 @@ const checkItem = async (req, res) => {
                 console.log("Usuario en 0")
 
                 await pool.request().input("contrato", contrato).query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
+
+                //Aquí mandamos el correo al usuario
+
+
             }
 
             console.log(detailStripe.status);
