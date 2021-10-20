@@ -257,9 +257,9 @@ const respMulti = async (req, res) => {
 
     const {codigo, mensaje, autorizacion} = req.params;
 
-    console.log("Codigo: ");
-    console.log("Mensaje: ");
-    console.log("Autorizacion: ");
+    console.log("Codigo: "+codigo);
+    console.log("Mensaje: "+mensaje);
+    console.log("Autorizacion: "+autorizacion);
 
     
 
