@@ -1,5 +1,5 @@
 const { Router} = require('express');
-const { postItem, updateItem, checkItem } = require('../controllers/checkout');
+const { postItem, updateItem, checkItem, respMulti } = require('../controllers/checkout');
 
 const router = Router();
 
@@ -10,6 +10,9 @@ router.post('/', postItem);
 router.patch('/:id', updateItem)
 
 //Confirmar estatus del pago
-router.patch('/confirm/:id', checkItem)
+router.patch('/confirm/:id', checkItem);
+
+//Ruta respuesta Multipagos
+router.post('/respuesta.html', respMulti);
 
 module.exports = router;

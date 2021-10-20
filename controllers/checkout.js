@@ -249,9 +249,27 @@ const checkItem = async (req, res) => {
     }
 }
 
+const respMulti = async (req, res) => {
+    
+    console.log(req);
+    console.log(req.params);
+    console.log(req.body);
+
+    const {codigo, mensaje, autorizacion} = req.params;
+
+    console.log("Codigo: ");
+    console.log("Mensaje: ");
+    console.log("Autorizacion: ");
+
+    
+
+    res.send("Listo")
+}
+
 
 module.exports = {
     postItem,
     updateItem,
-    checkItem
+    checkItem,
+    respMulti
 }

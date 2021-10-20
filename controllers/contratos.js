@@ -4,8 +4,6 @@ const sql = require('mssql');
 
 const contratosGet = async (req, res = response) => {
 
-    console.log(req);
-
     try {
         const pool = await getConnection();
         const result = await pool.request().query('SELECT top 1000 * FROM padron')
