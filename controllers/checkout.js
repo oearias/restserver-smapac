@@ -4,6 +4,7 @@ const sql = require('mssql');
 const { v4: uuidv4 } = require('uuid');
 const { generatePaymentIntent, generatePaymentMethod, getPaymentDetail } = require('../services/stripe');
 const nodemailer = require("nodemailer");
+const crypto = require('crypto');
 
 const postItem = async (req, res = response) => {
 
@@ -151,7 +152,7 @@ const checkItem = async (req, res) => {
 
             ////////Aquí mandamos el correo al usuario
 
-            
+
             //TODO: SendEmail
             try {
 
@@ -163,7 +164,7 @@ const checkItem = async (req, res) => {
                 let mes = fecha.getMonth();
                 let dia = fecha.getDate();
 
-                let fechaAux = dia+"/"+mes+"/"+anio
+                let fechaAux = dia + "/" + mes + "/" + anio
 
                 let metodo = "VISA";
 
@@ -186,37 +187,37 @@ const checkItem = async (req, res) => {
                     from: ' "Recibo SMAPAC" <noreply@smapac.gob.mx>', // sender address
                     to: destinatario, // list of receivers
                     subject: "Aquí tienes el recibo de tu pago a SMAPAC", // Subject line
-                    html: '<div>'+
-                        '<div style="text-align: center; font-size: 18px; font-weight: 700;">'+
-                            '<div style="padding: 0;">SISTEMA MUNICIPAL DE AGUA POTABLE</div>'+
-                            '<div style="margin: 0">Y ALCANTARILLADO DE CARMEN</div>'+
-                        '</div>'+
-                        '<div style="text-align: center;">'+
-                           '<h3>Recibo SMAPAC</h3>'+
-                        '</div><table>'+
-                            '<thead style="font-size: 14px;">'+
-                                '<th style="padding-left: 10px;">MONTO PAGADO</th>'+
-                                '<th style="padding-left: 10px;">FECHA DE PAGO</th>'+
-                            '</thead>'+
-                            '<tbody style="font-size: 18px">'+
-                               '<tr><td style="padding-left: 10px;">$'+monto+'</td>'+
-                                    '<td style="padding-left: 10px;">'+fechaAux+'</td>'+
-                                '</tr>'+
-                            '</tbody>'+
-                        '</table><div style="padding-left: 10px; margin-top: 20px; font-weight: 700;">'+
-                            'RESUMEN:</div>'+
-                        '<div style="background-color: rgb(238, 238, 238); height: 130px;">'+
-                            '<div style="padding-left: 10px; margin-top: 20px; padding-top: 20px;">Contrato: <b>'+contrato+'</b> - Pago servicio de Agua Potable - Usuario: '+nombre+' </div>'+
-                            '<br><hr><div style="padding-left: 10px; padding-top: 10px; font-weight: 700;"> Monto cargado: MXN $'+monto+
-                            '</div>'+
-                        '</div>'+
-                        '<div style="padding-left: 10px; margin-top: 20px;"> Si tienes alguna duda, contáctanos al correo:<br>'+
-                            'facturaelectronica@smapac.gob.mx o llama al teléfono 938 388 29 23.'+
-                            '<div style="font-size: 10px; margin-top: 30px;">'+
-                                'Estás recibiendo este correo por que has realizado un pago en SMAPAC.'+
-                            '</div>'+
-                        '</div>'+
-                    '</div>', // html body
+                    html: '<div>' +
+                        '<div style="text-align: center; font-size: 18px; font-weight: 700;">' +
+                        '<div style="padding: 0;">SISTEMA MUNICIPAL DE AGUA POTABLE</div>' +
+                        '<div style="margin: 0">Y ALCANTARILLADO DE CARMEN</div>' +
+                        '</div>' +
+                        '<div style="text-align: center;">' +
+                        '<h3>Recibo SMAPAC</h3>' +
+                        '</div><table>' +
+                        '<thead style="font-size: 14px;">' +
+                        '<th style="padding-left: 10px;">MONTO PAGADO</th>' +
+                        '<th style="padding-left: 10px;">FECHA DE PAGO</th>' +
+                        '</thead>' +
+                        '<tbody style="font-size: 18px">' +
+                        '<tr><td style="padding-left: 10px;">$' + monto + '</td>' +
+                        '<td style="padding-left: 10px;">' + fechaAux + '</td>' +
+                        '</tr>' +
+                        '</tbody>' +
+                        '</table><div style="padding-left: 10px; margin-top: 20px; font-weight: 700;">' +
+                        'RESUMEN:</div>' +
+                        '<div style="background-color: rgb(238, 238, 238); height: 130px;">' +
+                        '<div style="padding-left: 10px; margin-top: 20px; padding-top: 20px;">Contrato: <b>' + contrato + '</b> - Pago servicio de Agua Potable - Usuario: ' + nombre + ' </div>' +
+                        '<br><hr><div style="padding-left: 10px; padding-top: 10px; font-weight: 700;"> Monto cargado: MXN $' + monto +
+                        '</div>' +
+                        '</div>' +
+                        '<div style="padding-left: 10px; margin-top: 20px;"> Si tienes alguna duda, contáctanos al correo:<br>' +
+                        'facturaelectronica@smapac.gob.mx o llama al teléfono 938 388 29 23.' +
+                        '<div style="font-size: 10px; margin-top: 30px;">' +
+                        'Estás recibiendo este correo por que has realizado un pago en SMAPAC.' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>', // html body
                 }, (error, info) => {
                     if (error) {
                         emailMessage = "Hubo un error " + error.message;
@@ -231,7 +232,7 @@ const checkItem = async (req, res) => {
                 return res.status(400).json({ message: 'Algo ha ido mal' })
             }
 
-    
+
 
             ///////////
 
@@ -250,20 +251,58 @@ const checkItem = async (req, res) => {
 }
 
 const respMulti = async (req, res) => {
-    
-    console.log(req);
+
+    /*console.log(req);
     console.log(req.params);
-    console.log(req.body);
+    console.log(req.body);*/
 
-    const {codigo, mensaje, autorizacion} = req.query;
+    const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
 
-    console.log("Codigo: "+codigo);
-    console.log("Mensaje: "+mensaje);
-    console.log("Autorizacion: "+autorizacion);
 
+    const idExpress = 2338;
+    //Iniciamos con las decisiones
+
+    let result;
+    let message = referencia+importe+idExpress;
     
+    
+    //Genero una signature del lado del servidor.
+    let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
+    const mySignature = hash.digest('hex');
 
-    res.send("Listo")
+
+    if (codigo == 1) {
+        result = "Su pago fue rechazado";
+    } else if (codigo == 4) {
+        result = "Se detectó un problema con su pago, verifique con su administrador."
+    } else if (codigo == 5) {
+        result = "Ya se encuentra un pago con la referencia: " + referencia;
+    } else if (codigo == 0 || codigo == 3) {
+        //Comparo la signature que me envían con la que yo genero
+        if (signature != mySignature){
+            result = "Error en los datos del pago. No se ha podido concluir la transacción."
+        }else{
+            if(codigo == 3){
+                result = "El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, "
+                +" si el cobro no se realiza en este tiempo favor de comunicarse."
+            }else{
+                result = "El pago se realizó correctamente, número de autorización: "+autorizacion
+            }
+        }
+    }else{
+        result = "Tuvimos un problema con su pago."
+    }
+
+
+
+    console.log("Codigo: " + codigo);
+    console.log("Mensaje: " + mensaje);
+    console.log("Autorizacion: " + autorizacion);
+
+
+
+    res.json(result);
+
 }
 
 
