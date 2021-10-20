@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 
+const body_parser = require('body-parser');
+
 class Server {
 
     constructor() {
@@ -32,7 +34,8 @@ class Server {
         this.app.use(express.static('public'));
 
         this.app.use(express.json());
-        this.app.unsubscribe(express.urlencoded({extended: false}))
+        //this.app.unsubscribe(express.urlencoded({extended: false}))
+        this.app.use(express.urlencoded({extended: true}));
     }
 
     routes() {
