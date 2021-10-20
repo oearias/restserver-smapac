@@ -5,14 +5,14 @@ const stripe = Stripe(process.env.STRIPE_SK)
  * Generar intencion de PAGO
  */
 
-const generatePaymentIntent = async ({ amount, user, contrato, payment_method }) => {
+const generatePaymentIntent = async ({ amount, user, contrato, email, payment_method }) => {
     const resPaymentIntent = await stripe.paymentIntents.create({
         amount: Math.round(amount * 100),
         //amount: amount,
         currency: process.env.STRIPE_CURRENCY,
         payment_method_types: ['card'],
         payment_method,
-        description: `Contrato: ${contrato} - Pago servicio de Agua Potable - Usuario: ${user}`
+        description: `Contrato: ${contrato} - Pago servicio de Agua Potable - Usuario: ${user} - Email: ${email}`
     });
 
 
