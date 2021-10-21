@@ -270,6 +270,10 @@ const respMulti = async (req, res = response) => {
     let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
     const mySignature = hash.digest('hex');
 
+    const cadena = referencia;
+    const cadenaAux = cadena.split('_');
+    const contrato = cadenaAux[1]; 
+
 
     if (codigo == 1) {
         result = "Su pago fue rechazado";
@@ -286,16 +290,22 @@ const respMulti = async (req, res = response) => {
                 result = "El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, "
                 +" si el cobro no se realiza en este tiempo favor de comunicarse."
             }else{
-                result = "El pago se realizó correctamente, número de autorización: "+autorizacion
+                result = "El pago se realizó correctamente, número de autorización: "+autorizacion;
+
+                res.render('thankyou',{
+                    codigo,
+                    contrato,
+                    referencia,
+                    mensaje,
+                    autorizacion
+                });
             }
         }
     }else{
         result = "Tuvimos un problema con su pago."
     }
 
-    const cadena = referencia;
-    const cadenaAux = cadena.split('_');
-    const contrato = cadenaAux[1];
+    
 
 
     console.log("Codigo: " + codigo);
@@ -305,16 +315,13 @@ const respMulti = async (req, res = response) => {
 
     //Inserto datos en la tabla
     
+    if(codigo!=0){
+        res.render('none',{
+            mensaje
+        });
+    }
 
-
-
-    res.render('home',{
-        codigo,
-        contrato,
-        referencia,
-        mensaje,
-        autorizacion
-    });
+    
 
 }
 

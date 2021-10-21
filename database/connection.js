@@ -40,6 +40,7 @@ async function  getConnection() {
     try {
         const pool = await sql.connect(dbSettings);
 
+
         return pool;
         
     } catch (error) {

@@ -17,7 +17,7 @@ router.post('/respuesta.html', respMulti);
 
 router.get('/recibo', (req, res)=>{
 
-    res.render('home');
+    res.render('thankyou');
 
 })
 
