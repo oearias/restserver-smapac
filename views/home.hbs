@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="col mt-5" style="text-align: center;">
+            <h3>Resultado de la transacción</h3>
+        </div>
+        <div>
+            <div class="mt-5" style="width: 200px; height: 300px;">
+                <div>
+                    Imagen centrada
+                </div>
+            </div>
+
+
+            <div>
+                Mensaje:
+                <span style="font-weight: 600;">{{mensaje}}</span>
+            </div>
+            <div>
+                Código:
+                <span style="font-weight: 600;">{{codigo}}</span>
+            </div>
+            <div>
+                Autorización:
+                <span style="font-weight: 600;">{{autorizacion}}</span>
+            </div>
+            <div>
+                Referencia:
+                <span style="font-weight: 600;">{{referencia}}</span>
+            </div>
+        </div>
+
+        <div class="mt-4" style="align-items: center; justify-content:center; display:flex">
+            <form action="https://smapac.gob.mx/pagaturecibo#/dashboard/valida">
+                <button type="submit" class="btn btn-primary">Regresar</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

@@ -15,4 +15,10 @@ router.patch('/confirm/:id', checkItem);
 //Ruta respuesta Multipagos
 router.post('/respuesta.html', respMulti);
 
+router.get('/recibo', (req, res)=>{
+
+    res.render('home');
+
+})
+
 module.exports = router;

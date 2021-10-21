@@ -1,8 +1,6 @@
 const express = require('express');
 const cors = require('cors');
 
-const body_parser = require('body-parser');
-
 class Server {
 
     constructor() {
@@ -29,6 +27,9 @@ class Server {
 
         //Lectura y parseo del body
         this.app.use(express.json());
+
+        //Handlebars
+        this.app.set('view engine', 'hbs');
 
         //Directorio público
         this.app.use(express.static('public'));

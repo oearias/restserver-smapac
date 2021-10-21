@@ -250,7 +250,7 @@ const checkItem = async (req, res) => {
     }
 }
 
-const respMulti = async (req, res) => {
+const respMulti = async (req, res = response) => {
 
     /*console.log(req);
     console.log(req.params);
@@ -293,15 +293,28 @@ const respMulti = async (req, res) => {
         result = "Tuvimos un problema con su pago."
     }
 
+    const cadena = referencia;
+    const cadenaAux = cadena.split('_');
+    const contrato = cadenaAux[1];
 
 
     console.log("Codigo: " + codigo);
     console.log("Mensaje: " + mensaje);
     console.log("Autorizacion: " + autorizacion);
+    console.log("Contrato: ",contrato);
+
+    //Inserto datos en la tabla
+    
 
 
 
-    res.json(result);
+    res.render('home',{
+        codigo,
+        contrato,
+        referencia,
+        mensaje,
+        autorizacion
+    });
 
 }
 
