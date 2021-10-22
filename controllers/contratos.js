@@ -10,7 +10,7 @@ const contratosGet = async (req, res = response) => {
 
 
 
-        const contratos = result.recordset ;
+        const contratos = result.recordset;
 
         res.json(
             {
@@ -21,6 +21,8 @@ const contratosGet = async (req, res = response) => {
 
     } catch (error) {
         res.status(500).send(error.message);
+    }finally{
+        sql.pool.close();
     }
 }
 
@@ -30,18 +32,26 @@ const contratoGet = async (req, res = response) => {
 
     const pool = await getConnection();
 
-    const result = await pool.request().input("id", id).query('SELECT * FROM padron where contrato = @id')
+    try {
+        
+        const result = await pool.request().input("id", id).query('SELECT * FROM padron where contrato = @id')
 
+        if (result.recordset.length < 1) {
+            return res.json({
+                msg: 'No existe ningun contrato con ese número'
+            });
+        }
 
-    if(result.recordset.length < 1){
-        return res.json({
-            msg: 'No existe ningun contrato con ese número'
-        });
+        res.json(
+            result.recordset[0]
+        );
+    } catch (error) {
+        res.json(error.message);
+    }finally{
+        pool.close();
     }
 
-    res.json(
-        result.recordset[0]
-    );
+    
 }
 
 const contratoGetByUserId = async (req, res = response) => {
@@ -84,15 +94,17 @@ const addContratoUser = async (req, res = response) => {
         })
     } catch (error) {
         res.json(error.message)
+    }finally{
+        sql.pool.close();
     }
 
 }
 
 const updateAdeudo = async (req, res = response) => {
-    
-    const {id} = req.params;
 
-    const {pagado} = req.body;
+    const { id } = req.params;
+
+    const { pagado } = req.body;
 }
 
 module.exports = {

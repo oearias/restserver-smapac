@@ -8,14 +8,15 @@ const { generarJWT, genTokenPassword, getTokenPassword } = require('../helpers/g
 
 const login = async (req, res = response) => {
 
+    const pool = await getConnection();
+
     try {
         const { email, password } = req.body;
 
-        console.log(email);
 
         //Validamos que exista el email
 
-        const pool = await getConnection();
+        
         const resul = await pool.request()
             .input('email', sql.VarChar, email)
             .query('SELECT * from usuario where email = @email')
@@ -51,6 +52,8 @@ const login = async (req, res = response) => {
             error: error.message,
             msg: 'Algo salió mal, hable con el Administrador'
         })
+    }finally{
+        pool.close();
     }
 
 }
@@ -59,6 +62,8 @@ const forgotPassword = async (req, res = response) => {
 
     const {email} = req.body;
 
+    const pool = await getConnection();
+
     if(!email){
         res.status(400).json({
             msg: 'Email es requerido'
@@ -66,14 +71,13 @@ const forgotPassword = async (req, res = response) => {
     }
 
     const message = 'Revise su email para cambiar la contraseña';
-
     let verificationLink;
-
     let emailStatus = 'OK';
 
-    try {
-        const pool = await getConnection();
+    
 
+    try {
+        
         const result = await  pool.request()
                             .input('email', email)
                             .query('SELECT id, email FROM usuario WHERE email=@email');
@@ -90,6 +94,7 @@ const forgotPassword = async (req, res = response) => {
             verificationLink = process.env.URL_CLIENT+`#/reset?t=${token}`;
 
             //inserto en la tabla usuario colum resetToken el token
+            
             const inserta = await pool
                                 .request()
                                 .input('reset_token', sql.VarChar, token)
@@ -107,6 +112,8 @@ const forgotPassword = async (req, res = response) => {
 
     } catch (error) {
         return res.json(message)
+    }finally{
+        pool.close();
     }
 
 
@@ -152,8 +159,7 @@ const forgotPassword = async (req, res = response) => {
 
 const newPassword = async (req, res = response) => {
 
-    console.log(req.headers);
-    console.log(req.body);
+    const pool = await getConnection();
 
     const {newPassword} = req.body;
     const resetToken = req.headers.reset.toString();    //as string, en dado caso que no funcione el toString instalamos y configuramos babel
@@ -167,11 +173,7 @@ const newPassword = async (req, res = response) => {
     try {
         jwtPayload = await getTokenPassword(resetToken);
 
-        const pool = await getConnection();
-
         const result = await pool.request().input("reset_token", resetToken).query("Select id, email from usuario where reset_Token = @reset_token ");
-
-        //
 
         //const id = result.recordset[0]['id'];
         const email = result.recordset[0]['email'];
@@ -193,10 +195,10 @@ const newPassword = async (req, res = response) => {
         console.log(result2);
 
 
-        
-
     } catch (error) {
         return res.status(401).json({message: error.message})
+    }finally{
+        pool.close();
     }
 
 

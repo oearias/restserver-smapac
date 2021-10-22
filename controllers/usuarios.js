@@ -28,9 +28,9 @@ const usuariosPost = async (req, res = response) => {
         })
     }
 
-    try {
+    const pool = await getConnection();
 
-        const pool = await getConnection();
+    try {
 
         //Encriptar password
         const salt = bcryptjs.genSaltSync();
@@ -49,15 +49,17 @@ const usuariosPost = async (req, res = response) => {
 
     } catch (error) {
         res.status(500).json(error.message)
-    }
+    } 
 }
 
 const usuarioGet = async (req, res = response) => {
 
-    try {
-        const { id } = req.params;
+    const { id } = req.params;
 
-        const pool = await getConnection();
+    const pool = await getConnection();
+
+    try {
+
 
         const result = await pool.request().input("id", id).query('SELECT nombre, email FROM usuario where id = @id')
 
@@ -70,16 +72,18 @@ const usuarioGet = async (req, res = response) => {
         );
     } catch (error) {
         res.json(error.message)
+    } finally {
+        pool.close();
     }
 
 }
 
 const usuarioGetByEmail = async (req, res = response) => {
 
-    try {
-        const { email } = req.params;
+    const { email } = req.params;
+    const pool = await getConnection();
 
-        const pool = await getConnection();
+    try {
 
         const result = await pool.request().input("email", email).query('SELECT nombre, email FROM usuario where email = @email')
 
@@ -92,6 +96,8 @@ const usuarioGetByEmail = async (req, res = response) => {
         );
     } catch (error) {
         res.json(error.message)
+    } finally {
+        pool.close();
     }
 
 }
@@ -109,15 +115,21 @@ const usuariosPut = async (req, res = response) => {
 
     const pool = await getConnection();
 
-    const result = pool.request()
-        .input('id', sql.VarChar, id)
-        .input('email', sql.VarChar, usuario)
-        .input('nombre', sql.VarChar, nombre)
-        .query('UPDATE usuario SET email = @email, nombre = @nombre WHERE id=@id ')
+    try {
+        const result = pool.request()
+            .input('id', sql.VarChar, id)
+            .input('email', sql.VarChar, usuario)
+            .input('nombre', sql.VarChar, nombre)
+            .query('UPDATE usuario SET email = @email, nombre = @nombre WHERE id=@id ')
 
-    res.json({
-        msg: `Usuario: ${email} editado correctamente`,
-    });
+        res.json({
+            msg: `Usuario: ${email} editado correctamente`,
+        });
+    } catch (error) {
+        res.json(error.message);
+    } finally {
+        pool.close();
+    }
 }
 
 const usuariosDelete = async (req, res = response) => {
