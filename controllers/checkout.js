@@ -259,20 +259,20 @@ const respMulti = async (req, res = response) => {
     const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
 
 
-    const idExpress = 2338;
+    const idExpress = "2328";
     //Iniciamos con las decisiones
 
     let result;
-    let message = referencia+importe+idExpress;
-    
-    
+    let message = referencia + importe + idExpress;
+
+
     //Genero una signature del lado del servidor.
     let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
     const mySignature = hash.digest('hex');
 
     const cadena = referencia;
     const cadenaAux = cadena.split('_');
-    const contrato = cadenaAux[1]; 
+    const contrato = cadenaAux[1];
 
 
     if (codigo == 1) {
@@ -283,16 +283,30 @@ const respMulti = async (req, res = response) => {
         result = "Ya se encuentra un pago con la referencia: " + referencia;
     } else if (codigo == 0 || codigo == 3) {
         //Comparo la signature que me envían con la que yo genero
-        if (signature != mySignature){
+        if (signature != mySignature) {
             result = "Error en los datos del pago. No se ha podido concluir la transacción."
-        }else{
-            if(codigo == 3){
+        } else {
+            if (codigo == 3) {
                 result = "El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, "
-                +" si el cobro no se realiza en este tiempo favor de comunicarse."
-            }else{
-                result = "El pago se realizó correctamente, número de autorización: "+autorizacion;
+                    + " si el cobro no se realiza en este tiempo favor de comunicarse."
+            } else {
+                result = "El pago se realizó correctamente, número de autorización: " + autorizacion;
 
-                res.render('thankyou',{
+
+                try {
+                    //Ponemos en 0 la tabla
+                    const pool = await getConnection();
+                    const resultado = await pool.request()
+                    await pool.request().input("contrato", contrato).query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
+
+                    console.log(resultado);
+
+                } catch (error) {
+                    console.log(error);
+                }
+
+
+                res.render('thankyou', {
                     codigo,
                     contrato,
                     referencia,
@@ -301,27 +315,27 @@ const respMulti = async (req, res = response) => {
                 });
             }
         }
-    }else{
+    } else {
         result = "Tuvimos un problema con su pago."
     }
 
-    
+
 
 
     console.log("Codigo: " + codigo);
     console.log("Mensaje: " + mensaje);
     console.log("Autorizacion: " + autorizacion);
-    console.log("Contrato: ",contrato);
+    console.log("Contrato: ", contrato);
 
     //Inserto datos en la tabla
-    
-    if(codigo!=0){
-        res.render('none',{
+
+    if (codigo != 0) {
+        res.render('none', {
             mensaje
         });
     }
 
-    
+
 
 }
 

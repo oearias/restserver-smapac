@@ -1,0 +1,10 @@
+<form action="https://www.adquiramexico.com.mx:443/mExpress/pago/avanzado" method="post"/>
+<input name="importe" value="{{importe}}" />
+<input type="hidden" name="referencia" value="123"/>
+<input type="hidden" name="urlretorno" value="https://restserver-smapac.herokuapp.com/api/orders/respuesta.html"/>
+<input type="hidden" name="idexpress" value="{{idExpress}}"/>
+<input type="hidden" name="financiamiento" value="0"/>
+<input type="hidden" name="plazos" value=""/>
+<input type="hidden" name="mediospago" value="110000"/>
+<input type="hidden" name="signature" value="{{mySignature}}"/>
+<input type="image" src="https://s3.amazonaws.com/prod.adquira.mp2.repo.files/verticales/bexpress/resources/img/icon/paybutton_4.png" /></form>
