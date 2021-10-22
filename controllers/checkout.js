@@ -297,7 +297,8 @@ const respMulti = async (req, res = response) => {
                     //Ponemos en 0 la tabla
                     const pool = await getConnection();
                     const resultado = await pool.request()
-                    await pool.request().input("contrato", contrato).query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
+                                                .input("contrato", contrato)
+                                                .query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
 
                     console.log(resultado);
 
