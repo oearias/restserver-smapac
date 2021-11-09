@@ -13,10 +13,10 @@ const validarJWT = async (req, res = response, next) => {
         })
     }
 
-    const id = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
-
-
+    
     try {
+
+        const id = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
         const pool = await getConnection();
 
@@ -31,11 +31,18 @@ const validarJWT = async (req, res = response, next) => {
             });
         }
 
+        next();
+
     } catch (error) {
+
         console.log(error);
+
+        res.status(401).json({
+            msg: 'Token no valido, Sesión expirada. Por favor inicie sesión nuevamente'
+        })
     }
 
-    next();
+    
 }
 
 module.exports = {

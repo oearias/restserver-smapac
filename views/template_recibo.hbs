@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Recíbo Dígital</title>
+    <base href="/">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+        integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body style="color: rgb(82, 82, 82);">
+
+    <style>
+        .frame {
+            border: 12px solid rgb(0, 139, 204);
+            width: 880px;
+            height: 1370px;
+            margin: 20px;
+        }
+
+        b {
+            font-weight: bold;
+        }
+
+        .titulo {
+            width: 100%;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        .labelTitle {
+            width: 400px;
+            margin-top: -2px;
+            margin-left: -2px;
+            margin-right: -1px;
+            color: white;
+            font-weight: 800;
+            border: 2px solid rgb(0, 139, 204);
+            background: rgb(0, 139, 204);
+        }
+
+        .labelTitle2 {
+            width: 402px;
+            margin-top: -2px;
+            color: white;
+            font-weight: 800;
+            border: 2px solid rgb(0, 139, 204);
+            background: rgb(0, 139, 204);
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .result {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        .celda1 {
+            width: 132px;
+            font-weight: 700;
+        }
+
+        .titleMinus {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .encabezadoTabla {
+            background-color: rgb(0, 139, 204);
+            color: white;
+            text-align: center;
+        }
+
+        .contenidoTabla {
+            border: 2px solid rgb(0, 139, 204);
+            font-size: 18px;
+            text-align: center;
+            font-weight: 800;
+        }
+    </style>
+
+    <div class="frame">
+
+        <table class="titulo">
+            <td>
+                <div>
+                    <img style="height: 100px;"
+                        src="https://storage-smapac-assets.s3.us-east-2.amazonaws.com/smapac-logo-300x190.ico" alt="">
+                </div>
+            </td>
+            <td style="padding-top:20px">
+                <div style="padding-bottom: 0px; font-weight: 800;">SISTEMA MUNICIPAL DE AGUA POTABLE</div>
+                <div style="margin-top: -10px; font-weight:800">Y ALCANTARILLADO DE CARMEN</div>
+                <div style="margin-top:-5px; font-size: 10px; font-weight: 700">R.F.C. SMA-860206-225</div>
+                <div style="margin-top:-5px; font-size: 10px; font-weight: 700">
+                    CALLE 33 No. 140 INT. 1 ENTRE 50 Y 56 COL. PETROLERA C.P. 24180 CD. DEL CARMEN, CAMPECHE
+                </div>
+            </td>
+            <td>
+                <div>
+                    <img style="height: 160px;"
+                        src="https://storage-smapac-assets.s3.us-east-2.amazonaws.com/Logo_Vertical+Negro.png" alt="">
+                </div>
+            </td>
+        </table>
+
+        <div style="margin: 10px; 20px 20px 0">
+
+            <div style="
+                font-size: 16px; 
+                font-weight: 700; 
+                padding: 20px 10px 20px 20px;
+                border: 2px solid rgb(0, 139, 204); 
+                border-radius: 10px 10px 0px 0px">
+
+                <div class="row">
+                    <div class="col titleMinus">CONTRATO: <span class="result">{{contrato}}</span></div>
+                    <div class="col titleMinus">REGIÓN: <span class="result">{{region}}</span></div>
+                    <div class="col titleMinus">SECTOR: <span class="result">{{sector}}</span></div>
+                    <div class="col titleMinus">REPARTO: <span class="result">{{reparto}}</span></div>
+                </div>
+
+                <div class="row">
+                    <div class="col-7">
+                        <div class="titleMinus">USUARIO: <span class="result">{{nombre}}</span></div>
+                        <div class="titleMinus">DOMICILIO: <span class="result">{{direccion}}</span></div>
+                        <div class="titleMinus">ENTRE:</div>
+                        <div class="row">
+                            <div class="col titleMinus">COLONIA: <span class="result">{{colonia}}</span></div>
+                            <div class="col titleMinus">C.P: <span class="result">{{cp}}</span></div>
+                        </div>
+                    </div>
+                    <div class="col-5">
+
+                        <div style="text-align: center; 
+                        margin-top: 20px; 
+                        width: 75%;
+                        background-color:rgb(0, 139, 204);
+                        color: white;
+                        display: flex;
+                        margin-left: 50px;
+                        justify-content: center;
+                        align-items: center;
+                        ">
+                            PRESENTE MES
+                        </div>
+
+                        <div style=" margin-right: -11px; margin-top: 9px; margin-bottom: -150px">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td class="encabezadoTabla" style="border-radius: 10px 0 0 0;">LECTURA ANTERIOR</td>
+                                    <td class="encabezadoTabla">LECTURA ACTUAL</td>
+                                    <td class="encabezadoTabla" style="border-radius: 0 10px 0 0;">CONSUMO</td>
+                                </tr>
+                                <tr>
+                                    <td class="contenidoTabla">{{lectura_anterior}}</td>
+                                    <td class="contenidoTabla">{{lectura_actual}}</td>
+                                    <td class="contenidoTabla">{{consumo}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="labelTitle2">INFORMACIÓN DE CONSUMO
+                    </div>
+
+                    <div style="border: 2px solid rgb(0,139,204);">
+
+                        <table style="width: 100%; text-align:center;">
+                            <tr style="font-weight: 800;">
+                                <td>PERIODO</td>
+                                <td>ANT.</td>
+                                <td>ACT.</td>
+                                <td>CONS. M<sup>3</sup></td>
+                            </tr>
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado7}}</td>
+                                <td>{{lectura8}}</td>
+                                <td>{{lectura7}}</td>
+                                <td>{{consumo6}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado6}}</td>
+                                <td>{{lectura7}}</td>
+                                <td>{{lectura6}}</td>
+                                <td>{{consumo5}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado5}}</td>
+                                <td>{{lectura6}}</td>
+                                <td>{{lectura5}}</td>
+                                <td>{{consumo4}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado4}}</td>
+                                <td>{{lectura5}}</td>
+                                <td>{{lectura4}}</td>
+                                <td>{{consumo3}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado3}}</td>
+                                <td>{{lectura4}}</td>
+                                <td>{{lectura3}}</td>
+                                <td>{{consumo2}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado2}}</td>
+                                <td>{{lectura3}}</td>
+                                <td>{{lectura2}}</td>
+                                <td>{{consumo1}}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="labelTitle2">HISTÓRICO DE CUENTA
+                    </div>
+
+                    <div style="border: 2px solid rgb(0,139,204);">
+
+                        <table style="width: 100%; text-align:center;">
+                            <tr style="font-weight: 800;">
+                                <td>PERIODO</td>
+                                <td>EMISIÓN</td>
+                                <td>IMPORTE</td>
+                            </tr>
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado7}}</td>
+                                <td>{{fecha_emision7}}</td>
+                                <td>{{adeudo7}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado6}}</td>
+                                <td>{{fecha_emision6}}</td>
+                                <td>{{adeudo6}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado5}}</td>
+                                <td>{{fecha_emision5}}</td>
+                                <td>{{adeudo5}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado4}}</td>
+                                <td>{{fecha_emision4}}</td>
+                                <td>{{adeudo4}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado3}}</td>
+                                <td>{{fecha_emision3}}</td>
+                                <td>{{adeudo3}}</td>
+                            </tr>
+
+                            <tr class="titleMinus">
+                                <td>{{mes_facturado2}}</td>
+                                <td>{{fecha_emision2}}</td>
+                                <td>{{adeudo2}}</td>
+                            </tr>
+                        </table>
+
+                    </div>
+
+                    <div class="labelTitle2">HISTÓRICO DE CONSUMO
+                    </div>
+                </div>
+                <div class="col">
+
+
+                    <div style="
+                    margin-top: -2px;
+                    margin-left: -31px;
+                    padding-left: 10px;
+                    border-radius: 0px 0px 20px 20px;
+                    border: 2px solid rgb(0, 139, 204)">
+                        <div class="mt-3 titleMinus">
+                            PERIODO DE CONSUMO:
+                        </div>
+                        <div class="titleMinus">
+                            MES FACTURADO: <span class="result">&nbsp;&nbsp;{{mes_facturado}}</span>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-4">
+                                <div class="pl-1" style="
+                                    background: rgb(0, 139, 204); 
+                                    color: white;
+                                    font-weight: 700;
+                                    width: 100%">
+                                    VENCIMIENTO
+                                </div>
+                            </div>
+
+                            <div class="col">
+                                <span class="result">{{fecha_vencimiento}}</span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col titleMinus">MEDIDOR: <span class="result">{{medidor}}</span></div>
+                            <div class="col titleMinus">TARIFA:
+                                <span class="result">{{tarifa}}</span>
+                            </div>
+                        </div>
+                        <div class="titleMinus">
+                            GIRO: <span class="result">&nbsp;&nbsp;{{giro}}</span>
+                        </div>
+                        <div class="titleMinus">
+                            PERIODOS DE ADEUDO
+                        </div>
+
+                        <br>
+
+                        <div class="labelTitle2" style="
+                        margin-left: -12px;
+                        width: 432px;">
+                            DETALLE DE CUENTA
+                        </div>
+
+                        <table style="width: 95%;" class="titleMinus">
+                            <tr style="font-size: 18px; font-weight: 900;">
+                                <td>Concepto</td>
+                                <td style="text-align: right;">Vencido</td>
+                                <td style="text-align: right;">Actual</td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>Consumo</td>
+                                <td style="text-align: right;">${{consumo_vencido}}</td>
+                                <td style="text-align: right;">${{consumo_actual}}</td>
+                            </tr>
+                            <tr>
+                                <td>Recargo</td>
+                                <td style="text-align: right;">${{recargo_vencido}}</td>
+                                <td style="text-align: right;">${{recargo_actual}}</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td style="text-align: right;">Ha pagado:</td>
+                                <td style="text-align: right;">${{pagado}}</td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td></td>
+                                <td style="text-align: right;" class="result">${{adeuda}}</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div style="text-align: center; font-size:10px; font-weight: 700">
+                        PARA CUALQUIER ACLARACIÓN <br>
+                        PRESENTARSE ANTES DE LA FECHA <br>
+                        DE VENCIMIENTO CON SU LECTURA
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="text-align: center; font-size: 22px; font-weight: 800; margin-top:20px">
+            EVITE CORTES Y PAGO DE RECONEXIÓN
+            <br>
+            ESTADO DE CUENTA
+        </div>
+
+        <div style="text-align: right; font-size: 60px; margin-right: 10px; font-weight:600">
+            *{{contrato}}
+        </div>
+
+        <div class="row" style="text-align: center; font-size:24px; font-weight: 800; color:rgb(105, 105, 105)">
+            <div class="col">
+                <i class="fab fa-facebook" style="font-size: 28px; color: rgb(0, 139, 204);"></i> Smapac.Carmen
+            </div>
+            <div class="col">
+                www.smapac.gob.mx
+            </div>
+        </div>
+
+
+        <div class="mt-2" style="text-align: center; 
+                    font-size: 22px;
+                    font-weight: 800;
+                    background-color: rgb(0, 139, 204); 
+                    margin-right: 0px;
+                    color:white">
+            EL AGUA ES PARA TODOS, CUIDARLA Y PAGARLA ES TU RESPONSABILIDAD
+        </div>
+
+        <div class="row" style="margin-top: 30px">
+
+            <div class="col" style="margin-left: 15px;">
+                <div class="titleMinus">FECHA DE VENCIMIENTO: <span class="result">{{fecha_vencimiento}}</span></div>
+                <div class="titleMinus">CONTRATO: <span class="result">{{contrato}}</span></div>
+                <div class="titleMinus">REPARTO: <span class="result">{{reparto}}</span></div>
+                <div class="titleMinus">USUARIO: <span class="result">{{nombre}}</span></div>
+                <div class="titleMinus">DOMICILIO: <span class="result">{{direccion}}</span></div>
+                <div class="titleMinus">COLONIA: <span class="result">{{colonia}}</span></div>
+                <div class="titleMinus">TARIFA: <span class="result">{{tarifa}}</span></div>
+            </div>
+
+            <div class="col" style="margin-right: 15px;">
+                <div style="
+                border-radius: 20px 20px 0px 0px;
+                background:rgb(0, 139, 204);
+                color: white;
+                text-align: center;
+                font-weight: 800;
+                font-size: 20px;
+                border: 2px solid rgb(0, 139, 204);">
+                    DETALLES DE CUENTA
+                </div>
+                <div style="
+                border: 2px solid rgb(0, 139, 204);
+                border-radius: 0px 0px 20px 20px;">
+
+                    <table style="width: 95%;" class="titleMinus ml-1">
+                        <tr style="font-size: 18px; font-weight: 900;">
+                            <td>Concepto</td>
+                            <td style="text-align: right;">Vencido</td>
+                            <td style="text-align: right;">Actual</td>
+                        </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td>&nbsp;</td>
+                        </tr>
+
+                        <tr>
+                            <td>Consumo</td>
+                            <td style="text-align: right;">${{consumo_vencido}}</td>
+                            <td style="text-align: right;">${{consumo_actual}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Recargo</td>
+                            <td style="text-align: right;">${{recargo_vencido}}</td>
+                            <td style="text-align: right;">${{recargo_actual}}</td>
+                        </tr>
+
+                        <tr>
+                                <td>&nbsp;</td>
+                                <td style="text-align: right;">Ha pagado:</td>
+                                <td style="text-align: right;">${{pagado}}</td>
+                            </tr>
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;" class="result">${{adeuda}}</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

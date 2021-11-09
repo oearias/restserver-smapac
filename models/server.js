@@ -11,6 +11,7 @@ class Server {
         this.usuariosPath = '/api/usuarios'
         this.contratosPath = '/api/contratos'
         this.ordersPath = '/api/orders'
+        this.recibosPath = '/api/recibos'
 
         //Middlewares
         this.middlewares();
@@ -45,6 +46,7 @@ class Server {
         this.app.use(this.contratosPath, require('../routes/contratos'));
         this.app.use(this.usuariosPath, require('../routes/usuarios'));
         this.app.use(this.ordersPath, require('../routes/checkout'));
+        this.app.use(this.recibosPath, require('../routes/recibos'));
 
     }
 
