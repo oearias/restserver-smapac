@@ -57,6 +57,12 @@ const reciboGet = async (req, res = response) => {
                 'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, ' +
                 'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
                 'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
+                'dbo.lectura_mes_anterior(@id, 1) as lectura_ant1, '+
+                'dbo.lectura_mes_anterior(@id, 2) as lectura_ant2, '+
+                'dbo.lectura_mes_anterior(@id, 3) as lectura_ant3, '+
+                'dbo.lectura_mes_anterior(@id, 4) as lectura_ant4, '+
+                'dbo.lectura_mes_anterior(@id, 5) as lectura_ant5, '+
+                'dbo.lectura_mes_anterior(@id, 6) as lectura_ant6, '+
                 'dbo.mes_anterior(@id, 1) as lectura1, '+
                 'dbo.mes_anterior(@id, 2) as lectura2, '+
                 'dbo.mes_anterior(@id, 3) as lectura3, '+
@@ -172,12 +178,12 @@ const reciboGet = async (req, res = response) => {
         //Diferencias (-) de Consumo
         result.recordset[0]['consumo'] = result.recordset[0]['lectura_actual'] - result.recordset[0]['lectura_anterior'];
 
-        result.recordset[0]['consumo1'] = result.recordset[0]['lectura2'] - result.recordset[0]['lectura3'];
-        result.recordset[0]['consumo2'] = result.recordset[0]['lectura3'] - result.recordset[0]['lectura4'];
-        result.recordset[0]['consumo3'] = result.recordset[0]['lectura4'] - result.recordset[0]['lectura5'];
-        result.recordset[0]['consumo4'] = result.recordset[0]['lectura5'] - result.recordset[0]['lectura6'];
-        result.recordset[0]['consumo5'] = result.recordset[0]['lectura6'] - result.recordset[0]['lectura7'];
-        result.recordset[0]['consumo6'] = result.recordset[0]['lectura7'] - result.recordset[0]['lectura8'];
+        result.recordset[0]['consumo1'] = result.recordset[0]['lectura1'] - result.recordset[0]['lectura_ant1'];
+        result.recordset[0]['consumo2'] = result.recordset[0]['lectura2'] - result.recordset[0]['lectura_ant2'];
+        result.recordset[0]['consumo3'] = result.recordset[0]['lectura3'] - result.recordset[0]['lectura_ant3'];
+        result.recordset[0]['consumo4'] = result.recordset[0]['lectura4'] - result.recordset[0]['lectura_ant4'];
+        result.recordset[0]['consumo5'] = result.recordset[0]['lectura5'] - result.recordset[0]['lectura_ant5'];
+        result.recordset[0]['consumo6'] = result.recordset[0]['lectura6'] - result.recordset[0]['lectura_ant6'];
 
         const html = DOC(result.recordset[0]);
 
