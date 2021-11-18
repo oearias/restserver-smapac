@@ -345,29 +345,46 @@
                                 <td style="text-align: right;">Actual</td>
                             </tr>
 
-                            <tr>
-                                <td>&nbsp;</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+
                             <tr>
                                 <td>Consumo</td>
-                                <td style="text-align: right;">${{consumo_vencido}}</td>
-                                <td style="text-align: right;">${{consumo_actual}}</td>
+                                <td style="text-align: right;">{{consumo_vencido}}</td>
+                                <td style="text-align: right;">{{consumo_actual}}</td>
                             </tr>
+
                             <tr>
-                                <td>Recargo</td>
-                                <td style="text-align: right;">${{recargo_vencido}}</td>
-                                <td style="text-align: right;">${{recargo_actual}}</td>
+                                <td>{{label_drenaje}}</td>
+                                <td style="text-align: right;">{{drenaje_vencido}}</td>
+                                <td style="text-align: right;">{{drenaje}}</td>
                             </tr>
+
+                            <tr>
+                                <td>{{label_pipas}}</td>
+                                <td style="text-align: right;">{{pipas_vencido}}</td>
+                                <td style="text-align: right;">{{pipas}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_iva}}</td>
+                                <td style="text-align: right;">{{iva_vencido}}</td>
+                                <td style="text-align: right;">{{iva}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_recargos}}</td>
+                                <td style="text-align: right;">{{recargo_vencido}}</td>
+                                <td style="text-align: right;">{{recargo_actual}}</td>
+                            </tr>
+
                             <tr>
                                 <td>&nbsp;</td>
-                                <td style="text-align: right;">Ha pagado:</td>
-                                <td style="text-align: right;">${{pagado}}</td>
+                                <td style="text-align: right;">{{label_pagado}}</td>
+                                <td style="text-align: right;">{{pagado}}</td>
                             </tr>
+
                             <tr>
                                 <td>&nbsp;</td>
-                                <td></td>
+                                <td>Total a pagar:</td>
                                 <td style="text-align: right;" class="result">${{adeuda}}</td>
                             </tr>
                         </table>
@@ -440,41 +457,55 @@
                 border-radius: 0px 0px 20px 20px;">
 
                     <table style="width: 95%;" class="titleMinus ml-1">
+
                         <tr style="font-size: 18px; font-weight: 900;">
-                            <td>Concepto</td>
-                            <td style="text-align: right;">Vencido</td>
-                            <td style="text-align: right;">Actual</td>
-                        </tr>
-
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td>&nbsp;</td>
-                        </tr>
-
-                        <tr>
-                            <td>Consumo</td>
-                            <td style="text-align: right;">${{consumo_vencido}}</td>
-                            <td style="text-align: right;">${{consumo_actual}}</td>
-                        </tr>
-
-                        <tr>
-                            <td>Recargo</td>
-                            <td style="text-align: right;">${{recargo_vencido}}</td>
-                            <td style="text-align: right;">${{recargo_actual}}</td>
-                        </tr>
-
-                        <tr>
-                                <td>&nbsp;</td>
-                                <td style="text-align: right;">Ha pagado:</td>
-                                <td style="text-align: right;">${{pagado}}</td>
+                                <td>Concepto</td>
+                                <td style="text-align: right;">Vencido</td>
+                                <td style="text-align: right;">Actual</td>
                             </tr>
 
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td style="text-align: right;" class="result">${{adeuda}}</td>
-                        </tr>
+
+                            <tr>
+                                <td>Consumo</td>
+                                <td style="text-align: right;">{{consumo_vencido}}</td>
+                                <td style="text-align: right;">{{consumo_actual}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_drenaje}}</td>
+                                <td style="text-align: right;">{{drenaje_vencido}}</td>
+                                <td style="text-align: right;">{{drenaje}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_pipas}}</td>
+                                <td style="text-align: right;">{{pipas_vencido}}</td>
+                                <td style="text-align: right;">{{pipas}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_iva}}</td>
+                                <td style="text-align: right;">{{iva_vencido}}</td>
+                                <td style="text-align: right;">{{iva}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>{{label_recargos}}</td>
+                                <td style="text-align: right;">{{recargo_vencido}}</td>
+                                <td style="text-align: right;">{{recargo_actual}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td style="text-align: right;">{{label_pagado}}</td>
+                                <td style="text-align: right;">{{pagado}}</td>
+                            </tr>
+
+                            <tr>
+                                <td>&nbsp;</td>
+                                <td>Total a pagar:</td>
+                                <td style="text-align: right;" class="result">${{adeuda}}</td>
+                            </tr>
 
 
                     </table>

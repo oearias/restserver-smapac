@@ -53,8 +53,9 @@ const reciboGet = async (req, res = response) => {
         .input("id", id)
         .input("fecha_pagado_inf", fecha_pagado_inf)
         .input("fecha_pagado_sup", fecha_pagado_sup)
-            .query('SELECT a.contrato, a.mes_facturado, a.recargo_actual, cast(a.consumo_actual as decimal(10,2)) as consumo_actual, ' +
+            .query('SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, ' +
                 'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, ' +
+                'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, ' +
                 'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
                 'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
                 'dbo.lectura_mes_anterior(@id, 1) as lectura_ant1, '+
@@ -97,6 +98,7 @@ const reciboGet = async (req, res = response) => {
                 'AND a.contrato = b.contrato ' +
                 'AND a.año = 2021 and a.mes = @mes_actual GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
                 'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
+                'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
                 'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
                 'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor')
 
@@ -141,20 +143,64 @@ const reciboGet = async (req, res = response) => {
         //Formateamos fechas de emision
         result.recordset[0]['fecha_emision1'] ? result.recordset[0]['fecha_emision1'] : '-'
 
+        //Leyendas
+        if(result.recordset[0]['drenaje'] > 0 ){
+            result.recordset[0]['label_drenaje'] = 'Drenaje';
+        }
+
+        if(result.recordset[0]['pipas'] > 0 ){
+            result.recordset[0]['label_pipas'] = 'Pipa de agua';
+        }
+
+        if(result.recordset[0]['iva'] > 0 ){
+            result.recordset[0]['label_iva'] = 'IVA';
+        }
+
+        if(result.recordset[0]['pagado'] > 0 ){
+            result.recordset[0]['label_pagado'] = 'Ha pagado:';
+        }
+
+        if(result.recordset[0]['recargo_actual'] > 0 ){
+            result.recordset[0]['label_recargo'] = 'Recargos:';
+        }
+
         //Formateamos a dos decimales y comas por miles los valores
-        result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = formatNumber(result.recordset[0]['consumo_actual']) : '';
-        result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = formatNumber(result.recordset[0]['consumo_vencido']) : '';
-        result.recordset[0]['recargo_actual'] ? result.recordset[0]['recargo_actual'] = formatNumber(result.recordset[0]['recargo_actual']) : '';
-        result.recordset[0]['recargo_vencido'] ? result.recordset[0]['recargo_vencido'] = formatNumber(result.recordset[0]['recargo_vencido']) : '';
+        result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = '$'+formatNumber(result.recordset[0]['consumo_actual']) : '';
+        result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = '$'+formatNumber(result.recordset[0]['consumo_vencido']) : '';
+        result.recordset[0]['recargo_actual'] ? result.recordset[0]['recargo_actual'] = '$'+formatNumber(result.recordset[0]['recargo_actual']) : '';
+        result.recordset[0]['recargo_vencido'] ? result.recordset[0]['recargo_vencido'] = '$'+formatNumber(result.recordset[0]['recargo_vencido']) : '';
+        result.recordset[0]['drenaje']  ? result.recordset[0]['drenaje'] = '$'+formatNumber(result.recordset[0]['drenaje']) : '';
+        result.recordset[0]['drenaje_vencido'] ? result.recordset[0]['drenaje_vencido'] = '$'+formatNumber(result.recordset[0]['drenaje_vencido']) : '';
+        result.recordset[0]['iva'] ? result.recordset[0]['iva'] = '$'+formatNumber(result.recordset[0]['iva']) : '';
+        result.recordset[0]['iva_vencido'] ? result.recordset[0]['iva_vencido'] = '$'+formatNumber(result.recordset[0]['iva_vencido']) : '';
+        result.recordset[0]['pipas'] ? result.recordset[0]['pipas'] = '$'+formatNumber(result.recordset[0]['pipas']) : '';
+        result.recordset[0]['pipas_vencido'] ? result.recordset[0]['pipas_vencido'] = '$'+formatNumber(result.recordset[0]['pipas_vencido']) : '';
         
+
+        //Desaparecemos los valores que sean = a 0
+        (result.recordset[0]['consumo_vencido'] == 0) ? result.recordset[0]['consumo_vencido'] = '' : result.recordset[0]['consumo_vencido'];
+        (result.recordset[0]['recargo_actual'] == 0) ? result.recordset[0]['recargo_actual'] = '' : result.recordset[0]['recargo_actual'];
+        (result.recordset[0]['recargo_vencido'] == 0) ? result.recordset[0]['recargo_vencido'] = '' : result.recordset[0]['recargo_vencido'];
+        //-----------------------------------------//
+        (result.recordset[0]['drenaje'] == 0) ? result.recordset[0]['drenaje'] = '' : result.recordset[0]['drenaje'];
+        (result.recordset[0]['drenaje_vencido'] == 0) ? result.recordset[0]['drenaje_vencido'] = '' : result.recordset[0]['drenaje_vencido'];
+        (result.recordset[0]['iva'] == 0) ? result.recordset[0]['iva'] = '' : result.recordset[0]['iva'];
+        (result.recordset[0]['iva_vencido'] == 0) ? result.recordset[0]['iva_vencido'] = '' : result.recordset[0]['iva_vencido'];
+        (result.recordset[0]['pipas'] == 0) ? result.recordset[0]['pipas'] = '' : result.recordset[0]['pipas'];
+        (result.recordset[0]['pipas_vencido'] == 0) ? result.recordset[0]['pipas_vencido'] = '' : result.recordset[0]['pipas_vencido'];
+
+
         result.recordset[0]['adeuda'] ? result.recordset[0]['adeuda'] = formatNumber(result.recordset[0]['adeuda']) : '';
-        result.recordset[0]['pagado'] ? result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']) : 0;
+        result.recordset[0]['pagado'] ? result.recordset[0]['pagado'] = '$'+formatNumber(result.recordset[0]['pagado']) : 0;
 
         //Diferencia de lo pagado y el adeudo
         if(result.recordset[0]['adeuda'] && result.recordset[0]['pagado']){
             console.log("si entra condi");
             result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado']
         }
+
+        //Desaparecemos lo pagado despues de todas las operaciones aritmeticas, antes no!!!
+        (result.recordset[0]['pagado'] == 0) ? result.recordset[0]['pagado'] = '' : result.recordset[0]['pagado'];
         
         result.recordset[0]['adeudo1'] ? result.recordset[0]['adeudo1'] = formatNumber(result.recordset[0]['adeudo1']) : '';
         result.recordset[0]['adeudo2'] ? result.recordset[0]['adeudo2'] = formatNumber(result.recordset[0]['adeudo2']) : '';
@@ -165,8 +211,8 @@ const reciboGet = async (req, res = response) => {
         result.recordset[0]['adeudo7'] ? result.recordset[0]['adeudo7'] = formatNumber(result.recordset[0]['adeudo7']) : '';
 
         //result.recordset[0]['adeuda'] ? result.recordset[0]['adeuda'] = formatNumber(result.recordset[0]['adeuda']) : '-';
-        result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = formatNumber(result.recordset[0]['consumo_actual']) : '-';
-        result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = formatNumber(result.recordset[0]['consumo_vencido']) : '-';
+        //result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = formatNumber(result.recordset[0]['consumo_actual']) : '-';
+        //result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = formatNumber(result.recordset[0]['consumo_vencido']) : '-';
 
 
         //formateamos adeuda por que no pone doble cero cuando es = a 0
