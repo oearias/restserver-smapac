@@ -23,6 +23,10 @@ const reciboGet = async (req, res = response) => {
         //dia actual
         dia_actual = fecha_actual.getDate();
 
+        const fecha_pagado_inf = '2021-11-16';
+        const fecha_pagado_sup = '2021-12-15';
+        const mes_actual = 11;
+
 
         //Esto me está dando error
         //HAcemos este procedimiento porque gon el getmonth daba mes erroneo
@@ -31,13 +35,13 @@ const reciboGet = async (req, res = response) => {
         mes_actual = Number(mes_actual[1]);*/
         anio_actual = fecha_actual.getFullYear();
 
-        mes_auxiliar = mes_actual;
+        //mes_auxiliar = mes_actual;
 
 
         //Preguntamos si ya salió el recibo actual comparando la fecha
-        if(dia_actual < 15){
+        /*if(dia_actual < 15){
             mes_actual = mes_actual - 1;
-        }
+        }*/
 
         
         //Preparo la fecha a comparar para saber cuanto se ha pagado a la fecha
@@ -48,9 +52,7 @@ const reciboGet = async (req, res = response) => {
         let fecha_pagado_sup = anio_actual+'-'+(mes_actual+1)+'-'+15;
         */
 
-        const fecha_pagado_inf = '2021-11-16';
-        const fecha_pagado_sup = '2021-12-15';
-        const mes_actual = 11;
+        
 
         console.log("fecha de lo pagado: "+fecha_pagado_inf);
         console.log("fecha de lo pagado: "+fecha_pagado_sup);
