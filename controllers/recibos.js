@@ -38,8 +38,15 @@ const reciboGet = async (req, res = response) => {
 
         console.log('Mes actual: ',mes_actual);
         //Preparo la fecha a comparar para saber cuanto se ha pagado a la fecha
+
+        ///Esto me esta dando error de manera dinamica
+        /*
         let fecha_pagado_inf = anio_actual+'-'+mes_actual+'-'+15;
         let fecha_pagado_sup = anio_actual+'-'+(mes_actual+1)+'-'+15;
+        */
+
+        const fecha_pagado_inf = '2021-11-16';
+        const fecha_pagado_sup = '2021-12-15';
 
         console.log("fecha de lo pagado: "+fecha_pagado_inf);
         console.log("fecha de lo pagado: "+fecha_pagado_sup);
@@ -195,7 +202,6 @@ const reciboGet = async (req, res = response) => {
 
         //Diferencia de lo pagado y el adeudo
         if(result.recordset[0]['adeuda'] && result.recordset[0]['pagado']){
-            console.log("si entra condi");
             result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado']
         }
 
