@@ -254,7 +254,11 @@ const reciboGet = async (req, res = response) => {
         });*/
 
         const browser = await puppeteer.launch({
-            ignoreDefaultArgs: ['--disable-extensions']
+            'args' : [
+                '--no-sandbox',
+                '--disable-setuid-sandbox'
+            ]
+            
         });
 
         console.log(result.recordset[0]);
