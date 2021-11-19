@@ -22,10 +22,13 @@ const reciboGet = async (req, res = response) => {
 
         //dia actual
         dia_actual = fecha_actual.getDate();
+
+
+        //Esto me está dando error
         //HAcemos este procedimiento porque gon el getmonth daba mes erroneo
-        mes_actual = fecha_actual.toLocaleString();
+        /*mes_actual = fecha_actual.toLocaleString();
         mes_actual = mes_actual.split('/');
-        mes_actual = Number(mes_actual[1]);
+        mes_actual = Number(mes_actual[1]);*/
         anio_actual = fecha_actual.getFullYear();
 
         mes_auxiliar = mes_actual;
@@ -36,10 +39,10 @@ const reciboGet = async (req, res = response) => {
             mes_actual = mes_actual - 1;
         }
 
-        console.log('Mes actual: ',mes_actual);
+        
         //Preparo la fecha a comparar para saber cuanto se ha pagado a la fecha
 
-        ///Esto me esta dando error de manera dinamica
+        ///Esto me está dando error de manera dinamica
         /*
         let fecha_pagado_inf = anio_actual+'-'+mes_actual+'-'+15;
         let fecha_pagado_sup = anio_actual+'-'+(mes_actual+1)+'-'+15;
@@ -47,9 +50,11 @@ const reciboGet = async (req, res = response) => {
 
         const fecha_pagado_inf = '2021-11-16';
         const fecha_pagado_sup = '2021-12-15';
+        const mes_actual = 11;
 
         console.log("fecha de lo pagado: "+fecha_pagado_inf);
         console.log("fecha de lo pagado: "+fecha_pagado_sup);
+        console.log('Mes actual: ',mes_actual);
 
         //Iniciamos leyendo plantilla
         const template = fs.readFileSync('./views/template_recibo.hbs', 'utf-8');
