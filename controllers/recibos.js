@@ -246,10 +246,15 @@ const reciboGet = async (req, res = response) => {
 
         const html = DOC(result.recordset[0]);
 
-        const browser = await puppeteer.launch({
-            //dumpio: true,
+
+        //Esto funciona de manera local
+        /*const browser = await puppeteer.launch({
             headless: true,
             defaultViewport: null
+        });*/
+
+        const browser = await puppeteer.launch({
+            ignoreDefaultArgs: ['--disable-extensions']
         });
 
         console.log(result.recordset[0]);
