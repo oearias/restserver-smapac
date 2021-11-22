@@ -80,12 +80,13 @@ const usuarioGet = async (req, res = response) => {
 
 const usuarioGetByEmail = async (req, res = response) => {
 
+
     const { email } = req.params;
     const pool = await getConnection();
 
     try {
 
-        const result = await pool.request().input("email", email).query('SELECT nombre, email FROM usuario where email = @email')
+        const result = await pool.request().input("email", email).query('SELECT id, nombre, email FROM usuario where email = @email')
 
         if (result.recordset.length == 0) {
             result.recordset[0] = "No existe registro con tal email"
@@ -104,6 +105,9 @@ const usuarioGetByEmail = async (req, res = response) => {
 
 const usuariosPut = async (req, res = response) => {
 
+    console.log(req.params);
+    console.log(req.body);
+
     const { id } = req.params
 
     const { nombre, email } = req.body;
@@ -116,11 +120,11 @@ const usuariosPut = async (req, res = response) => {
     const pool = await getConnection();
 
     try {
-        const result = pool.request()
+        await pool.request()
             .input('id', sql.VarChar, id)
-            .input('email', sql.VarChar, usuario)
+            .input('email', sql.VarChar, email)
             .input('nombre', sql.VarChar, nombre)
-            .query('UPDATE usuario SET email = @email, nombre = @nombre WHERE id=@id ')
+            .query('UPDATE usuario SET nombre = @nombre WHERE id=@id ')
 
         res.json({
             msg: `Usuario: ${email} editado correctamente`,
