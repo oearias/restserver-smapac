@@ -1,12 +1,13 @@
 const { response } = require('express');
 const { getConnection } = require('../database/connection');
+const { queries } = require('../database/queries')
 
 const puppeteer = require('puppeteer')
 
 const fs = require('fs');
 const { handlebars } = require('hbs');
 const { Stream } = require('stream');
-const { putCommas, twoDigits, formatNumber } = require('../helpers/format');
+const { formatResultRecordset } = require('../helpers/formatRR');
 
 
 const reciboGet = async (req, res = response) => {
@@ -29,7 +30,7 @@ const reciboGet = async (req, res = response) => {
 
 
         //Esto me está dando error
-        //HAcemos este procedimiento porque gon el getmonth daba mes erroneo
+        //Hacemos este procedimiento porque gon el getmonth daba mes erroneo
         /*mes_actual = fecha_actual.toLocaleString();
         mes_actual = mes_actual.split('/');
         mes_actual = Number(mes_actual[1]);*/
@@ -67,54 +68,7 @@ const reciboGet = async (req, res = response) => {
         .input("id", id)
         .input("fecha_pagado_inf", fecha_pagado_inf)
         .input("fecha_pagado_sup", fecha_pagado_sup)
-            .query('SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, ' +
-                'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, ' +
-                'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, ' +
-                'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
-                'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
-                'dbo.lectura_mes_anterior(@id, 1) as lectura_ant1, '+
-                'dbo.lectura_mes_anterior(@id, 2) as lectura_ant2, '+
-                'dbo.lectura_mes_anterior(@id, 3) as lectura_ant3, '+
-                'dbo.lectura_mes_anterior(@id, 4) as lectura_ant4, '+
-                'dbo.lectura_mes_anterior(@id, 5) as lectura_ant5, '+
-                'dbo.lectura_mes_anterior(@id, 6) as lectura_ant6, '+
-                'dbo.mes_anterior(@id, 1) as lectura1, '+
-                'dbo.mes_anterior(@id, 2) as lectura2, '+
-                'dbo.mes_anterior(@id, 3) as lectura3, '+
-                'dbo.mes_anterior(@id, 4) as lectura4, '+
-                'dbo.mes_anterior(@id, 5) as lectura5, '+
-                'dbo.mes_anterior(@id, 6) as lectura6, '+
-                'dbo.mes_anterior(@id, 7) as lectura7, '+
-                'dbo.mes_anterior(@id, 8) as lectura8, '+
-                'dbo.adeudo(@id, 1) as adeudo1, '+
-                'dbo.adeudo(@id, 2) as adeudo2, '+
-                'dbo.adeudo(@id, 3) as adeudo3, '+
-                'dbo.adeudo(@id, 4) as adeudo4, '+
-                'dbo.adeudo(@id, 5) as adeudo5, '+
-                'dbo.adeudo(@id, 6) as adeudo6, '+
-                'dbo.adeudo(@id, 7) as adeudo7, '+
-                'dbo.fecha_emision(@id, 1) as fecha_emision1, '+
-                'dbo.fecha_emision(@id, 2) as fecha_emision2, '+
-                'dbo.fecha_emision(@id, 3) as fecha_emision3, '+
-                'dbo.fecha_emision(@id, 4) as fecha_emision4, '+
-                'dbo.fecha_emision(@id, 5) as fecha_emision5, '+
-                'dbo.fecha_emision(@id, 6) as fecha_emision6, '+
-                'dbo.fecha_emision(@id, 7) as fecha_emision7, '+
-                'dbo.mes_facturado(@id, 1) as mes_facturado1, '+
-                'dbo.mes_facturado(@id, 2) as mes_facturado2, '+
-                'dbo.mes_facturado(@id, 3) as mes_facturado3, '+
-                'dbo.mes_facturado(@id, 4) as mes_facturado4, '+
-                'dbo.mes_facturado(@id, 5) as mes_facturado5, '+
-                'dbo.mes_facturado(@id, 6) as mes_facturado6, '+
-                'dbo.mes_facturado(@id, 7) as mes_facturado7 '+
-                'FROM facthist a, padron b ' +
-                'where a.contrato = @id ' +
-                'AND a.contrato = b.contrato ' +
-                'AND a.año = 2021 and a.mes = @mes_actual GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
-                'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
-                'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
-                'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
-                'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor')
+            .query(queries.getRecibo)
 
         if (result.recordset.length < 1) {
 
@@ -145,15 +99,17 @@ const reciboGet = async (req, res = response) => {
             });
         }
 
-        let a = result.recordset[0]['fecha_vencimiento'];
+        
+
 
         //Formateamos fecha de vencimiento
-        let mes_venci = ( "0" + (result.recordset[0]['fecha_vencimiento'].getMonth() +1 )).slice(-2);
+        /*let mes_venci = ( "0" + (result.recordset[0]['fecha_vencimiento'].getMonth() +1 )).slice(-2);
         let dia_venci = result.recordset[0]['fecha_vencimiento'].getUTCDate();
         let anio_venci = result.recordset[0]['fecha_vencimiento'].getFullYear();
 
         result.recordset[0]['fecha_vencimiento'] = dia_venci+'/'+mes_venci+'/'+anio_venci;
 
+        /*
         //Formateamos fechas de emision
         result.recordset[0]['fecha_emision1'] ? result.recordset[0]['fecha_emision1'] : '-'
 
@@ -176,8 +132,12 @@ const reciboGet = async (req, res = response) => {
 
         if(result.recordset[0]['recargo_actual'] > 0 ){
             result.recordset[0]['label_recargo'] = 'Recargos:';
-        }
+        }*/
 
+
+        result.recordset[0] = formatResultRecordset(result)
+
+        /*
         //Formateamos a dos decimales y comas por miles los valores
         result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = '$'+formatNumber(result.recordset[0]['consumo_actual']) : '';
         result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = '$'+formatNumber(result.recordset[0]['consumo_vencido']) : '';
@@ -243,6 +203,7 @@ const reciboGet = async (req, res = response) => {
         result.recordset[0]['consumo4'] = result.recordset[0]['lectura4'] - result.recordset[0]['lectura_ant4'];
         result.recordset[0]['consumo5'] = result.recordset[0]['lectura5'] - result.recordset[0]['lectura_ant5'];
         result.recordset[0]['consumo6'] = result.recordset[0]['lectura6'] - result.recordset[0]['lectura_ant6'];
+        */
 
         const html = DOC(result.recordset[0]);
 
