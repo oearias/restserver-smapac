@@ -212,23 +212,29 @@ const googleSignin = async (req, res = response) => {
 
     const { id_token } = req.body;
 
-    //console.log(id_token);
+    console.log(id_token);
 
     try {
 
-        const googleUser = await googleVerify(id_token);
-        const { nombre, img, email } = await googleVerify(id_token);
+        //const googleUser = await googleVerify(id_token);
+        const { nombre, email } = await googleVerify(id_token);
+
+        console.log(nombre);
+        console.log(email);
 
         //Validamos que el usuario no exista
 
         const pool = await getConnection();
         const resul = await pool.request()
-            .input('email', sql.VarChar, email)
+            .input('email', email)
             .query('SELECT * from usuario where email = @email')
 
         const exist = resul.recordset.length;
 
+        console.log(exist)
+
         if (exist < 1) {
+
             console.log("El correo no existe en la DB");
             //Creo el usuario
 
@@ -276,6 +282,7 @@ const googleSignin = async (req, res = response) => {
             }catch (error) {
                 console.warn(error.message);
             }
+
         } else {
             //Si existe...
             console.log("El correo existe!!!");
@@ -284,19 +291,25 @@ const googleSignin = async (req, res = response) => {
                                     .input('email', email)
                                     .query("SELECT id, email, nombre FROM usuario WHERE email = @email");
 
-                if(result.recordset[0]){
+                if(result.recordset){
 
                     const id = result.recordset[0]['id'];
+
+                    console.log(id);
 
                     //Generar el JWT
                     const token = await generarJWT(id);
 
-                    res.json({
+                    const data = {
                         email,
                         nombre,
                         token,
                         flag: 1
-                    });
+                    }
+
+                    console.log(data);
+
+                    res.json(data);
 
                 }else{
                     console.log("Consulta fallida");
@@ -308,7 +321,8 @@ const googleSignin = async (req, res = response) => {
     } catch (error) {
         res.status(400).json({
             ok: false,
-            msg: 'El token no se pudo verificar'
+            msg: 'El token no se pudo verificar',
+            error: error.message
         })
     }
 
