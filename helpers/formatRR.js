@@ -68,7 +68,8 @@ const formatResultRecordset = (result = []) => {
             console.log("entra a lo adeudado y pagado");
             console.log(result.recordset[0]['adeuda'] );
             console.log(result.recordset[0]['pagado'] );
-            result.recordset[0]['adeuda'] = '$'+(result.recordset[0]['adeuda'] - result.recordset[0]['pagado']);
+            result.recordset[0]['adeuda'] = (result.recordset[0]['adeuda'] - result.recordset[0]['pagado']);
+            result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'] ;
         }
 
         //Desaparecemos lo pagado despues de todas las operaciones aritmeticas, antes no!!!
@@ -85,9 +86,13 @@ const formatResultRecordset = (result = []) => {
         //formateamos adeuda por que no pone doble cero cuando es = a 0 y en caso contrario solamente agregamos el signo de peso
         if (result.recordset[0]['adeuda'] == 0) {
             result.recordset[0]['adeuda'] = "0.00"
-        }else{
-            result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
         }
+
+        result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
+
+
+
+
 
         //Diferencias (-) de Consumo
         result.recordset[0]['consumo'] = result.recordset[0]['lectura_actual'] - result.recordset[0]['lectura_anterior'];
