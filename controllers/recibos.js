@@ -99,41 +99,6 @@ const reciboGet = async (req, res = response) => {
             });
         }
 
-        
-
-
-        //Formateamos fecha de vencimiento
-        /*let mes_venci = ( "0" + (result.recordset[0]['fecha_vencimiento'].getMonth() +1 )).slice(-2);
-        let dia_venci = result.recordset[0]['fecha_vencimiento'].getUTCDate();
-        let anio_venci = result.recordset[0]['fecha_vencimiento'].getFullYear();
-
-        result.recordset[0]['fecha_vencimiento'] = dia_venci+'/'+mes_venci+'/'+anio_venci;
-
-        /*
-        //Formateamos fechas de emision
-        result.recordset[0]['fecha_emision1'] ? result.recordset[0]['fecha_emision1'] : '-'
-
-        //Leyendas
-        if(result.recordset[0]['drenaje'] > 0 ){
-            result.recordset[0]['label_drenaje'] = 'Drenaje';
-        }
-
-        if(result.recordset[0]['pipas'] > 0 ){
-            result.recordset[0]['label_pipas'] = 'Pipa de agua';
-        }
-
-        if(result.recordset[0]['iva'] > 0 ){
-            result.recordset[0]['label_iva'] = 'IVA';
-        }
-
-        if(result.recordset[0]['pagado'] > 0 ){
-            result.recordset[0]['label_pagado'] = 'Ha pagado:';
-        }
-
-        if(result.recordset[0]['recargo_actual'] > 0 ){
-            result.recordset[0]['label_recargo'] = 'Recargos:';
-        }*/
-
 
         result.recordset[0] = formatResultRecordset(result)
 
