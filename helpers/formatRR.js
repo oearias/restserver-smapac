@@ -90,10 +90,6 @@ const formatResultRecordset = (result = []) => {
 
         result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
 
-
-
-
-
         //Diferencias (-) de Consumo
         result.recordset[0]['consumo'] = result.recordset[0]['lectura_actual'] - result.recordset[0]['lectura_anterior'];
 
