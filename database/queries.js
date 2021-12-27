@@ -42,8 +42,10 @@ const queries = {
     'dbo.mes_facturado(@id, 7) as mes_facturado7 '+
     'FROM facthist a, padron b ' +
     'WHERE a.contrato = @id ' +
-    'AND a.contrato = b.contrato ' +
-    'AND a.año = 2021 and a.mes = @mes_actual GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
+    'AND a.contrato = b.contrato '+
+    'AND a.año = 2021 AND a.mes_facturado = @mes_facturado '+
+    //'AND a.mes = @mes_actual '+
+    'GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
     'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
