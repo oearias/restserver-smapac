@@ -144,7 +144,7 @@ const addContratoUser = async (req, res = response) => {
 
         res.json({
             msg: "Contrato añadido correctamente"
-        })
+        })  
     } catch (error) {
         res.json(error.message)
     }finally{
