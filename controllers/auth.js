@@ -10,13 +10,14 @@ const { json } = require('body-parser');
 
 const login = async (req, res = response) => {
 
-    const pool = await getConnection();
+    
 
     try {
         const { email, password } = req.body;
 
 
         //Validamos que exista el email
+        const pool = await getConnection();
         const resul = await pool.request()
             .input('email', sql.VarChar, email)
             .query('SELECT * from usuario where email = @email')
@@ -57,9 +58,9 @@ const login = async (req, res = response) => {
             error: error.message,
             msg: 'Algo salió mal, hable con el Administrador'
         })
-    } finally {
-        //pool.close();
-    }
+    } /*finally {
+        pool.close();
+    }*/
 
 }
 
