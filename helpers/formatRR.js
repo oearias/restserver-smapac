@@ -100,6 +100,34 @@ const formatResultRecordset = (result = []) => {
         result.recordset[0]['consumo5'] = result.recordset[0]['lectura5'] - result.recordset[0]['lectura_ant5'];
         result.recordset[0]['consumo6'] = result.recordset[0]['lectura6'] - result.recordset[0]['lectura_ant6'];
 
+        //Desaparecemos ConsM3 cuando no existen fechas de emision
+
+        
+        if(result.recordset[0]['consumo6'] == 0 && result.recordset[0]['mes_facturado6'] == null ){
+            result.recordset[0]['consumo6']=null;
+        }
+
+        if(result.recordset[0]['consumo5'] == 0 && result.recordset[0]['mes_facturado5'] == null ){
+            result.recordset[0]['consumo5']=null;
+        }
+
+        if(result.recordset[0]['consumo4'] == 0 && result.recordset[0]['mes_facturado4'] == null ){
+            result.recordset[0]['consumo4']=null;
+        }
+
+        if(result.recordset[0]['consumo3'] == 0 && result.recordset[0]['mes_facturado3'] == null ){
+            result.recordset[0]['consumo3']=null;
+        }
+
+        if(result.recordset[0]['consumo2'] == 0 && result.recordset[0]['mes_facturado2'] == null ){
+            result.recordset[0]['consumo2']=null;
+        }
+
+        if(result.recordset[0]['consumo1'] == 0 && result.recordset[0]['mes_facturado1'] == null ){
+            result.recordset[0]['consumo1']=null;
+        }
+
+
         return result.recordset[0];
         
     } catch (error) {

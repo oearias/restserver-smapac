@@ -29,7 +29,7 @@ const contratosGet = async (req, res = response) => {
 const contratoGet = async (req, res = response) => {
 
     const { id } = req.params;
-
+    const pool = await getConnection();
     
 
     try {
@@ -69,7 +69,7 @@ const contratoGet = async (req, res = response) => {
             fecha2 = fecha2.toLocaleString('kw-GB', options);
         }
         
-        const pool = await getConnection();
+        //const pool = await getConnection();
         const result = await pool.request()
             .input("id", id)
             .query(`SELECT contrato, nombre, direccion, colonia, cp, `+
@@ -92,7 +92,6 @@ const contratoGet = async (req, res = response) => {
             }
         }
 
-
         console.log(result.recordset[0]);
 
         res.json(
@@ -101,9 +100,9 @@ const contratoGet = async (req, res = response) => {
     } catch (error) {
         res.json(error.message);
     }
-    /*finally{
+    finally{
         pool.close();
-    }*/
+    }
 
     
 }

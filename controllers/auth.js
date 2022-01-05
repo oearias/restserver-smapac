@@ -31,6 +31,7 @@ const login = async (req, res = response) => {
 
         const id = resul.recordset[0]['id'];
         const pass = resul.recordset[0]['password'];
+        const nombre = resul.recordset[0]['nombre'];
 
         //Verificar la contraseña
         const validPassword = bcryptjs.compareSync(password, pass)
@@ -46,6 +47,7 @@ const login = async (req, res = response) => {
 
         res.json({
             email,
+            nombre,
             token
         })
 
@@ -76,8 +78,6 @@ const forgotPassword = async (req, res = response) => {
     let verificationLink;
     let emailStatus = 'OK';
 
-
-
     try {
 
         const result = await pool.request()
@@ -96,8 +96,7 @@ const forgotPassword = async (req, res = response) => {
             verificationLink = process.env.URL_CLIENT + `#/reset?t=${token}`;
 
             //inserto en la tabla usuario colum resetToken el token
-
-            const inserta = await pool
+            await pool
                 .request()
                 .input('reset_token', sql.VarChar, token)
                 .input('id', sql.Int, id)
@@ -109,7 +108,7 @@ const forgotPassword = async (req, res = response) => {
             })
 
         } else {
-            return res.json(message)
+            return res.json(message);
         }
 
     } catch (error) {
@@ -119,7 +118,7 @@ const forgotPassword = async (req, res = response) => {
     }
 
 
-    //TODO: SendEmail
+    //SendEmail
     try {
 
         let destinatario = email;
