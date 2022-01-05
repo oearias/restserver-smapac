@@ -26,7 +26,6 @@ const sql = require('mssql');
 
 
 //AWS
-/*
 const dbSettings = {
     user: 'sa',
     password: '1989023aB9.',
@@ -37,7 +36,7 @@ const dbSettings = {
         trustServerCertificate: true,
     },
 };
-*/
+
 
 //Computadora Local
 /*const dbSettings = {
@@ -64,7 +63,7 @@ const dbSettings = {
 };*/
 
 //SQL Google Cloud BZUBIETA
-const dbSettings = {
+/*const dbSettings = {
     user: 'sqlserver',
     password: 'Aguamala2022$',
     server: '34.121.224.0',
@@ -73,12 +72,12 @@ const dbSettings = {
         encrypt: true,
         trustServerCertificate: true,
     },
-};
+};*/
 
 async function  getConnection() {
 
     try {
-        
+
         const pool = await sql.connect(dbSettings);
 
         return pool;
