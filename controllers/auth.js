@@ -17,8 +17,6 @@ const login = async (req, res = response) => {
 
 
         //Validamos que exista el email
-
-
         const resul = await pool.request()
             .input('email', sql.VarChar, email)
             .query('SELECT * from usuario where email = @email')
@@ -52,12 +50,15 @@ const login = async (req, res = response) => {
         })
 
     } catch (error) {
+
+        console.log(error);
+
         res.status(500).json({
             error: error.message,
             msg: 'Algo salió mal, hable con el Administrador'
         })
     } finally {
-        pool.close();
+        //pool.close();
     }
 
 }
