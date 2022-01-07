@@ -135,20 +135,20 @@ const addContratoUser = async (req, res = response) => {
 
         const { contrato_id } = req.body
 
+        console.log(req.body);
+
         const pool = await getConnection();
 
-        const result = await pool.request()
+        await pool.request()
             .input('contrato_id', sql.Int, contrato_id)
             .input('usuario_id', sql.Int, id)
-            .query('INSERT INTO padron_usuario (contrato_id, usuario_id) values (@contrato_id, @usuario_id)');
+            .query('INSERT INTO usuario_padron values (@usuario_id, @contrato_id)');
 
         res.json({
             msg: "Contrato añadido correctamente"
         })  
     } catch (error) {
         res.json(error.message)
-    }finally{
-        sql.pool.close();
     }
 
 }

@@ -37,7 +37,6 @@ const dbSettings = {
     },
 };
 
-
 //Computadora Local
 /*const dbSettings = {
     user: 'usuarionode',
@@ -51,7 +50,8 @@ const dbSettings = {
 };*/
 
 //SQL Google Cloud 
-/*const dbSettings = {
+/*
+const dbSettings = {
     user: 'sqlserver',
     password: '1989023aB9.',
     server: '34.136.217.147',
@@ -60,7 +60,8 @@ const dbSettings = {
         encrypt: true,
         trustServerCertificate: true,
     },
-};*/
+};
+*/
 
 //SQL Google Cloud BZUBIETA
 /*const dbSettings = {
@@ -72,7 +73,8 @@ const dbSettings = {
         encrypt: true,
         trustServerCertificate: true,
     },
-};*/
+};
+*/
 
 async function  getConnection() {
 

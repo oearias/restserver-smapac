@@ -11,7 +11,6 @@ const { json } = require('body-parser');
 const login = async (req, res = response) => {
 
     
-
     try {
         const { email, password } = req.body;
 
@@ -207,7 +206,6 @@ const newPassword = async (req, res = response) => {
 
     res.json({ message: 'La contraseña ha sido cambiada' })
 }
-
 
 const googleSignin = async (req, res = response) => {
 

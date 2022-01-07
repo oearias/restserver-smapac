@@ -28,6 +28,7 @@ const reciboGet = async (req, res = response) => {
         const fecha_pagado_sup = '2022-01-17';
         const mes_actual = 12;
         const mes_facturado = 'Dic2021';
+        const anio = 2021;
 
 
         //Esto me está dando error
@@ -46,6 +47,7 @@ const reciboGet = async (req, res = response) => {
         const DOC = handlebars.compile(template);
 
         const result = await pool.request()
+        .input("anio", anio)
         .input("mes_actual", mes_actual)
         .input("mes_facturado", mes_facturado)
         .input("id", id)
