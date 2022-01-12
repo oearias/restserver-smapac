@@ -59,19 +59,19 @@ const formatResultRecordset = (result = []) => {
         (result.recordset[0]['pipas'] == 0) ? result.recordset[0]['pipas'] = '' : result.recordset[0]['pipas'];
         (result.recordset[0]['pipas_vencido'] == 0) ? result.recordset[0]['pipas_vencido'] = '' : result.recordset[0]['pipas_vencido'];
 
-
-        result.recordset[0]['adeuda'] ? result.recordset[0]['adeuda'] = formatNumber(result.recordset[0]['adeuda']) : '';
-        result.recordset[0]['pagado'] ? result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']) : 0;
-
         //Diferencia de lo pagado y el adeudo
         if (result.recordset[0]['adeuda'] && result.recordset[0]['pagado']) {
             console.log("entra a lo adeudado y pagado");
             console.log(result.recordset[0]['adeuda'] );
             console.log(result.recordset[0]['pagado'] );
             result.recordset[0]['adeuda'] = (result.recordset[0]['adeuda'] - result.recordset[0]['pagado']);
-            result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'] ;
+
+            console.log("--> "+result.recordset[0]['adeuda']);
+            //result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'] ;
         }
 
+        result.recordset[0]['adeuda'] ? result.recordset[0]['adeuda'] = formatNumber(result.recordset[0]['adeuda']) : '';
+        //result.recordset[0]['pagado'] ? result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']) : 0;
         //Desaparecemos lo pagado despues de todas las operaciones aritmeticas, antes no!!!
         (result.recordset[0]['pagado'] == 0) ? result.recordset[0]['pagado'] = '' : result.recordset[0]['pagado'];
 
@@ -88,6 +88,7 @@ const formatResultRecordset = (result = []) => {
             result.recordset[0]['adeuda'] = "0.00"
         }
 
+        result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'];
         result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
 
         //Diferencias (-) de Consumo

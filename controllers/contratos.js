@@ -34,49 +34,32 @@ const contratoGet = async (req, res = response) => {
 
     try {
 
-        //Esta fecha debe ser 16 del mes pasado o el actual dependiendo la fecha
-        //const fechaHoy = "16/10/2021"
+        const fecha = '2021-12-16';
+        const fecha2 = '2022-01-17';
+        const anio = 2021;
+        const mes = 12;
+        const mes_facturado = 'Dic2021';
 
-        //obten dia
-        const fechaHoy = new Date();
-        
-        let dia = fechaHoy.getDate();
-        let mes = fechaHoy.getMonth();
-        let anio = fechaHoy.getFullYear();
-
-        const fechaCompara = new Date(anio, mes, 15);
-        let fecha, fecha2;
-
-        const options = {
-            year: 'numeric',
-            month : '2-digit',
-            day: '2-digit'
-        }
-
-        //Las fechas del periodo cambiarán dependiendo el mes, al menos hasta que lo configuremos en una tabla
-
-        if(fechaHoy < fechaCompara){
-            fecha = new Date(anio, mes-1, 16);
-            fecha = fecha.toLocaleString('kw-GB', options);
-
-            fecha2 = new Date(anio, mes, 15);
-            fecha2 = fecha2.toLocaleString('kw-GB', options);
-        }else{
-            fecha = new Date(anio, mes, 16);
-            fecha = fecha.toLocaleString('kw-GB', options);
-
-            fecha2 = new Date(anio, mes+1, 15);
-            fecha2 = fecha2.toLocaleString('kw-GB', options);
-        }
         
         //const pool = await getConnection();
         const result = await pool.request()
             .input("id", id)
-            .query(`SELECT contrato, nombre, direccion, colonia, cp, `+
-            `giro, adeuda, tarifa, region, estatus, medidor, reparto, sector, `+
-            `dbo.sum_pagado(@id, '${fecha}', '${fecha2}') as pagado, `+
-            `(adeuda - dbo.sum_pagado(@id, '${fecha}', '${fecha2}' )) as aux `+
-            `FROM padron where contrato = @id`)
+            .input("anio", anio)
+            .input("mes", mes)
+            .input("mes_facturado", mes_facturado)
+            .input("fecha", fecha)
+            .input("fecha2", fecha2)
+            .query('SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
+            'b.giro, a.adeudo as adeuda, b.tarifa, b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
+            'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+
+            '(a.adeudo - dbo.sum_pagado(@id, @fecha, @fecha2 )) as aux '+
+            'FROM facthist a, '+
+            'padron b '+
+            'where b.contrato = @id '+
+            'AND b.contrato = a.contrato '+
+            'AND a.año = @anio '+
+            'AND a.mes = @mes '+ 
+            'AND a.mes_facturado = @mes_facturado');
 
         if (result.recordset.length < 1) {
             return res.json({
