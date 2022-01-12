@@ -60,7 +60,6 @@ const usuarioGet = async (req, res = response) => {
 
     try {
 
-
         const result = await pool.request().input("id", id).query('SELECT nombre, email FROM usuario where id = @id')
 
         if (result.recordset.length == 0) {

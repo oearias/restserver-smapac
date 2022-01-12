@@ -65,15 +65,12 @@ const formatResultRecordset = (result = []) => {
             console.log(result.recordset[0]['adeuda'] );
             console.log(result.recordset[0]['pagado'] );
             result.recordset[0]['adeuda'] = (result.recordset[0]['adeuda'] - result.recordset[0]['pagado']);
-
-            console.log("--> "+result.recordset[0]['adeuda']);
-            //result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'] ;
         }
 
         result.recordset[0]['adeuda'] ? result.recordset[0]['adeuda'] = formatNumber(result.recordset[0]['adeuda']) : '';
-        //result.recordset[0]['pagado'] ? result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']) : 0;
         //Desaparecemos lo pagado despues de todas las operaciones aritmeticas, antes no!!!
-        (result.recordset[0]['pagado'] == 0) ? result.recordset[0]['pagado'] = '' : result.recordset[0]['pagado'];
+        (result.recordset[0]['pagado'] == 0)  ? result.recordset[0]['pagado'] = '' : result.recordset[0]['pagado'];
+
 
         result.recordset[0]['adeudo1'] ? result.recordset[0]['adeudo1'] = formatNumber(result.recordset[0]['adeudo1']) : '';
         result.recordset[0]['adeudo2'] ? result.recordset[0]['adeudo2'] = formatNumber(result.recordset[0]['adeudo2']) : '';
@@ -88,7 +85,13 @@ const formatResultRecordset = (result = []) => {
             result.recordset[0]['adeuda'] = "0.00"
         }
 
-        result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'];
+        //Agrega signo de peso al pagado si no viene como null
+        if(result.recordset[0]['pagado'] != null) {
+            result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']);
+            result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'];
+        }
+
+        
         result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
 
         //Diferencias (-) de Consumo
