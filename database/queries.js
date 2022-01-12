@@ -44,7 +44,7 @@ const queries = {
     'WHERE a.contrato = @id ' +
     'AND a.contrato = b.contrato '+
     'AND a.año = 2021 '+
-    //'AND a.mes_facturado = @mes_facturado '+
+    'AND a.mes_facturado = @mes_facturado '+
     'AND a.mes = @mes_actual '+
     'GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
     'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
