@@ -3,7 +3,7 @@ const queries = {
     getRecibo: 'SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, ' +
     'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, ' +
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, ' +
-    'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
+    'b.nombre, b.direccion, b.colonia, b.cp, b.giro, a.adeudo as adeuda, b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
     'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
     'dbo.lectura_mes_anterior(@id, @anio, @mes_actual, 1) as lectura_ant1, '+
     'dbo.lectura_mes_anterior(@id, @anio, @mes_actual, 2) as lectura_ant2, '+
@@ -46,7 +46,7 @@ const queries = {
     'AND a.año = 2021 '+
     'AND a.mes_facturado = @mes_facturado '+
     'AND a.mes = @mes_actual '+
-    'GROUP BY a.contrato, a.fecha_vencimiento, a.lectura_anterior, '+
+    'GROUP BY a.contrato, a.fecha_vencimiento, a.adeudo, a.lectura_anterior, '+
     'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
