@@ -7,9 +7,6 @@ const contratosGet = async (req, res = response) => {
     try {
         const pool = await getConnection();
         const result = await pool.request().query('SELECT top 1000 * FROM padron')
-
-
-
         const contratos = result.recordset;
 
         res.json(
@@ -50,7 +47,7 @@ const contratoGet = async (req, res = response) => {
             .input("fecha", fecha)
             .input("fecha2", fecha2)
             .query('SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
-            'b.giro, a.adeudo as adeuda, b.tarifa, b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
+            'b.giro, a.adeudo as adeuda, a.mes_facturado, b.tarifa, b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
             'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+
             '(a.adeudo - dbo.sum_pagado(@id, @fecha, @fecha2 )) as aux '+
             'FROM facthist a, '+
@@ -87,49 +84,98 @@ const contratoGet = async (req, res = response) => {
         pool.close();
     }
 
-    
 }
 
-const contratoGetByUserId = async (req, res = response) => {
+const contratoGetByUserEmail = async (req, res = response) => {
 
-    const { id } = req.params;
+    const { email } = req.params;
 
     const pool = await getConnection();
 
-    const result = await pool.request().input('id', id)
-        .query('select usuario.id, padron.contrato, padron.nombre, padron.direccion, padron.colonia,' +
-            'padron.giro, padron.tarifa, padron.adeuda, padron.region, padron.estatus, ' +
-            'usuario.nombre as nombre_usuario, usuario.email ' +
-            'from padron , padron_usuario , usuario  ' +
-            'where usuario.id=@id and padron.id = contrato_id AND padron_usuario.usuario_id = usuario.id ');
+    try {
 
-    //Validar cuando no encuentre usuario
+        const consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac ');
 
-    res.json(
-        result.recordset
-    );
+        const fecha_inf = consulta.recordset[0]['fecha_inf'];
+        const fecha_sup = consulta.recordset[0]['fecha_sup'];
+        const mes_facturado = consulta.recordset[0]['mes_facturado'];
+        const anio = consulta.recordset[0]['año'];
+        const mes = consulta.recordset[0]['mes'];
+        
+        const result = await pool.request()
+        .input('email', email)
+        .input('anio', anio)
+        .input('mes', mes)
+        .input('mes_facturado', mes_facturado)
+        .query('SELECT c.contrato, c.nombre, c.direccion, c.colonia, c.giro, c.estatus, '+
+            'c.medidor, c.cp, '+
+            'd.adeudo as adeuda, '+
+            'd.mes_facturado, '+
+            'd.fecha_vencimiento '+
+            'FROM usuario_padron a, '+
+            'facthist d, '+
+            'usuario b , padron c '+
+            'WHERE b.email = @email '+
+            'AND a.usuario_id = b.id  '+
+            'AND a.contrato = c.contrato '+
+            'AND d.contrato = c.contrato '+
+            'AND d.año = @anio AND d.mes = @mes AND d.mes_facturado = @mes_facturado');
+        
+        const contratos = result.recordset;
+
+        res.json({
+            contratos
+        });
+
+    } catch (error) {
+        res.json(error.message);
+    }
+
+    
 
 }
 
 const addContratoUser = async (req, res = response) => {
 
     try {
+
         const { id } = req.params;
+        const { contrato } = req.body;
 
-        const { contrato_id } = req.body
-
-        console.log(req.body);
+        console.log(id, contrato);
 
         const pool = await getConnection();
 
-        await pool.request()
-            .input('contrato_id', sql.Int, contrato_id)
-            .input('usuario_id', sql.Int, id)
-            .query('INSERT INTO usuario_padron values (@usuario_id, @contrato_id)');
+        //Obtenemos el id
 
-        res.json({
+        //Preguntamos primero si no existe el contrato añadido
+
+        const result = await pool.request()
+                                .input('contrato', contrato)
+                                .input('id', id)
+                                .query('SELECT * FROM usuario_padron '+
+                                'WHERE contrato = @contrato '+
+                                'AND usuario_id = @id');
+
+        if( result.recordset.length > 0 ){
+            return res.json({
+                msg: 'El contrato ya se encuentra vinculado a su correo'
+            })
+        }else{
+        
+            await pool.request()
+                .input('contrato', sql.Int, contrato)
+                .input('usuario_id', sql.Int, id)
+                .query('INSERT INTO usuario_padron values (@contrato, @usuario_id)');
+
+        }
+
+        res.status(200).json({
+            info: 'Ok',
             msg: "Contrato añadido correctamente"
-        })  
+        });
+
     } catch (error) {
         res.json(error.message)
     }
@@ -146,6 +192,6 @@ const updateAdeudo = async (req, res = response) => {
 module.exports = {
     contratoGet,
     contratosGet,
-    contratoGetByUserId,
+    contratoGetByUserEmail,
     addContratoUser
 }

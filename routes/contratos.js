@@ -1,5 +1,5 @@
 const { Router} = require('express');
-const { contratoGet, contratosGet, contratoGetByUserId, addContratoUser } = require('../controllers/contratos');
+const { contratoGet, contratosGet, contratoGetByUserId, addContratoUser, contratoGetByUserEmail } = require('../controllers/contratos');
 const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
@@ -10,7 +10,7 @@ const router = Router();
 //router.get('/:id', validarJWT, contratoGet);
 router.get('/:id', contratoGet);
 
-router.get('/consulta/:id', contratoGetByUserId);
+router.get('/consulta/:email', contratoGetByUserEmail);
 
 router.post('/add/:id', addContratoUser);
 
