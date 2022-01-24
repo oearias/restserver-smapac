@@ -31,11 +31,11 @@ const contratoGet = async (req, res = response) => {
 
     try {
 
-        const fecha = '2021-12-16';
-        const fecha2 = '2022-01-17';
-        const anio = 2021;
-        const mes = 12;
-        const mes_facturado = 'Dic2021';
+        const fecha = '2022-01-18';
+        const fecha2 = '2022-02-15';
+        const anio = 2022;
+        const mes = 1;
+        const mes_facturado = 'Ene2022';
 
         
         //const pool = await getConnection();

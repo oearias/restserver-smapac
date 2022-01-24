@@ -24,10 +24,10 @@ const reciboGet = async (req, res = response) => {
         //dia actual
         dia_actual = fecha_actual.getDate();
 
-        const fecha_pagado_inf = '2021-12-16';
-        const fecha_pagado_sup = '2022-01-17';
-        const mes_actual = 12;
-        const mes_facturado = 'Dic2021';
+        const fecha_pagado_inf = '2022-01-18';
+        const fecha_pagado_sup = '2022-02-15';
+        const mes_actual = 13;
+        const mes_facturado = 'Ene2022';
         const anio = 2021;
 
 
