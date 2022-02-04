@@ -127,7 +127,9 @@ const usuariosPut = async (req, res = response) => {
         res.json({
             msg: `Usuario: ${email} editado correctamente`,
         });
+        
     } catch (error) {
+
         res.json({
             error: 'No se pudo actualizar el usuario'
         });
