@@ -1,12 +1,12 @@
 const { response } = require('express');
 const { getConnection } = require('../database/connection');
-const { queries } = require('../database/queries')
 
-const puppeteer = require('puppeteer')
-
+const puppeteer = require('puppeteer');
 const fs = require('fs');
 const { handlebars } = require('hbs');
 const { Stream } = require('stream');
+
+const { queries } = require('../database/queries');
 const { formatResultRecordset } = require('../helpers/formatRR');
 
 
@@ -24,27 +24,19 @@ const reciboGet = async (req, res = response) => {
         //dia actual
         dia_actual = fecha_actual.getDate();
 
+
+        //TODO:Esto está pendiente migrarlo a la consulta
         const fecha_pagado_inf = '2022-01-18';
         const fecha_pagado_sup = '2022-02-15';
         const mes_actual = 13;
         const mes_facturado = 'Ene2022';
         const anio = 2021;
 
-
-        //Esto me está dando error
-        //Hacemos este procedimiento porque gon el getmonth daba mes erroneo
-        /*mes_actual = fecha_actual.toLocaleString();
-        mes_actual = mes_actual.split('/');
-        mes_actual = Number(mes_actual[1]);*/
-        anio_actual = fecha_actual.getFullYear();
-
         console.log("fecha de lo pagado: "+fecha_pagado_inf);
         console.log("fecha de lo pagado: "+fecha_pagado_sup);
         console.log('Mes actual: ',mes_actual);
 
-        //Iniciamos leyendo plantilla
-        const template = fs.readFileSync('./views/template_recibo.hbs', 'utf-8');
-        const DOC = handlebars.compile(template);
+        
 
         const result = await pool.request()
         .input("anio", anio)
@@ -77,7 +69,6 @@ const reciboGet = async (req, res = response) => {
                 .input("fecha", fecha)
                 .query('INSERT log_recibo_notfound (contrato, fecha) values (@contrato, @fecha)')
             }
-            
 
             return res.json({
                 msg: 'No se pudo generar el recibo.'
@@ -87,6 +78,9 @@ const reciboGet = async (req, res = response) => {
 
         result.recordset[0] = formatResultRecordset(result)
 
+        //Iniciamos leyendo plantilla
+        const template = fs.readFileSync('./views/template_recibo.hbs', 'utf-8');
+        const DOC = handlebars.compile(template);
         const html = DOC(result.recordset[0]);
 
 
@@ -110,7 +104,6 @@ const reciboGet = async (req, res = response) => {
 
         // Configurar el tiempo de espera de la navegación
         await page.setDefaultNavigationTimeout(0);
-
         await page.setContent(html);
 
         const pdf = await page.pdf({
@@ -130,7 +123,6 @@ const reciboGet = async (req, res = response) => {
         bufferStream.end(buffer);
 
         return res.send(buffer);
-
 
     } catch (error) {
         res.json(error.message);

@@ -1,6 +1,7 @@
 const { response } = require('express');
 const { getConnection } = require('../database/connection');
 const sql = require('mssql');
+const { queries } = require('../database/queries');
 
 const contratosGet = async (req, res = response) => {
 
@@ -31,11 +32,22 @@ const contratoGet = async (req, res = response) => {
 
     try {
 
+        /*
         const fecha = '2022-01-18';
         const fecha2 = '2022-02-15';
         const anio = 2022;
         const mes = 1;
         const mes_facturado = 'Ene2022';
+        */
+
+        const consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac ');
+
+        const fecha = consulta.recordset[0]['fecha_inf'];
+        const fecha2 = consulta.recordset[0]['fecha_sup'];
+        const mes_facturado = consulta.recordset[0]['mes_facturado'];
+        const anio = consulta.recordset[0]['año'];
+        const mes = consulta.recordset[0]['mes'];
 
         
         //const pool = await getConnection();
@@ -46,17 +58,7 @@ const contratoGet = async (req, res = response) => {
             .input("mes_facturado", mes_facturado)
             .input("fecha", fecha)
             .input("fecha2", fecha2)
-            .query('SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
-            'b.giro, a.adeudo as adeuda, a.mes_facturado, b.tarifa, b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
-            'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+
-            '(a.adeudo - dbo.sum_pagado(@id, @fecha, @fecha2 )) as aux '+
-            'FROM facthist a, '+
-            'padron b '+
-            'where b.contrato = @id '+
-            'AND b.contrato = a.contrato '+
-            'AND a.año = @anio '+
-            'AND a.mes = @mes '+ 
-            'AND a.mes_facturado = @mes_facturado');
+            .query(queries.getContrato);
 
         if (result.recordset.length < 1) {
             return res.json({
@@ -97,8 +99,8 @@ const contratoGetByUserEmail = async (req, res = response) => {
         const consulta = await pool.request()
                         .query('SELECT * from periodo_facturac ');
 
-        const fecha_inf = consulta.recordset[0]['fecha_inf'];
-        const fecha_sup = consulta.recordset[0]['fecha_sup'];
+        const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
+        const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
@@ -107,10 +109,13 @@ const contratoGetByUserEmail = async (req, res = response) => {
         .input('email', email)
         .input('anio', anio)
         .input('mes', mes)
+        .input('fecha_pagado_inf', fecha_pagado_inf)
+        .input('fecha_pagado_sup', fecha_pagado_sup)
         .input('mes_facturado', mes_facturado)
         .query('SELECT c.contrato, c.nombre, c.direccion, c.colonia, c.giro, c.estatus, '+
             'c.medidor, c.cp, '+
             'd.adeudo as adeuda, '+
+            'dbo.sum_pagado(c.contrato, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
             'd.mes_facturado, '+
             'd.fecha_vencimiento '+
             'FROM usuario_padron a, '+
@@ -120,7 +125,32 @@ const contratoGetByUserEmail = async (req, res = response) => {
             'AND a.usuario_id = b.id  '+
             'AND a.contrato = c.contrato '+
             'AND d.contrato = c.contrato '+
-            'AND d.año = @anio AND d.mes = @mes AND d.mes_facturado = @mes_facturado');
+            'AND d.año = @anio AND d.mes = @mes AND d.mes_facturado = @mes_facturado order by c.contrato');
+
+            if(result.recordset.length > 0){
+                for(let i=0; i< result.recordset.length; i++){
+
+                    if(result.recordset[i]['pagado'] != null){
+
+                        result.recordset[i]['adeuda'] = result.recordset[i]['adeuda'] - result.recordset[i]['pagado']
+
+                        if( result.recordset[i]['adeuda'] < 0 ){
+                            result.recordset[i]['adeuda'] = 0 ;
+                        }
+                    }
+                }
+            }
+
+        /*if(result.recordset[0]['pagado']){
+            console.log('hay pagado');
+            result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado']
+
+            if( result.recordset[0]['adeuda'] < 0 ){
+                result.recordset[0]['adeuda'] = 0 ;
+            }
+        }*/
+
+
         
         const contratos = result.recordset;
 
@@ -130,9 +160,9 @@ const contratoGetByUserEmail = async (req, res = response) => {
 
     } catch (error) {
         res.json(error.message);
+    }finally{
+        pool.close();
     }
-
-    
 
 }
 
@@ -142,8 +172,6 @@ const addContratoUser = async (req, res = response) => {
 
         const { id } = req.params;
         const { contrato } = req.body;
-
-        console.log(id, contrato);
 
         const pool = await getConnection();
 
@@ -182,6 +210,51 @@ const addContratoUser = async (req, res = response) => {
 
 }
 
+const deleteContratoUser = async (req, res = response) =>{
+    
+    const { id } = req.params;
+    const {email} = req.body;
+    const pool = await getConnection();
+
+    try {
+
+        const consulta = await pool.request()
+                        .input("contrato", id)
+                        .input("email", email)
+                        .query('SELECT b.id FROM usuario_padron a '+
+                                'INNER JOIN '+
+                                'USUARIO B '+
+                                'ON (a.usuario_id = b.id '+ 
+                                'AND b.email = @email AND a.contrato = @contrato )');
+
+        
+
+        if(consulta.recordset.length > 0){
+            
+            const usuario_id = consulta.recordset[0]['id'];
+            //Procedemos a borrar el contrato
+
+            await pool.request()
+                    .input('contrato', id)
+                    .input('usuario_id', usuario_id)
+                    .query('DELETE usuario_padron '+
+                    'where contrato =  @contrato '+
+                    'AND usuario_id = @usuario_id'
+                    );
+
+            res.json({
+                msg: 'Contrato desvinculado correctamente'
+            });
+        }
+
+        
+
+    } catch (error) {
+        res.json(error.message);
+    }
+    
+}
+
 const updateAdeudo = async (req, res = response) => {
 
     const { id } = req.params;
@@ -193,5 +266,6 @@ module.exports = {
     contratoGet,
     contratosGet,
     contratoGetByUserEmail,
-    addContratoUser
+    addContratoUser,
+    deleteContratoUser
 }

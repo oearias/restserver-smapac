@@ -51,7 +51,20 @@ const queries = {
     'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
-    'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor'
+    'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor',
+
+    getContrato: 'SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
+    'b.giro, a.adeudo as adeuda, a.mes_facturado, b.tarifa, '+
+    'b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
+    'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+
+    '(a.adeudo - dbo.sum_pagado(@id, @fecha, @fecha2 )) as aux '+
+    'FROM facthist a, '+
+    'padron b '+
+    'where b.contrato = @id '+
+    'AND b.contrato = a.contrato '+
+    'AND a.año = @anio '+
+    'AND a.mes = @mes '+ 
+    'AND a.mes_facturado = @mes_facturado'
 }
 
 module.exports = {

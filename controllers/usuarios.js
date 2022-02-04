@@ -104,9 +104,6 @@ const usuarioGetByEmail = async (req, res = response) => {
 
 const usuariosPut = async (req, res = response) => {
 
-    console.log(req.params);
-    console.log(req.body);
-
     const { id } = req.params
 
     const { nombre, email } = req.body;
@@ -123,13 +120,17 @@ const usuariosPut = async (req, res = response) => {
             .input('id', sql.VarChar, id)
             .input('email', sql.VarChar, email)
             .input('nombre', sql.VarChar, nombre)
-            .query('UPDATE usuario SET nombre = @nombre WHERE id=@id ')
+            .query('UPDATE usuario '+
+            'SET nombre = @nombre '+
+            'WHERE id=@id')
 
         res.json({
             msg: `Usuario: ${email} editado correctamente`,
         });
     } catch (error) {
-        res.json(error.message);
+        res.json({
+            error: 'No se pudo actualizar el usuario'
+        });
     } finally {
         pool.close();
     }
