@@ -35,7 +35,6 @@ class Server {
         //Directorio público
         this.app.use(express.static('public'));
 
-        this.app.use(express.json());
         //this.app.unsubscribe(express.urlencoded({extended: false}))
         this.app.use(express.urlencoded({extended: true}));
     }

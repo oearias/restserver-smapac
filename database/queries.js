@@ -1,10 +1,10 @@
 const queries = {
 
-    getRecibo: 'SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, ' +
-    'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, ' +
-    'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, ' +
+    getRecibo: 'SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, '+
+    'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, '+
+    'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, a.adeudo as adeuda, '+
-    'b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, ' +
+    'b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, '+
     'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
     'dbo.lectura_mes_anterior(@id, 2021, 13, 1) as lectura_ant1, '+  //TODO: Aqui el mes_Actual lo cambiamos a 13 en la facturacion de Enero
     'dbo.lectura_mes_anterior(@id, @anio, @mes_actual, 2) as lectura_ant2, '+
@@ -41,8 +41,8 @@ const queries = {
     'dbo.mes_facturado(@id, @anio, @mes_actual, 5) as mes_facturado5, '+
     'dbo.mes_facturado(@id, @anio, @mes_actual, 6) as mes_facturado6, '+
     'dbo.mes_facturado(@id, @anio, @mes_actual, 7) as mes_facturado7 '+
-    'FROM facthist a, padron b ' +
-    'WHERE a.contrato = @id ' +
+    'FROM facthist a, padron b '+
+    'WHERE a.contrato = @id '+
     'AND a.contrato = b.contrato '+
     'AND a.año = 2022 '+    //TODO: Este debe cambiar a 2022 con la facturacion de Enero
     'AND a.mes_facturado = @mes_facturado '+
@@ -54,7 +54,9 @@ const queries = {
     'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor',
 
     getContrato: 'SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
-    'b.giro, a.adeudo as adeuda, a.mes_facturado, b.tarifa, '+
+    'b.giro, '+ 
+    'a.adeudo as adeuda,  b.adeuda as adeuda_padron, '+
+    'a.mes_facturado, b.tarifa, '+
     'b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
     'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+
     '(a.adeudo - dbo.sum_pagado(@id, @fecha, @fecha2 )) as aux '+
