@@ -24,23 +24,28 @@ const reciboGet = async (req, res = response) => {
         //dia actual
         dia_actual = fecha_actual.getDate();
 
+        //Obtenemos el Periodo
+        const consulta = await pool.request()
+        .query('SELECT * from periodo_facturac WHERE estatus = 1');
 
-        //TODO:Esto está pendiente migrarlo a la consulta
-        const fecha_pagado_inf = '2022-01-18';
-        const fecha_pagado_sup = '2022-02-15';
+        const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
+        const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
+        const mes_facturado = consulta.recordset[0]['mes_facturado'];
+        const mes = consulta.recordset[0]['mes'];
+
         const mes_actual = 13;
-        const mes_facturado = 'Ene2022';
         const anio = 2021;
 
+        console.log('Año: ', anio);
         console.log("fecha de lo pagado: "+fecha_pagado_inf);
         console.log("fecha de lo pagado: "+fecha_pagado_sup);
         console.log('Mes actual: ',mes_actual);
-
         
 
         const result = await pool.request()
         .input("anio", anio)
         .input("mes_actual", mes_actual)
+        .input('mes', mes)
         .input("mes_facturado", mes_facturado)
         .input("id", id)
         .input("fecha_pagado_inf", fecha_pagado_inf)

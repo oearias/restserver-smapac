@@ -42,7 +42,7 @@ const contratoGet = async (req, res = response) => {
         */
 
         const consulta = await pool.request()
-                        .query('SELECT * from periodo_facturac ');
+                        .query('SELECT * from periodo_facturac WHERE estatus = 1');
 
         const fecha = consulta.recordset[0]['fecha_inf'];
         const fecha2 = consulta.recordset[0]['fecha_sup'];
@@ -84,10 +84,13 @@ const contratoGet = async (req, res = response) => {
         }
 
         //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
-        result.recordset[0]['adeuda']   = truncateD(result.recordset[0]['adeuda']);
-        result.recordset[0]['aux']      = truncateD(result.recordset[0]['aux']);
+        (result.recordset[0]['adeuda']) 
+            ? truncateD(result.recordset[0]['adeuda'])
+            : null;
 
-        console.log(result.recordset[0]);
+        (result.recordset[0]['aux'])     
+            ? truncateD(result.recordset[0]['aux'])
+            :null
 
         res.json(
             result.recordset[0]
