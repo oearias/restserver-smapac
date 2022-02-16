@@ -10,8 +10,18 @@ const formatNumber = (valor = 0) => {
     return format;
 }
 
+const truncateD = ( valor = 0) => {
+
+    let format = valor;
+
+    format = parseFloat(valor.toFixed(2));
+
+    return format;
+}
+
 
 
 module.exports = {
-    formatNumber
+    formatNumber,
+    truncateD
 }

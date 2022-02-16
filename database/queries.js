@@ -55,7 +55,8 @@ const queries = {
 
     getContrato: 'SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
     'b.giro, '+ 
-    'a.adeudo as adeuda,  b.adeuda as adeuda_padron, '+
+    'Cast(Round(a.adeudo, 2, 1) as decimal(18,2)) as adeuda, '+
+    'b.adeuda as adeuda_padron, '+
     'a.mes_facturado, b.tarifa, '+
     'b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
     'dbo.sum_pagado(@id, @fecha, @fecha2) as pagado, '+

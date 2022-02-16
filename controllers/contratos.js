@@ -2,6 +2,7 @@ const { response } = require('express');
 const { getConnection } = require('../database/connection');
 const sql = require('mssql');
 const { queries } = require('../database/queries');
+const { truncateD } = require('../helpers/format');
 
 const contratosGet = async (req, res = response) => {
 
@@ -75,12 +76,16 @@ const contratoGet = async (req, res = response) => {
         }
 
         if(result.recordset[0]['pagado']){
-            result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado']
+            result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado'];
 
             if( result.recordset[0]['adeuda'] < 0 ){
                 result.recordset[0]['adeuda'] = 0 ;
             }
         }
+
+        //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
+        result.recordset[0]['adeuda']   = truncateD(result.recordset[0]['adeuda']);
+        result.recordset[0]['aux']      = truncateD(result.recordset[0]['aux']);
 
         console.log(result.recordset[0]);
 
