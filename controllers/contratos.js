@@ -146,27 +146,37 @@ const contratoGetByUserEmail = async (req, res = response) => {
             if(result.recordset.length > 0){
                 for(let i=0; i< result.recordset.length; i++){
 
-                    if(result.recordset[i]['pagado'] != null){
+                    /*if(result.recordset[i]['pagado'] != null){
 
                         result.recordset[i]['adeuda'] = result.recordset[i]['adeuda'] - result.recordset[i]['pagado']
 
                         if( result.recordset[i]['adeuda'] < 0 ){
                             result.recordset[i]['adeuda'] = 0 ;
                         }
+                    }*/
+
+                    if(result.recordset[0]['adeuda'] != result.recordset[0]['adeuda_padron'] && result.recordset[0]['adeuda_padron'] == 0){
+                        result.recordset[0]['adeuda'] = result.recordset[0]['adeuda_padron'];
                     }
+            
+                    if(result.recordset[0]['pagado']){
+                        result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado'];
+            
+                        if( result.recordset[0]['adeuda'] < 0 ){
+                            result.recordset[0]['adeuda'] = 0 ;
+                        }
+                    }
+            
+                    //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
+                    (result.recordset[0]['adeuda']) 
+                        ? truncateD(result.recordset[0]['adeuda'])
+                        : null;
+            
+                    (result.recordset[0]['aux'])     
+                        ? truncateD(result.recordset[0]['aux'])
+                        :null
                 }
             }
-
-        /*if(result.recordset[0]['pagado']){
-            console.log('hay pagado');
-            result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado']
-
-            if( result.recordset[0]['adeuda'] < 0 ){
-                result.recordset[0]['adeuda'] = 0 ;
-            }
-        }*/
-
-
         
         const contratos = result.recordset;
 
