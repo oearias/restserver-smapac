@@ -113,7 +113,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
     try {
 
         const consulta = await pool.request()
-                        .query('SELECT * from periodo_facturac ');
+                        .query('SELECT * from periodo_facturac where estatus = 1');
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
