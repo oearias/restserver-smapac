@@ -16,8 +16,6 @@ const truncateD = ( valor = 0 ) => {
 
     format = parseFloat(valor.toFixed(2));
 
-    console.log(format);
-
     return format;
 }
 

@@ -131,6 +131,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
         .query('SELECT c.contrato, c.nombre, c.direccion, c.colonia, c.giro, c.estatus, '+
             'c.medidor, c.cp, '+
             'd.adeudo as adeuda, '+
+            'c.adeuda as adeuda_padron, '+
             'dbo.sum_pagado(c.contrato, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
             'd.mes_facturado, '+
             'd.fecha_vencimiento '+
@@ -155,25 +156,28 @@ const contratoGetByUserEmail = async (req, res = response) => {
                         }
                     }*/
 
-                    if(result.recordset[0]['adeuda'] != result.recordset[0]['adeuda_padron'] && result.recordset[0]['adeuda_padron'] == 0){
-                        result.recordset[0]['adeuda'] = result.recordset[0]['adeuda_padron'];
+                    //Adecuacion para los que pagan y revisan enseguida
+
+                    if(result.recordset[i]['adeuda'] != result.recordset[i]['adeuda_padron'] && result.recordset[i]['adeuda_padron'] == 0){
+                        console.log('Entra a la condicion del adeuda');
+                        result.recordset[i]['adeuda'] = result.recordset[i]['adeuda_padron'];
                     }
             
-                    if(result.recordset[0]['pagado']){
-                        result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado'];
+                    if(result.recordset[i]['pagado']){
+                        result.recordset[i]['adeuda'] = result.recordset[i]['adeuda'] - result.recordset[i]['pagado'];
             
-                        if( result.recordset[0]['adeuda'] < 0 ){
-                            result.recordset[0]['adeuda'] = 0 ;
+                        if( result.recordset[i]['adeuda'] < 0 ){
+                            result.recordset[i]['adeuda'] = 0 ;
                         }
                     }
             
                     //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
-                    (result.recordset[0]['adeuda']) 
-                        ? truncateD(result.recordset[0]['adeuda'])
+                    (result.recordset[i]['adeuda']) 
+                        ? truncateD(result.recordset[i]['adeuda'])
                         : null;
             
-                    (result.recordset[0]['aux'])     
-                        ? truncateD(result.recordset[0]['aux'])
+                    (result.recordset[i]['aux'])     
+                        ? truncateD(result.recordset[i]['aux'])
                         :null
                 }
             }
