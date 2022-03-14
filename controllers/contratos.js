@@ -28,7 +28,7 @@ const contratosGet = async (req, res = response) => {
 const contratoGet = async (req, res = response) => {
 
     const { id } = req.params;
-    const pool = await getConnection();
+    const pool = await getConnection(); 
     
 
     try {
