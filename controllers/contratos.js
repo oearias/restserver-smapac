@@ -50,8 +50,6 @@ const contratoGet = async (req, res = response) => {
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
 
-        
-        //const pool = await getConnection();
         const result = await pool.request()
             .input("id", id)
             .input("anio", anio)
