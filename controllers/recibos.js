@@ -33,7 +33,7 @@ const reciboGet = async (req, res = response) => {
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const mes = consulta.recordset[0]['mes'];
 
-        const mes_actual = 13;
+        const mes_actual = 14;
         const anio = 2021;
 
         console.log('Año: ', anio);
