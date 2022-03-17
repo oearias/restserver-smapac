@@ -36,12 +36,6 @@ const reciboGet = async (req, res = response) => {
         const mes_actual = 14;
         const anio = 2021;
 
-        console.log('Año: ', anio);
-        console.log("fecha de lo pagado: "+fecha_pagado_inf);
-        console.log("fecha de lo pagado: "+fecha_pagado_sup);
-        console.log('Mes actual: ',mes_actual);
-        
-
         const result = await pool.request()
         .input("anio", anio)
         .input("mes_actual", mes_actual)
