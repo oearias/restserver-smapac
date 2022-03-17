@@ -26,10 +26,22 @@ const sql = require('mssql');
 
 
 //AWS
-const dbSettings = {
+/*const dbSettings = {
     user: 'sa',
     password: '1989023aB9.',
     server: '18.118.36.40',
+    database: 'SMAPAC_DB',
+    options: {
+        encrypt: true,
+        trustServerCertificate: true,
+    },
+};*/
+
+//Servidor TELMEX
+const dbSettings = {
+    user: 'sa',
+    password: '1989023aB9.',
+    server: '201.161.127.23',
     database: 'SMAPAC_DB',
     options: {
         encrypt: true,
