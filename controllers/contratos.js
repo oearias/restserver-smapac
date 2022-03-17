@@ -27,8 +27,6 @@ const contratosGet = async (req, res = response) => {
 
 const contratoGet = async (req, res = response) => {
 
-    console.log("Si llega");
-
     const { id } = req.params;
     const pool = await getConnection(); 
     
@@ -53,12 +51,6 @@ const contratoGet = async (req, res = response) => {
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
 
-        console.log(id);
-        console.log(fecha);
-        console.log(fecha2);
-        console.log(mes_facturado);
-        console.log(anio);
-        console.log(mes);
 
         const result = await pool.request()
             .input("id", id)
