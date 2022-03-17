@@ -27,6 +27,8 @@ const contratosGet = async (req, res = response) => {
 
 const contratoGet = async (req, res = response) => {
 
+    console.log("Si llega");
+
     const { id } = req.params;
     const pool = await getConnection(); 
     
@@ -44,11 +46,19 @@ const contratoGet = async (req, res = response) => {
         const consulta = await pool.request()
                         .query('SELECT * from periodo_facturac WHERE estatus = 1');
 
+
         const fecha = consulta.recordset[0]['fecha_inf'];
         const fecha2 = consulta.recordset[0]['fecha_sup'];
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
+
+        console.log(id);
+        console.log(fecha);
+        console.log(fecha2);
+        console.log(mes_facturado);
+        console.log(anio);
+        console.log(mes);
 
         const result = await pool.request()
             .input("id", id)
@@ -89,6 +99,8 @@ const contratoGet = async (req, res = response) => {
         (result.recordset[0]['aux'])     
             ? truncateD(result.recordset[0]['aux'])
             :null
+
+            console.log(result.recordset[0]);
 
         res.json(
             result.recordset[0]
