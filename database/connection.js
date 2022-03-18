@@ -39,10 +39,10 @@ const sql = require('mssql');
 
 //Servidor TELMEX
 const dbSettings = {
-    user: 'sa',
-    password: '1989023aB9.',
-    server: '201.161.127.23',
-    database: 'SMAPAC_DB',
+    user: process.env.DB_USER,
+    password: process.env.DB_PASS,
+    server: process.env.DB_HOST,
+    database: process.env.DB,
     options: {
         encrypt: true,
         trustServerCertificate: true,
