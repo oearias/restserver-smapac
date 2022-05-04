@@ -78,6 +78,8 @@ const contratoGet = async (req, res = response) => {
         if(result.recordset[0]['pagado']){
             result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado'];
 
+            result.recordset[0]['adeuda'] = truncateD(result.recordset[0]['adeuda'])
+
             if( result.recordset[0]['adeuda'] < 0 ){
                 result.recordset[0]['adeuda'] = 0 ;
             }
