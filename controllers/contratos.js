@@ -27,6 +27,8 @@ const contratosGet = async (req, res = response) => {
 
 const contratoGet = async (req, res = response) => {
 
+    console.log(req.id);
+
     const { id } = req.params;
     const pool = await getConnection(); 
     
@@ -102,9 +104,9 @@ const contratoGet = async (req, res = response) => {
     } catch (error) {
         res.json(error.message);
     }
-    finally{
-        pool.close();
-    }
+    //finally{
+        //pool.close();
+    //}
 
 }
 
