@@ -250,11 +250,8 @@ const checkItem = async (req, res) => {
     }
 }
 
+//URL Multipagos Pagina Web
 const respMulti = async (req, res = response) => {
-
-    /*console.log(req);
-    console.log(req.params);
-    console.log(req.body);*/
 
     const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
 
@@ -340,10 +337,93 @@ const respMulti = async (req, res = response) => {
 
 }
 
+//URL Multipagos Pagina Web
+const respMultiMovil = async (req, res = response) => {
+
+    const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
+
+
+    const idExpress = "2576";
+
+    let result;
+    let message = referencia + importe + idExpress;
+
+    //Genero una signature del lado del servidor.
+    let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
+    const mySignature = hash.digest('hex');
+
+    const cadena = referencia;
+    const cadenaAux = cadena.split('_');
+    const contrato = cadenaAux[1];
+
+
+    if (codigo == 1) {
+        result = "Su pago fue rechazado";
+    } else if (codigo == 4) {
+        result = "Se detectó un problema con su pago, verifique con su administrador."
+    } else if (codigo == 5) {
+        result = "Ya se encuentra un pago con la referencia: " + referencia;
+    } else if (codigo == 0 || codigo == 3) {
+        //Comparo la signature que me envían con la que yo genero
+        if (signature != mySignature) {
+            result = "Error en los datos del pago. No se ha podido concluir la transacción."
+        } else {
+            if (codigo == 3) {
+                result = "El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, "
+                    + " si el cobro no se realiza en este tiempo favor de comunicarse."
+            } else {
+                result = "El pago se realizó correctamente, número de autorización: " + autorizacion;
+
+                try {
+                    //Ponemos en 0 la tabla
+                    const pool = await getConnection();
+                    const resultado = await pool.request()
+                                                .input("contrato", contrato)
+                                                .query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
+
+                    console.log(resultado);
+
+                } catch (error) {
+                    console.log(error);
+                }
+
+
+                res.render('thankyouMovl', {
+                    codigo,
+                    contrato,
+                    referencia,
+                    mensaje,
+                    autorizacion
+                });
+            }
+        }
+    } else {
+        result = "Tuvimos un problema con su pago."
+    }
+
+    console.log("Pago realizado con la APP");
+    console.log("-------------------------");
+    console.log("Codigo: " + codigo);
+    console.log("Mensaje: " + mensaje);
+    console.log("Autorizacion: " + autorizacion);
+    console.log("Contrato: ", contrato);
+    console.log("-------------------------");
+
+    if (codigo != 0) {
+        res.render('noneMovil', {
+            mensaje
+        });
+    }
+
+
+
+}
+
 
 module.exports = {
     postItem,
     updateItem,
     checkItem,
-    respMulti
+    respMulti,
+    respMultiMovil
 }

@@ -1,5 +1,5 @@
 const { Router} = require('express');
-const { postItem, updateItem, checkItem, respMulti } = require('../controllers/checkout');
+const { postItem, updateItem, checkItem, respMulti, respMultiMovil } = require('../controllers/checkout');
 const crypto = require('crypto');
 
 const router = Router();
@@ -13,8 +13,11 @@ router.patch('/:id', updateItem)
 //Confirmar estatus del pago
 router.patch('/confirm/:id', checkItem);
 
-//Ruta respuesta Multipagos
+//Url retorno - Ruta respuesta Multipagos
 router.post('/respuesta.html', respMulti);
+
+//URL retorno - Ruta respuesta Multipagos vía App
+router.post('/respuestaMovil.html', respMultiMovil)
 
 router.get('/recibo', (req, res)=>{
 
