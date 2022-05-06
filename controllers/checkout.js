@@ -388,7 +388,7 @@ const respMultiMovil = async (req, res = response) => {
                 }
 
 
-                res.render('thankyouMovl', {
+                res.render('thankyouMovil', {
                     codigo,
                     contrato,
                     referencia,
