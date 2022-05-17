@@ -350,7 +350,7 @@ const respMultiMovil = async (req, res = response) => {
 
     //Genero una signature del lado del servidor.
     let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
-    const mySignature = hash.digest('hex');
+    const mySignature = hash.digest('hex');h
 
     const cadena = referencia;
     const cadenaAux = cadena.split('_');
