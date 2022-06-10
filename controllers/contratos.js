@@ -35,24 +35,14 @@ const contratoGet = async (req, res = response) => {
 
     try {
 
-        /*
-        const fecha = '2022-01-18';
-        const fecha2 = '2022-02-15';
-        const anio = 2022;
-        const mes = 1;
-        const mes_facturado = 'Ene2022';
-        */
-
         const consulta = await pool.request()
                         .query('SELECT * from periodo_facturac WHERE estatus = 1');
-
 
         const fecha = consulta.recordset[0]['fecha_inf'];
         const fecha2 = consulta.recordset[0]['fecha_sup'];
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
-
 
         const result = await pool.request()
             .input("id", id)
@@ -65,7 +55,9 @@ const contratoGet = async (req, res = response) => {
 
         if (result.recordset.length < 1) {
             return res.json({
-                msg: 'No existe ningun contrato con ese número'
+                msg: 'No se encontró ningun contrato con ese número, '+
+                'si el contrato existe y no aparece '+
+                'favor de ponerse en contacto al correo: sistemas@smapac.gob.mx'
             });
         }
 
@@ -294,7 +286,6 @@ const deleteContratoUser = async (req, res = response) =>{
 const updateAdeudo = async (req, res = response) => {
 
     const { id } = req.params;
-
     const { pagado } = req.body;
 }
 

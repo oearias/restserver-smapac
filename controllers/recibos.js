@@ -70,14 +70,12 @@ const reciboGet = async (req, res = response) => {
             });
         }
 
-
         result.recordset[0] = formatResultRecordset(result)
 
         //Iniciamos leyendo plantilla
         const template = fs.readFileSync('./views/template_recibo.hbs', 'utf-8');
         const DOC = handlebars.compile(template);
         const html = DOC(result.recordset[0]);
-
 
         //Esto funciona de manera local
         /*const browser = await puppeteer.launch({

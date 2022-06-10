@@ -6,8 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Recíbo Dígital</title>
+    <title>Recibo Dígital</title>
     <base href="/">
+
+    <!--Hacemos prueba de estilo-->
+    <link rel="stylesheet" href="/css/thankyou.css">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
         integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
@@ -22,8 +25,9 @@
     <style>
         .frame {
             /*0,139,204*/
-            border: 12px solid rgb(157, 36, 73);
-            width: 880px;
+            border: 8px solid rgb(157, 36, 73);
+            /*width: 880; Tamaño ya probado */ 
+            width: 1080px; /*Tamaño que abarca el 100% del tamaó carta*/
             height: 1540px;
             margin: 20px;
         }
@@ -38,6 +42,35 @@
             text-align: center;
         }
 
+        .titulo2{
+            margin-top: 20px;
+            font-size: 44px;
+            font-weight: 700;
+            text-align: center;
+            color: rgb(157, 36, 73);
+        }
+
+        .subtitulo{
+            font-size: 44px;
+            font-weight: 700;
+            text-align: center;
+            color: black;
+        }
+
+        .tituloTabla{
+            color: rgb(157, 36, 73);
+            text-align: center;
+            font-size: 34px;
+            font-weight: 700;
+        }
+
+        .subtituloTabla{
+            color: black;
+            text-align: center;
+            font-size: 22px;
+            font-weight: 700;
+        }
+
         .labelTitle {
             width: 400px;
             margin-top: -2px;
@@ -50,7 +83,8 @@
         }
 
         .labelTitle2 {
-            width: 402px;
+            /*width: 402px;*/
+            width: 540 px;;
             margin-top: -2px;
             color: white;
             font-weight: 800;
@@ -99,10 +133,10 @@
                 </div>
             </td>
             <td style="padding-top:20px">
-                <div style="padding-bottom: 0px; font-weight: 800;">SISTEMA MUNICIPAL DE AGUA POTABLE</div>
-                <div style="margin-top: -10px; font-weight:800">Y ALCANTARILLADO DE CARMEN</div>
-                <div style="margin-top:-5px; font-size: 10px; font-weight: 700">R.F.C. SMA-860206-225</div>
-                <div style="margin-top:-5px; font-size: 10px; font-weight: 700">
+                <div style="padding-bottom: 0px; font-weight: 800; font-size: 36px">SISTEMA MUNICIPAL DE AGUA POTABLE</div>
+                <div style="margin-top: -10px; font-weight:800; font-size: 36px">Y ALCANTARILLADO DE CARMEN</div>
+                <div style="margin-top:-5px; font-size: 14px; font-weight: 700">R.F.C. SMA-860206-225</div>
+                <div style="margin-top:-5px; font-size: 14px; font-weight: 700">
                     CALLE 33 No. 140 INT. 1 ENTRE 50 Y 56 COL. PETROLERA C.P. 24180 CD. DEL CARMEN, CAMPECHE
                 </div>
             </td>
@@ -391,10 +425,11 @@
                         </table>
                     </div>
 
-                    <div style="text-align: center; font-size:10px; font-weight: 700">
-                        PARA CUALQUIER ACLARACIÓN <br>
-                        PRESENTARSE ANTES DE LA FECHA <br>
-                        DE VENCIMIENTO CON SU LECTURA
+                    <div style="text-align: center; font-size:12px; font-weight: 700">
+                        Art. 93 Ley de Agua Potable y Alcantarillado del Edo. de Campeche <br>
+                        Tendrá derecho a inconformarse ante el organismo operador,<br>
+                        dentro del mes en que deba efectuarse el pago correspondiente <br>
+                        al consumo objetado.
                     </div>
                 </div>
             </div>
@@ -516,6 +551,75 @@
 
             </div>
         </div>
+
+    </div>
+
+    <!--Separador-->
+    <div style="height: 10px;"></div>
+
+
+    <!--Segunda Página-->
+    <div class="frame">
+
+        <div class="titulo2" style="margin-bottom: -18px">DUDAS Y/O ACLARACIONES A LOS TELÉFONOS:</div>
+        <div class="subtitulo" style="padding: 0">938 38 230 01 / 938 38 230 63</div>
+
+        <div style="border-top: 3px solid rgb(157, 36, 73);">&nbsp;</div>
+
+        <div class="row tituloTabla" style="margin-bottom: -10px;">
+            <div class="col">OFICINA CENTRAL</div>
+            <div class="col">SUCURSAL SORIANA</div>
+        </div>
+
+        <div class="row" style="margin-bottom: -5px;">
+            <div class="col subtituloTabla">LUNES A VIERNES DE 8:00 A.M. A 4:00 P.M.</div>
+            <div class="col subtituloTabla">LUNES A VIERNES DE 8:00 A.M. A 3:00 P.M.</div>
+        </div>
+
+        <div class="row">
+            <div class="col subtituloTabla">SÁBADOS DE 9:00 A.M. A 2:00 P.M.</div>
+            <div class="col subtituloTabla">SÁBADOS DE 9:00 A.M. A 2:00 P.M.</div>
+        </div>
+
+        <div class="row tituloTabla" style="margin-top: 20px; margin-bottom: -10px;">
+            <div class="col">SUCURSAL AYUNTAMIENTO</div>
+            <div class="col">SUCURSAL MERCADO</div>
+        </div>
+
+        <div class="row" style="margin-bottom: -5px;">
+            <div class="col subtituloTabla">LUNES A VIERNES DE 8:00 A.M. A 3:00 P.M.</div>
+            <div class="col subtituloTabla">LUNES A VIERNES DE 8:00 A.M. A 3:00 P.M.</div>
+        </div>
+
+        <div class="row tituloTabla" style="margin-top: 20px; margin-bottom: -10px;">
+            <div class="col">SUC. ACADEMIA DE POLICÍA</div>
+        </div>
+
+         <div class="row" style="margin-bottom: 20px">
+            <div class="col subtituloTabla">LUNES A VIERNES DE 8:00 A.M. A 3:00 P.M.</div>
+        </div>
+
+        <table style="width: 100%;">
+            <tr>
+                <td style="text-align: center;">
+                    <img style="height: 650px;"
+                        src="https://smapac.gob.mx/assets/images/reverso_recibo1.png" alt="">
+                </td>
+            </tr>
+
+        </table>
+
+        <div style="border-top: 3px dashed rgb(157, 36, 73);">&nbsp;</div>
+
+        <table style="width: 100%;">
+            <tr>
+                <td style="text-align: center;">
+                    <img style="height: 375px;"
+                        src="https://smapac.gob.mx/assets/images/reverso_recibo2.png" alt="">
+                </td>
+            </tr>
+
+        </table>
 
     </div>
 
