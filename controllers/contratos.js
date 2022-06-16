@@ -36,7 +36,7 @@ const contratoGet = async (req, res = response) => {
         //preguntamos primero la region del contrato y en base a eso realizamos la consulta del periodo de Facturación
         const consulta_region = await pool.request()
         .input("id", id)
-        .query('SELECT region from padron WHERE contrato = @id');
+        .query('SELECT region FROM padron WHERE contrato = @id');
 
         const region = consulta_region.recordset[0]['region'];
 
@@ -163,34 +163,10 @@ const contratoGetByUserEmail = async (req, res = response) => {
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
-        const mes_facturado = consulta.recordset[0]['mes_facturado'];
+        //const mes_facturado = consulta.recordset[0]['mes_facturado'];
+        const mes_facturado = 'Jun2022';
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
-
-        //preguntamos primero la region del contrato y en base a eso realizamos la consulta del periodo de Facturación
-        /*
-        const consulta_region = await pool.request()
-        .input("id", id)
-        .query('SELECT region from padron WHERE contrato = @id');
-
-        const region = consulta_region.recordset[0]['region'];
-
-        let consulta;
-
-        if(region == 2){
-            consulta = await pool.request()
-            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
-        }else{
-            consulta = await pool.request()
-            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
-        }
-
-        const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
-        const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
-        const mes_facturado = consulta.recordset[0]['mes_facturado'];
-        const anio = consulta.recordset[0]['año'];
-        const mes = consulta.recordset[0]['mes'];
-        */
         //////
 
         
@@ -205,7 +181,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
             'c.medidor, c.cp, '+
             'd.adeudo as adeuda, '+
             'c.adeuda as adeuda_padron, '+
-            'dbo.sum_pagado(c.contrato, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
+            'dbo.sum_pagado_movil(c.contrato) as pagado, '+
             'd.mes_facturado, '+
             'd.fecha_vencimiento '+
             'FROM usuario_padron a, '+
@@ -215,7 +191,11 @@ const contratoGetByUserEmail = async (req, res = response) => {
             'AND a.usuario_id = b.id  '+
             'AND a.contrato = c.contrato '+
             'AND d.contrato = c.contrato '+
-            'AND d.año = @anio AND d.mes = @mes AND d.mes_facturado = @mes_facturado order by c.contrato');
+            //'AND d.año = @anio '+
+            'AND d.año = 2022 '+
+            //'AND d.mes = @mes '+
+            'AND d.mes_facturado = @mes_facturado '+
+            'ORDER BY  c.contrato');
 
             if(result.recordset.length > 0){
                 for(let i=0; i< result.recordset.length; i++){
