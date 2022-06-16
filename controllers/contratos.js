@@ -158,16 +158,17 @@ const contratoGetByUserEmail = async (req, res = response) => {
 
     try {
 
-        /*const consulta = await pool.request()
-                        .query('SELECT * from periodo_facturac where estatus = 1');
+        const consulta = await pool.request()
+                        .query('SELECT * FROM periodo_facturac WHERE estatus = 1');
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const anio = consulta.recordset[0]['año'];
-        const mes = consulta.recordset[0]['mes'];*/
+        const mes = consulta.recordset[0]['mes'];
 
         //preguntamos primero la region del contrato y en base a eso realizamos la consulta del periodo de Facturación
+        /*
         const consulta_region = await pool.request()
         .input("id", id)
         .query('SELECT region from padron WHERE contrato = @id');
@@ -189,7 +190,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
-
+        */
         //////
 
         
