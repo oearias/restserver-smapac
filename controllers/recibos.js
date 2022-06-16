@@ -265,6 +265,5 @@ const downloadRecibo = async ( req, res = response) => {
 
 module.exports = {
     reciboGet,
-    downloadRecibo,
-    reciboTest
+    downloadRecibo
 }
