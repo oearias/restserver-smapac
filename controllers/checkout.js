@@ -270,7 +270,15 @@ const respMulti = async (req, res = response) => {
     const cadena = referencia;
     const cadenaAux = cadena.split('_');
     const contrato = cadenaAux[1];
+    const esReconexion = cadenaAux[0];
 
+    let consulta;
+
+    if( esReconexion == 'RECONEX' ){
+        consulta = "UPDATE padron SET adeuda = 0 WHERE contrato = @contrato";
+    }else{
+        consulta = "UPDATE padron SET adeuda = 0 AND estatus = 'En proceso de Reconexión' WHERE contrato = @contrato"
+    }
 
     if (codigo == 1) {
         result = "Su pago fue rechazado";
@@ -289,20 +297,18 @@ const respMulti = async (req, res = response) => {
             } else {
                 result = "El pago se realizó correctamente, número de autorización: " + autorizacion;
 
-
                 try {
                     //Ponemos en 0 la tabla
                     const pool = await getConnection();
                     const resultado = await pool.request()
                                                 .input("contrato", contrato)
-                                                .query("UPDATE padron SET adeuda = 0 where contrato= @contrato");
+                                                .query(consulta);
 
                     console.log(resultado);
 
                 } catch (error) {
                     console.log(error);
                 }
-
 
                 res.render('thankyou', {
                     codigo,
@@ -316,9 +322,6 @@ const respMulti = async (req, res = response) => {
     } else {
         result = "Tuvimos un problema con su pago."
     }
-
-
-
 
     console.log("Codigo: " + codigo);
     console.log("Mensaje: " + mensaje);
@@ -342,7 +345,6 @@ const respMultiMovil = async (req, res = response) => {
 
     const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
 
-
     const idExpress = "2576";
 
     let result;
@@ -355,7 +357,6 @@ const respMultiMovil = async (req, res = response) => {
     const cadena = referencia;
     const cadenaAux = cadena.split('_');
     const contrato = cadenaAux[1];
-
 
     if (codigo == 1) {
         result = "Su pago fue rechazado";

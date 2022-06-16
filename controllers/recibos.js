@@ -14,15 +14,34 @@ const { formatResultRecordset } = require('../helpers/formatRR');
 
 const reciboGet = async (req, res = response) => {
 
+    
+
     const { id } = req.params;
+
 
     const pool = await getConnection();
 
     try {
 
+        //preguntamos primero la region del contrato y en base a eso realizamos la consulta del periodo de Facturación
+        const consulta_region = await pool.request()
+        .input("id", id)
+        .query('SELECT region from padron WHERE contrato = @id');
+
+        const region = consulta_region.recordset[0]['region'];
+
         //Obtenemos el Periodo
-        const consulta = await pool.request()
-        .query('SELECT * from periodo_facturac WHERE estatus = 1');
+        let consulta;
+
+        if(region == 2){
+            consulta = await pool.request()
+            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
+        }else{
+            consulta = await pool.request()
+            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+        }
+        
+        
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
@@ -246,5 +265,6 @@ const downloadRecibo = async ( req, res = response) => {
 
 module.exports = {
     reciboGet,
-    downloadRecibo
+    downloadRecibo,
+    reciboTest
 }

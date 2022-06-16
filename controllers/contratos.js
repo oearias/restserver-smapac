@@ -3,6 +3,7 @@ const { getConnection } = require('../database/connection');
 const sql = require('mssql');
 const { queries } = require('../database/queries');
 const { truncateD } = require('../helpers/format');
+const { calculaReconex } = require('../helpers/calcula_reconexion');
 
 const contratosGet = async (req, res = response) => {
 
@@ -27,16 +28,28 @@ const contratosGet = async (req, res = response) => {
 
 const contratoGet = async (req, res = response) => {
 
-    console.log(req.id);
-
     const { id } = req.params;
     const pool = await getConnection(); 
-    
 
     try {
 
-        const consulta = await pool.request()
-                        .query('SELECT * from periodo_facturac WHERE estatus = 1');
+        //preguntamos primero la region del contrato y en base a eso realizamos la consulta del periodo de Facturación
+        const consulta_region = await pool.request()
+        .input("id", id)
+        .query('SELECT region from padron WHERE contrato = @id');
+
+        const region = consulta_region.recordset[0]['region'];
+
+        //Obtenemos el Periodo
+        let consulta;
+
+        if(region == 2){
+            consulta = await pool.request()
+            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
+        }else{
+            consulta = await pool.request()
+            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+        }
 
         const fecha = consulta.recordset[0]['fecha_inf'];
         const fecha2 = consulta.recordset[0]['fecha_sup'];
@@ -54,11 +67,25 @@ const contratoGet = async (req, res = response) => {
             .query(queries.getContrato);
 
         if (result.recordset.length < 1) {
+
             return res.json({
                 msg: 'No se encontró ningun contrato con ese número, '+
                 'si el contrato existe y no aparece '+
                 'favor de ponerse en contacto al correo: sistemas@smapac.gob.mx'
             });
+
+        }
+
+        //Caso Reconexiones Cuando no hay Históricos recientes
+        if(result.recordset[0]['estatus'] == 'Suspendido' && result.recordset[0]['adeuda_padron'] > 0 ){
+
+            let reconexion = calculaReconex(result.recordset[0]['tarifa']);
+            
+            result.recordset[0]['adeuda'] = result.recordset[0]['adeuda_padron'] + reconexion ;
+            result.recordset[0]['reconexion'] = reconexion;
+            result.recordset[0]['flag_reconexion'] = 1;
+            result.recordset[0]['adeuda'] = truncateD(result.recordset[0]['adeuda'])
+
         }
 
         //Esta adecuación se hizo por las personas que pagan en linea y consultan enseguida ya que 
@@ -69,7 +96,7 @@ const contratoGet = async (req, res = response) => {
             result.recordset[0]['adeuda'] = result.recordset[0]['adeuda_padron'];
         }
 
-        if(result.recordset[0]['pagado']){
+        if(result.recordset[0]['pagado'] && result.recordset[0]['flag_reconexion'] == null ){
             result.recordset[0]['adeuda'] = result.recordset[0]['adeuda'] - result.recordset[0]['pagado'];
 
             result.recordset[0]['adeuda'] = truncateD(result.recordset[0]['adeuda'])
@@ -88,6 +115,27 @@ const contratoGet = async (req, res = response) => {
             ? truncateD(result.recordset[0]['aux'])
             :null
 
+
+            //TODO: Optimizar esta parte de código metiéndolo en una función por separado
+            //Fecha de vencimiento para el periodo, esto se hizo ya que por medio de las APIS del periodo había que enviar el numero de contrato y cambiar el frontend
+
+            let fecha3 = new Date(consulta.recordset[0]['fecha_sup']);
+            //Esta porcion de codigo no le resta un dia a la fecha
+            fecha3.setMinutes(fecha3.getMinutes() + fecha3.getTimezoneOffset());
+
+            // const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+            const month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
+
+            let mes3 = month[fecha3.getMonth()];
+            let anio3 = fecha3.getFullYear();
+            let dia3 = fecha3.getDate();
+
+            fecha_vencimiento = dia3 +'/'+ mes3 + '/' + anio3
+
+            result.recordset[0]['fecha_vencimiento'] =  fecha_vencimiento;
+            result.recordset[0]['mes_facturado'] =  consulta.recordset[0]['mes_facturado_c'];
+
+            //
             console.log(result.recordset[0]);
 
         res.json(
@@ -281,12 +329,6 @@ const deleteContratoUser = async (req, res = response) =>{
         res.json(error.message);
     }
     
-}
-
-const updateAdeudo = async (req, res = response) => {
-
-    const { id } = req.params;
-    const { pagado } = req.body;
 }
 
 module.exports = {
