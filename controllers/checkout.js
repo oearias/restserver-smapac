@@ -275,9 +275,9 @@ const respMulti = async (req, res = response) => {
     let consulta;
 
     if( esReconexion == 'RECONEX' ){
-        consulta = "UPDATE padron SET adeuda = 0 WHERE contrato = @contrato";
-    }else{
         consulta = "UPDATE padron SET adeuda = 0, estatus = 'En proceso de Reconexión' WHERE contrato = @contrato"
+    }else{
+        consulta = "UPDATE padron SET adeuda = 0 WHERE contrato = @contrato";
     }
 
     if (codigo == 1) {

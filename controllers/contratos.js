@@ -195,7 +195,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
             'AND d.año = 2022 '+
             //'AND d.mes = @mes '+
             'AND d.mes_facturado = @mes_facturado '+
-            'ORDER BY  c.contrato');
+            'ORDER BY c.contrato');
 
             if(result.recordset.length > 0){
                 for(let i=0; i< result.recordset.length; i++){
