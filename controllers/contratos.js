@@ -159,12 +159,12 @@ const contratoGetByUserEmail = async (req, res = response) => {
     try {
 
         const consulta = await pool.request()
-                        .query('SELECT * FROM periodo_facturac WHERE estatus = 1');
+                        .query('SELECT * FROM periodo_facturac WHERE estatus = 1 AND region IS NULL ');
 
-        const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
-        const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
+        //const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
+        //const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
         //const mes_facturado = consulta.recordset[0]['mes_facturado'];
-        const mes_facturado = 'Jun2022';
+        //const mes_facturado = 'Jun2022';
         const anio = consulta.recordset[0]['año'];
         const mes = consulta.recordset[0]['mes'];
         //////
@@ -174,27 +174,18 @@ const contratoGetByUserEmail = async (req, res = response) => {
         .input('email', email)
         .input('anio', anio)
         .input('mes', mes)
-        .input('fecha_pagado_inf', fecha_pagado_inf)
-        .input('fecha_pagado_sup', fecha_pagado_sup)
-        .input('mes_facturado', mes_facturado)
         .query('SELECT c.contrato, c.nombre, c.direccion, c.colonia, c.giro, c.estatus, '+
             'c.medidor, c.cp, '+
-            'd.adeudo as adeuda, '+
             'c.adeuda as adeuda_padron, '+
-            'dbo.sum_pagado_movil(c.contrato) as pagado, '+
-            'd.mes_facturado, '+
-            'd.fecha_vencimiento '+
+            'dbo.mes_facturado_movil(c.contrato) as mes_facturado, '+
+            'dbo.fecha_venc_movil(c.contrato, @anio, @mes) as fecha_vencimiento, '+
+            'dbo.calcula_adeudo_movil(c.contrato, @anio, @mes) as adeuda, '+
+            'dbo.sum_pagado_movil(c.contrato) as pagado '+
             'FROM usuario_padron a, '+
-            'facthist d, '+
             'usuario b , padron c '+
             'WHERE b.email = @email '+
             'AND a.usuario_id = b.id  '+
             'AND a.contrato = c.contrato '+
-            'AND d.contrato = c.contrato '+
-            //'AND d.año = @anio '+
-            'AND d.año = 2022 '+
-            //'AND d.mes = @mes '+
-            'AND d.mes_facturado = @mes_facturado '+
             'ORDER BY c.contrato');
 
             if(result.recordset.length > 0){
@@ -212,7 +203,6 @@ const contratoGetByUserEmail = async (req, res = response) => {
                     //Adecuacion para los que pagan y revisan enseguida
 
                     if(result.recordset[i]['adeuda'] != result.recordset[i]['adeuda_padron'] && result.recordset[i]['adeuda_padron'] == 0){
-                        console.log('Entra a la condicion del adeuda');
                         result.recordset[i]['adeuda'] = result.recordset[i]['adeuda_padron'];
                     }
             
