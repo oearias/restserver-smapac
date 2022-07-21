@@ -71,7 +71,22 @@ const queries = {
     'AND a.año = @anio '+
     'AND a.mes = @mes '+ 
     'AND a.mes_facturado = @mes_facturado '+
-    'where b.contrato = @id '
+    'where b.contrato = @id ',
+
+    getContratosByUserEmail : 'SELECT c.contrato, c.nombre, '+
+    'c.direccion, c.colonia, c.giro, c.estatus, '+
+    'c.medidor, c.cp, '+
+    'c.adeuda as adeuda_padron, '+
+    'dbo.mes_facturado_movil(c.contrato) as mes_facturado, '+
+    'dbo.fecha_venc_movil(c.contrato, @anio, @mes) as fecha_vencimiento, '+
+    'dbo.calcula_adeudo_movil(c.contrato, @anio, @mes) as adeuda, '+
+    'dbo.sum_pagado_movil(c.contrato) as pagado '+
+    'FROM usuario_padron a, '+
+    'usuario b , padron c '+
+    'WHERE b.email = @email '+
+    'AND a.usuario_id = b.id  '+
+    'AND a.contrato = c.contrato '+
+    'ORDER BY c.contrato'
     
 }
 

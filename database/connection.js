@@ -43,50 +43,16 @@ const dbSettings = {
     password: process.env.DB_PASS,
     server: process.env.DB_HOST,
     database: process.env.DB,
+    pool:{
+        max: 10,
+        min: 0,
+    },
     options: {
         encrypt: true,
         trustServerCertificate: true,
     },
 };
 
-//Computadora Local
-/*const dbSettings = {
-    user: 'usuarionode',
-    password: '1989023aB9.',
-    server: '192.168.1.98',
-    database: 'SMAPAC_DB',
-    options: {
-        encrypt: true,
-        trustServerCertificate: true,
-    },
-};*/
-
-//SQL Google Cloud 
-/*
-const dbSettings = {
-    user: 'sqlserver',
-    password: '1989023aB9.',
-    server: '34.136.217.147',
-    database: 'SMAPAC_DB',
-    options: {
-        encrypt: true,
-        trustServerCertificate: true,
-    },
-};
-*/
-
-//SQL Google Cloud BZUBIETA
-/*const dbSettings = {
-    user: 'sqlserver',
-    password: 'Aguamala2022$',
-    server: '34.121.224.0',
-    database: 'SMAPAC_DB',
-    options: {
-        encrypt: true,
-        trustServerCertificate: true,
-    },
-};
-*/
 
 async function  getConnection() {
 

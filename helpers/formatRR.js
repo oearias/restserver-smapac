@@ -2,7 +2,6 @@ const { formatNumber } = require("./format");
 
 const formatResultRecordset = (result = []) => {
 
-
     try {
 
         if(result.recordset[0]['fecha_vencimiento']){
@@ -94,7 +93,6 @@ const formatResultRecordset = (result = []) => {
             result.recordset[0]['pagado'] = formatNumber(result.recordset[0]['pagado']);
             result.recordset[0]['pagado'] = "$"+result.recordset[0]['pagado'];
         }
-
         
         result.recordset[0]['adeuda'] = "$"+result.recordset[0]['adeuda'];
 
@@ -109,7 +107,6 @@ const formatResultRecordset = (result = []) => {
         result.recordset[0]['consumo6'] = result.recordset[0]['lectura6'] - result.recordset[0]['lectura_ant6'];
 
         //Desaparecemos ConsM3 cuando no existen fechas de emision
-
         
         if(result.recordset[0]['consumo6'] == 0 && result.recordset[0]['mes_facturado6'] == null ){
             result.recordset[0]['consumo6']=null;
@@ -134,7 +131,6 @@ const formatResultRecordset = (result = []) => {
         if(result.recordset[0]['consumo1'] == 0 && result.recordset[0]['mes_facturado1'] == null ){
             result.recordset[0]['consumo1']=null;
         }
-
 
         return result.recordset[0];
         
