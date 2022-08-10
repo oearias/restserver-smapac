@@ -101,6 +101,9 @@ const contratoGet = async (req, res = response) => {
 };
 
 const contratoGetByUserEmail = async (req, res = response) => {
+
+  console.log("entramos");
+  
   try {
     const { email } = req.params;
     const pool = await getConnection();
@@ -151,6 +154,8 @@ const contratoGetByUserEmail = async (req, res = response) => {
     }
 
     const contratos = result.recordset;
+
+    console.log(contratos);
 
     res.json({
       contratos,
@@ -242,9 +247,10 @@ const contratoEmail = (req, res = response) => {
                     }
 
                     const contratos = result.recordset;
+                    console.log("Consulta desde la App");
                     console.log(contratos);
 
-                    return res.json({contratos});
+                    res.json(contratos);
 
                   } else {
                     res.send(err);
