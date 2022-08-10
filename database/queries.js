@@ -59,6 +59,8 @@ const queries = {
     getContrato: 'SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
     'b.giro, '+ 
     'a.adeudo as adeuda, '+
+    'c.multas, '+
+    'c.fecha_suspension, '+
     'b.adeuda as adeuda_padron, '+
     'a.mes_facturado, b.tarifa, '+
     'b.region, b.estatus, b.medidor, b.reparto, b.sector, '+
@@ -71,6 +73,9 @@ const queries = {
     'AND a.año = @anio '+
     'AND a.mes = @mes '+ 
     'AND a.mes_facturado = @mes_facturado '+
+    'LEFT JOIN '+
+    'multas c '+
+    'ON c.contrato = b.contrato '+
     'where b.contrato = @id ',
 
     getContratosByUserEmail : 'SELECT c.contrato, c.nombre, '+

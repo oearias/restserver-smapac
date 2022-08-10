@@ -5,7 +5,7 @@ const calculaReconex = (result = []) => {
 
     try {
 
-        if( result.recordset[0]["estatus"] == "Suspendido" && result.recordset[0]["adeuda_padron"] > 0 )
+        if( result.recordset[0]["estatus"] == "Suspendido" )
         {
             let tarifa = result.recordset[0]['tarifa'];
             let reco;
@@ -59,10 +59,10 @@ const calculaReconex = (result = []) => {
 
             //return reco;
 
-            result.recordset[0]["adeuda"]           = result.recordset[0]["adeuda_padron"] + reco;
-            result.recordset[0]["reconexion"]       = reco;
-            result.recordset[0]["flag_reconexion"]  = 1;
-            result.recordset[0]["adeuda"]           = truncateD(result.recordset[0]["adeuda"]);
+            result.recordset[0]["adeuda_reconex_total"]     = (result.recordset[0]['adeuda'] ) ? result.recordset[0]['adeuda'] + reco : result.recordset[0]["adeuda_padron"] + reco;
+            result.recordset[0]["reconexion"]               = reco;
+            result.recordset[0]["flag_reconexion"]          = 1;
+            result.recordset[0]["adeuda_reconex_total"]     = truncateD(result.recordset[0]["adeuda_reconex_total"]);
         }
 
         return result.recordset[0];

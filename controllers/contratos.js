@@ -83,8 +83,10 @@ const contratoGet = async (req, res = response) => {
 
     //Caso Reconexiones.
     result.recordset[0] = calculaReconex(result);
+
     //Padron vs Fatchist. Descripción dentro de la función
     result.recordset[0] = comparaTablas(result);
+
     //Formatea Fecha Vencimiento
     result.recordset[0]["fecha_vencimiento"] = formatFechaVencimiento(consulta);
     result.recordset[0]["mes_facturado"] =
@@ -99,7 +101,6 @@ const contratoGet = async (req, res = response) => {
 };
 
 const contratoGetByUserEmail = async (req, res = response) => {
-  
   try {
     const { email } = req.params;
     const pool = await getConnection();
@@ -160,100 +161,107 @@ const contratoGetByUserEmail = async (req, res = response) => {
 };
 
 const contratoEmail = (req, res = response) => {
-
+  
   const { email } = req.params;
 
-  dbConfig = {
-    user: process.env.DB_USER,
-    password: process.env.DB_PASS,
-    server: process.env.DB_HOST,
-    database: process.env.DB,
-    pool: {
-      max: 10,
-      min: 0,
-    },
-    options: {
-      encrypt: true,
-      trustServerCertificate: true,
-    },
-  };
+  try{
+  
+    dbConfig = {
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      server: process.env.DB_HOST,
+      database: process.env.DB,
+      pool: {
+        max: 10,
+        min: 0,
+      },
+      options: {
+        encrypt: true,
+        trustServerCertificate: true,
+      },
+    };
 
-  let connection = new sql.ConnectionPool(dbConfig);
-  connection.connect((err) => {
-    if (err) {
-      console.log("Error connecting ", err);
-      res.send(err);
-    } else {
+    let connection = new sql.ConnectionPool(dbConfig);
+  
+    connection.connect((err) => {
+      if (err) {
+        console.log("Error connecting ", err);
+        res.send(err);
+      } else {
 
-      let request = new sql.Request(connection);
+        let request = new sql.Request(connection);
 
-      request.query("SELECT * FROM periodo_facturac WHERE estatus = 1 AND region is NULL", (err, recordset) => {
-        if (err) {
+        request.query(
+          "SELECT * FROM periodo_facturac WHERE estatus = 1 AND region is NULL",
+          (err, recordset) => {
+            if (err) {
+              res.send(err);
+            } else {
 
-          res.send(err);
+              let consulta = recordset;
 
-        } else {
+              const anio = consulta.recordset[0]["año"];
+              const mes = consulta.recordset[0]["mes"];
 
-          let consulta = recordset;
+              request
+                .input("mes", mes)
+                .input("anio", anio)
+                .input("email", email)
+                .query(queries.getContratosByUserEmail, (err, result) => {
+                  if (!err) {
+                    if (result.recordset.length > 0) {
+                      for (let i = 0; i < result.recordset.length; i++) {
+                        if (
+                          result.recordset[i]["adeuda"] !=
+                            result.recordset[i]["adeuda_padron"] &&
+                          result.recordset[i]["adeuda_padron"] == 0
+                        ) {
+                          result.recordset[i]["adeuda"] =
+                            result.recordset[i]["adeuda_padron"];
+                        }
 
-          const anio = consulta.recordset[0]["año"];
-          const mes = consulta.recordset[0]["mes"];
+                        if (result.recordset[i]["pagado"]) {
+                          result.recordset[i]["adeuda"] =
+                            result.recordset[i]["adeuda"] -
+                            result.recordset[i]["pagado"];
 
-          request
-          .input('mes', mes)
-          .input('anio', anio)
-          .input('email',email)
-          .query(queries.getContratosByUserEmail, (err, result) => {
-            
-            if(!err){
+                          if (result.recordset[i]["adeuda"] < 0) {
+                            result.recordset[i]["adeuda"] = 0;
+                          }
+                        }
 
-              if (result.recordset.length > 0) {
+                        //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
+                        result.recordset[i]["adeuda"]
+                          ? truncateD(result.recordset[i]["adeuda"])
+                          : null;
 
-                for (let i = 0; i < result.recordset.length; i++) {
-                  if (
-                    result.recordset[i]["adeuda"] !=
-                      result.recordset[i]["adeuda_padron"] &&
-                    result.recordset[i]["adeuda_padron"] == 0
-                  ) {
-                    result.recordset[i]["adeuda"] = result.recordset[i]["adeuda_padron"];
-                  }
-          
-                  if (result.recordset[i]["pagado"]) {
-                    result.recordset[i]["adeuda"] =
-                      result.recordset[i]["adeuda"] - result.recordset[i]["pagado"];
-          
-                    if (result.recordset[i]["adeuda"] < 0) {
-                      result.recordset[i]["adeuda"] = 0;
+                        result.recordset[i]["aux"]
+                          ? truncateD(result.recordset[i]["aux"])
+                          : null;
+                      }
                     }
+
+                    const contratos = result.recordset;
+                    console.log(contratos);
+
+                    return res.json({contratos});
+
+                  } else {
+                    res.send(err);
                   }
-          
-                  //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos
-                  result.recordset[i]["adeuda"]
-                    ? truncateD(result.recordset[i]["adeuda"])
-                    : null;
-          
-                  result.recordset[i]["aux"]
-                    ? truncateD(result.recordset[i]["aux"])
-                    : null;
-                }
-              }
-
-              const contratos = result.recordset;
-
-              return res.json(
-                contratos
-              )
-            }else{
-              res.send(err)
+              });
             }
-          });
+          }
+        );
+      }
+    });
 
-        
-        }
-      });
+  }catch(err){
+    console.log(err);
+    res.send(err)
+  }
 
-    }
-  });
+
 };
 
 const addContratoUser = async (req, res = response) => {
