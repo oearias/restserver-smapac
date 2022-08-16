@@ -2,9 +2,6 @@ const { truncateD } = require("./format");
 
 const comparaTablas = (result = []) => {
 
-  console.log("compara tablas");
-  console.log(result.recordset[0]);
-
     //Esta adecuación se hizo por las personas que pagan en linea y consultan enseguida ya que
     //la tabla que se setea a 0 es la de padron y no facthist
     //para no hacer más movimientos de actualizaciones solo se comparan las dos tablas y se devuelve un 0 si padron
@@ -16,11 +13,13 @@ const comparaTablas = (result = []) => {
       ) {
         result.recordset[0]["adeuda"] = result.recordset[0]["adeuda_padron"];
       }
+
+
+
   
-      if (
-        result.recordset[0]["pagado"] &&
-        result.recordset[0]["flag_reconexion"] == null
-      ) {
+      if ( result.recordset[0]["pagado"] && result.recordset[0]["flag_reconexion"] == null)
+      {
+        console.log('condition!!!');
         result.recordset[0]["adeuda"] =
           result.recordset[0]["adeuda"] - result.recordset[0]["pagado"];
   
