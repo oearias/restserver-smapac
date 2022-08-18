@@ -48,6 +48,7 @@ const reciboGet = async (req, res = response) => {
 
         const mes_actual = 13;
         const anio = 2021;
+        
 
         const result = await pool.request()
         .input("anio", anio)
