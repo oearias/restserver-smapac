@@ -14,7 +14,6 @@ router.post('/login', [
     validarCampos
 ], login);
 
-
 router.put('/forgot-password',[
     check('email', 'El email es obligatorio').isEmail(),
     validarCampos

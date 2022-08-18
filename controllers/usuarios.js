@@ -108,6 +108,7 @@ const usuariosPut = async (req, res = response) => {
 
     const { nombre, email } = req.body;
 
+
     /*if (password) {
         const salt = bcryptjs.genSaltSync();
         const pass = bcryptjs.hashSync(password, salt)

@@ -51,4 +51,5 @@ const queries = {
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
     'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor',
+    
 }

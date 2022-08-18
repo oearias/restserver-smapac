@@ -13,6 +13,7 @@ const formatNumber = (valor = 0) => {
 const truncateD = ( valor = 0 ) => {
 
     let format = valor;
+    
 
     format = parseFloat(valor.toFixed(2));
 

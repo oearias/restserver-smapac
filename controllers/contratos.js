@@ -16,6 +16,7 @@ const contratosGet = async (req, res = response) => {
       total: 6,
       contratos,
     });
+    
   } catch (error) {
     res.status(500).send(error.message);
   } finally {

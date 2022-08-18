@@ -9,10 +9,10 @@ const router = Router();
 
 //router.get('/', usuariosGet);
 
-router.get('/:id', usuarioGet)
+router.get('/:id', usuarioGet);
 
 //Buscamos por email
-router.get('/email/:email', usuarioGetByEmail)
+router.get('/email/:email', usuarioGetByEmail);
 
 router.post('/', [
     check('email','El correo ingresado no tiene un formato válido').isEmail(),

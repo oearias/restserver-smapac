@@ -4,6 +4,7 @@ const sql = require('mssql');
 const emailExists = async (email = '') => {
 
     const pool = await getConnection();
+    
 
     //Validar que no exista el correo en la Base de Datos
     const valida = await pool.request()

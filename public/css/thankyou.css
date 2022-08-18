@@ -211,6 +211,7 @@
       display: none
   } */
   
+  
   .icon--order-success svg polyline {
       -webkit-animation: checkmark 0.25s ease-in-out 0.7s backwards;
       animation: checkmark 0.25s ease-in-out 0.7s backwards

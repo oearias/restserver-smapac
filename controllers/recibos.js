@@ -39,7 +39,6 @@ const reciboGet = async (req, res = response) => {
             .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
         }
         
-        
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];

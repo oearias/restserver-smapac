@@ -92,7 +92,6 @@ const queries = {
     'AND a.usuario_id = b.id  '+
     'AND a.contrato = c.contrato '+
     'ORDER BY c.contrato'
-    
 }
 
 module.exports = {

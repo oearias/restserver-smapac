@@ -14,7 +14,6 @@ const login = async (req, res = response) => {
     try {
         const { email, password } = req.body;
 
-
         //Validamos que exista el email
         const pool = await getConnection();
         const resul = await pool.request()

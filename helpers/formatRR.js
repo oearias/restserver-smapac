@@ -5,6 +5,7 @@ const formatResultRecordset = (result = []) => {
     try {
 
         if(result.recordset[0]['fecha_vencimiento']){
+            
 
             //Formateamos fecha de vencimiento
             let mes_venci = ("0" + (result.recordset[0]['fecha_vencimiento'].getMonth() + 1)).slice(-2);

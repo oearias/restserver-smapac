@@ -4,6 +4,7 @@ const { truncateD } = require("./format");
 const calculaReconex = (result = []) => {
 
     try {
+        
 
         if( result.recordset[0]["estatus"] == "Suspendido" )
         {

@@ -37,6 +37,7 @@ class Server {
 
         //this.app.unsubscribe(express.urlencoded({extended: false}))
         this.app.use(express.urlencoded({extended: true}));
+        
     }
 
     routes() {

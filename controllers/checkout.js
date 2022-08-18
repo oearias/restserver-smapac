@@ -262,7 +262,6 @@ const respMulti = async (req, res = response) => {
     let result;
     let message = referencia + importe + idExpress;
 
-
     //Genero una signature del lado del servidor.
     let hash = crypto.createHmac('sha256', process.env.MULTIPAGOSKEY).update(message);
     const mySignature = hash.digest('hex');

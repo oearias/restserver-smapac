@@ -13,9 +13,6 @@ const comparaTablas = (result = []) => {
       ) {
         result.recordset[0]["adeuda"] = result.recordset[0]["adeuda_padron"];
       }
-
-
-
   
       if ( result.recordset[0]["pagado"] && result.recordset[0]["flag_reconexion"] == null)
       {

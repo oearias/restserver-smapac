@@ -23,6 +23,7 @@ router.get('/recibo', (req, res)=>{
 
     res.render('thankyou');
 
+    
 })
 
 router.get('/test', (req, res)=>{

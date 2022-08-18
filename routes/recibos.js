@@ -8,6 +8,7 @@ router.post('/:id', reciboGet);
 //Endpoint al Playwright
 router.post('/browser/:id', downloadRecibo);
 
+
 /*router.post('/recibo/:id', reciboTest)*/
 
 module.exports = router;

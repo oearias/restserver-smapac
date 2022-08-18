@@ -24,7 +24,6 @@ const periodoGet = async (req, res = response) => {
         let dia = fecha.getDate();
 
         fecha_vencimiento = dia +'/'+ mes + '/' + anio
-
   
         res.json(
             {
