@@ -50,6 +50,7 @@ class Server {
         this.app.use(this.ordersPath, require('../routes/checkout'));
         this.app.use(this.recibosPath, require('../routes/recibos'));
         this.app.use(this.inspectoresPath, require('../routes/inspectores'));
+        
     
     }
 

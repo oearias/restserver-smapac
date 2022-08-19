@@ -9,5 +9,4 @@ router.get('/:id', inspectorGet);
 router.post('/',inspectorPost);
 
 
-
 module.exports = router;

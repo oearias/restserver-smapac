@@ -38,7 +38,7 @@ const inspectorPost = async( req , res = response) => {
     const pool = await getConnection();
     const result = await pool.request().input("nombre",nombre).query('INSERT INTO inspectores ( nombre ) values (@nombre)');
         
-    console.log(result)
+    console.log(result);
 
     if (result.rowsAffected[0] == 0){
         return res.status(500).json({ 
