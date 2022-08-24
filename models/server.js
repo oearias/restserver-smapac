@@ -13,6 +13,8 @@ class Server {
         this.periodosPath = '/api/periodos'
         this.ordersPath = '/api/orders'
         this.recibosPath = '/api/recibos'
+        this.inspectoresPath = '/api/inspectores'
+        this.tipoReportePath = '/api/tipoReporte'
 
         //Middlewares
         this.middlewares();
@@ -48,7 +50,10 @@ class Server {
         this.app.use(this.periodosPath, require('../routes/periodos'));
         this.app.use(this.ordersPath, require('../routes/checkout'));
         this.app.use(this.recibosPath, require('../routes/recibos'));
-
+        this.app.use(this.inspectoresPath, require('../routes/inspectores'));
+        this.app.use(this.tipoReportePath, require('../routes/tipo_reporte'));
+        
+    
     }
 
     listen() {
