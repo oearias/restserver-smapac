@@ -159,7 +159,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
     console.log(contratos);
 
     res.json({
-      contratos,
+      contratos
     });
   } catch (error) {
     res.json(error.message);
