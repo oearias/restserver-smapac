@@ -49,11 +49,24 @@ const contratoGet = async (req, res = response) => {
     let consulta, querie;
 
     //Obtenemos el Periodofacturac
-    region == 2
-      ? (querie =
-          "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2")
-      : (querie =
-          "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL");
+
+    switch(region){
+
+      case 2: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2";
+      break;
+
+      case 3: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 3";
+      break;
+
+      default: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL";
+      break;
+    }
+
+    // region == 2
+    //   ? (querie =
+    //       "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2")
+    //   : (querie =
+    //       "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL");
 
     consulta = await pool.request().query(querie);
 
