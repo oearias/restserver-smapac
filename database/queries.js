@@ -1,7 +1,8 @@
 const queries = {
 
     getRecibo: 'SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, '+
-    'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, '+
+    'a.consumo_vencido, '+
+    'a.favor, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, a.adeudo as adeuda, '+
     'b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, '+
@@ -50,7 +51,7 @@ const queries = {
     'AND a.mes = @mes '+ //TODO: Este debe cambiar a 1 con la facturación de Enero
     'WHERE b.contrato = @id '+
     'GROUP BY a.contrato, a.fecha_vencimiento, a.adeudo, a.lectura_anterior, '+
-    'a.lectura_actual, a.mes_facturado, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
+    'a.lectura_actual, a.mes_facturado, a.favor, a.recargo_actual, a.consumo_actual, a.consumo_vencido, a.recargo_vencido, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
     'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor',

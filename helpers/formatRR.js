@@ -39,6 +39,12 @@ const formatResultRecordset = (result = []) => {
             result.recordset[0]['label_recargo'] = 'Recargos:';
         }
 
+        if (result.recordset[0]['favor'] < 0) {
+            result.recordset[0]['label_favor'] = 'a favor';
+        }
+
+        
+
         //Formateamos a dos decimales y comas por miles los valores
         result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = '$' + formatNumber(result.recordset[0]['consumo_actual']) : '';
         result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = '$' + formatNumber(result.recordset[0]['consumo_vencido']) : '';
@@ -50,6 +56,7 @@ const formatResultRecordset = (result = []) => {
         result.recordset[0]['iva_vencido'] ? result.recordset[0]['iva_vencido'] = '$' + formatNumber(result.recordset[0]['iva_vencido']) : '';
         result.recordset[0]['pipas'] ? result.recordset[0]['pipas'] = '$' + formatNumber(result.recordset[0]['pipas']) : '';
         result.recordset[0]['pipas_vencido'] ? result.recordset[0]['pipas_vencido'] = '$' + formatNumber(result.recordset[0]['pipas_vencido']) : '';
+        result.recordset[0]['favor'] ? result.recordset[0]['favor'] = '$' + formatNumber(result.recordset[0]['favor']) : '';
 
         //Desaparecemos los valores que sean = a 0
         (result.recordset[0]['consumo_vencido'] == 0) ? result.recordset[0]['consumo_vencido'] = '' : result.recordset[0]['consumo_vencido'];
@@ -62,6 +69,7 @@ const formatResultRecordset = (result = []) => {
         (result.recordset[0]['iva_vencido'] == 0) ? result.recordset[0]['iva_vencido'] = '' : result.recordset[0]['iva_vencido'];
         (result.recordset[0]['pipas'] == 0) ? result.recordset[0]['pipas'] = '' : result.recordset[0]['pipas'];
         (result.recordset[0]['pipas_vencido'] == 0) ? result.recordset[0]['pipas_vencido'] = '' : result.recordset[0]['pipas_vencido'];
+        (result.recordset[0]['favor'] == 0) ? result.recordset[0]['favor'] = '' : result.recordset[0]['favor'];
 
         //Diferencia de lo pagado y el adeudo
         if (result.recordset[0]['adeuda'] && result.recordset[0]['pagado']) {
