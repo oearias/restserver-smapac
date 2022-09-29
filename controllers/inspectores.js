@@ -4,11 +4,33 @@ const sql = require('mssql');
 
 const inspectoresGet = async (req, res = response) => {
 
+
     const pool = await getConnection();
 
     const result = await pool.request().query('SELECT * FROM inspectores ');
 
-    res.json(result.recordsets);
+    res.json(result.recordset);
+}
+
+const inspectoresGetByReporteId = async (req, res = response) => {
+
+    try {
+        const { id } = req.params;
+
+        console.log(id);
+
+        const pool = await getConnection();
+
+        const result = await pool.request()
+            .input("id", id)
+            .query('SELECT b.id, b.nombre FROM reporte_inspectores a INNER JOIN inspectores b on a.inspector_id = b.id WHERE a.reporte_id = @id');
+
+        res.json(result.recordset);
+    } catch (error) {
+
+        console.log(error);
+        res.send(error.message)
+    }
 }
 
 
@@ -33,17 +55,19 @@ const inspectorGet = async (req, res = response) => {
 
 const inspectorPost = async (req, res = response) => {
 
+
     const { nombre } = req.body;
-    let nombreMayus = "";
-
-    if (nombre) {
-
-        nombreMayus = nombre.toUpperCase();
-    }
-
+    const pool = await getConnection();
 
     try {
-        const pool = await getConnection();
+
+        let nombreMayus = "";
+
+        if (nombre) {
+
+            nombreMayus = nombre.toUpperCase();
+        }
+
         const result = await pool.request().input("nombre", nombreMayus).query('INSERT INTO inspectores ( nombre ) values (@nombre)');
 
         console.log(result);
@@ -67,21 +91,28 @@ const inspectorPost = async (req, res = response) => {
 }
 
 const inspectorPut = async (req, res = response) => {
-   
+
     const { id } = req.params
     const { nombre } = req.body;
-    
+
+    const pool = await getConnection();
 
     try {
-        const pool = await getConnection();
+        
+        let nombreMayus = "";
+
+        if (nombre) {
+
+            nombreMayus = nombre.toUpperCase();
+        }
         await pool.request()
-            .input('id', id)       
-            .input('nombre', sql.VarChar, nombre)
+            .input('id', id)
+            .input('nombre', sql.VarChar, nombreMayus)
             .query('UPDATE inspectores ' +
                 'SET nombre = @nombre ' +
                 'WHERE id=@id')
         res.json({
-            msg: `Usuario: ${nombre} editado correctamente`,
+            msg: `Usuario: ${nombreMayus} editado correctamente`,
         });
 
     } catch (error) {
@@ -89,7 +120,7 @@ const inspectorPut = async (req, res = response) => {
         res.json({
             error: 'No se pudo actualizar el usuario'
         });
-    
+
     }
 }
 
@@ -104,10 +135,10 @@ const InspectorDelete = async (req, res = response) => {
 
             .input("id", id)
             .query('DELETE FROM inspectores where id = @id')
-            console.log(result);
+        console.log(result);
 
         res.status(200).json({
-            msg:"Inspector eliminado correctamente"
+            msg: "Inspector eliminado correctamente"
         });
 
     } catch (error) {
@@ -116,10 +147,11 @@ const InspectorDelete = async (req, res = response) => {
 }
 
 module.exports = {
+    inspectoresGetByReporteId,
     inspectoresGet,
     inspectorGet,
     inspectorPost,
     inspectorPut,
     InspectorDelete
-    
+
 }
