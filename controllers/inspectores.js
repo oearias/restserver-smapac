@@ -17,8 +17,6 @@ const inspectoresGetByReporteId = async (req, res = response) => {
     try {
         const { id } = req.params;
 
-        console.log(id);
-
         const pool = await getConnection();
 
         const result = await pool.request()
@@ -28,8 +26,8 @@ const inspectoresGetByReporteId = async (req, res = response) => {
         res.json(result.recordset);
     } catch (error) {
 
-        console.log(error);
         res.send(error.message)
+        
     }
 }
 

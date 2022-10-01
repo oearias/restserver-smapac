@@ -1,6 +1,5 @@
 const { response } = require('express');
 const { getConnection } = require('../database/connection');
-const sql = require('mssql');
 
 const reportesFotoGet = async (req, res = response) => {
     try {
@@ -23,8 +22,6 @@ const reporteFotoGet = async (req, res = response) => {
 
         const result = await pool.request().input('identificador', id)
             .query('SELECT * FROM reportes_foto where id = @identificador ');
-
-        console.log(result.recordset.length)
 
         if (result.recordset.length == 0) {
             return res.status(500).json({
@@ -58,7 +55,7 @@ const reporteFotoGetByReporteId = async (req, res = response) => {
         res.status(200).json(result.recordset);
     }
     catch (error) {
-        console.log(error);
+        
         res.json(error.message)
 
     }

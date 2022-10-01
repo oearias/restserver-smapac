@@ -10,8 +10,8 @@ const { json } = require('body-parser');
 
 const login = async (req, res = response) => {
 
-    
     try {
+
         const { email, password } = req.body;
 
         //Validamos que exista el email
@@ -372,9 +372,89 @@ const googleSignin = async (req, res = response) => {
 
 }
 
+const loginIntranet = async (req, res = response) => {
+    
+    try {
+        
+        const { email, password } = req.body;
+
+        //Validamos que exista el email
+        const pool = await getConnection();
+        const resul = await pool.request()
+            .input('email', sql.VarChar, email)
+            .query('SELECT * from usuarios_smapac where email = @email')
+
+        const exist = resul.recordset.length;
+
+        if (exist < 1) {
+            return res.json({ msg: 'El usuario no existe en la base de datos' })
+        }
+
+        const id = resul.recordset[0]['id'];
+        const pass = resul.recordset[0]['password'];
+        const nombre = resul.recordset[0]['nombre'];
+
+        //Verificar la contraseña
+        const validPassword = bcryptjs.compareSync(password, pass)
+
+        if (!validPassword) {
+            return res.status(400).json({
+                msg: 'Usuario o Contraseña son incorrectos'
+            })
+        }
+
+        //Generar el JWT
+        const token = await generarJWT(id);
+
+        res.json({
+            email,
+            nombre,
+            token
+        })
+
+    } catch (error) {
+
+        console.log(error);
+
+        res.status(500).json({
+            error: error.message,
+            msg: 'Algo salió mal, hable con el Administrador'
+        })
+    } 
+}
+const rolesGet = async (req, res = response) => {
+
+    const { email } = req.params;
+    const pool = await getConnection();
+
+    const result = await pool.request()
+        .query(`select 
+        a.email,
+        a.nombre, 
+        c.role_name
+        from usuarios_smapac a
+        inner join 
+        roles_usuarios b
+        on a.id= b.usuario_id
+        inner join
+        roles c
+        on c.id= b.role_id WHERE a.email = '${email}' `);
+
+
+    if (result.recordset.length == 0) {
+        return res.status(500).json({
+            msg: "No hay registros en la tabla"
+        });
+    }
+
+    res.status(200).json(result.recordset[0]);
+}
+
 module.exports = {
     login,
     forgotPassword,
     newPassword,
-    googleSignin
+    googleSignin,
+    loginIntranet,
+    rolesGet
 }

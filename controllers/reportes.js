@@ -1,9 +1,7 @@
 const { response } = require('express');
 const { getConnection } = require('../database/connection');
 const sql = require('mssql');
-const base64Img = require('base64-img');
 const cloudinary = require('cloudinary').v2;
-const tmp = require('tmp');
 
 cloudinary.config({
     cloud_name: process.env.cloud_name,
@@ -210,8 +208,6 @@ const reportesPost = async (req, res = response) => {
         });
 
     } catch (error) {
-
-        console.log(error);
 
         return res.status(500).json({
             msg: error.message
