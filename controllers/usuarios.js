@@ -3,6 +3,7 @@ const { getConnection } = require('../database/connection');
 const sql = require('mssql');
 
 const bcryptjs = require('bcryptjs');
+const { generarJWT } = require('../helpers/generate-jwt');
 
 const usuariosGet = async (req, res = response) => {
 
@@ -37,14 +38,17 @@ const usuariosPost = async (req, res = response) => {
         const pass = bcryptjs.hashSync(password, salt)
 
         //Consulta para insertar usuarios
-        const result = pool.request()
+        const result = await pool.request()
             .input('email', sql.VarChar, email)
             .input('nombre', sql.VarChar, nombre)
             .input('password', sql.VarChar, pass)
-            .query('INSERT INTO usuario (email, nombre, password) values (@email, @nombre, @password)')
+            .query('INSERT INTO usuario (email, nombre, password) values (@email, @nombre, @password); SELECT SCOPE_IDENTITY() as id');
+
+        const token = await generarJWT(` ${result.recordset[0]['id']} `);
 
         res.json({
             msg: `Usuario: ${email} registrado correctamente`,
+            token
         });
 
     } catch (error) {

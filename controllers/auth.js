@@ -382,8 +382,17 @@ const loginIntranet = async (req, res = response) => {
         const pool = await getConnection();
         const resul = await pool.request()
             .input('email', sql.VarChar, email)
-            .query('SELECT * from usuarios_smapac where email = @email')
+            .query(`
+                SELECT a.*, c.role_name as role
+                FROM usuarios_smapac a 
+                LEFT JOIN roles_usuarios b 
+                on a.id= b.usuario_id 
+                LEFT JOIN roles c
+                on c.id= b.role_id
+                WHERE a.email = @email`)
 
+        
+        
         const exist = resul.recordset.length;
 
         if (exist < 1) {
@@ -393,6 +402,7 @@ const loginIntranet = async (req, res = response) => {
         const id = resul.recordset[0]['id'];
         const pass = resul.recordset[0]['password'];
         const nombre = resul.recordset[0]['nombre'];
+        const role = resul.recordset[0]['role'];
 
         //Verificar la contraseña
         const validPassword = bcryptjs.compareSync(password, pass)
@@ -409,7 +419,8 @@ const loginIntranet = async (req, res = response) => {
         res.json({
             email,
             nombre,
-            token
+            token,
+            role
         })
 
     } catch (error) {
@@ -422,6 +433,7 @@ const loginIntranet = async (req, res = response) => {
         })
     } 
 }
+
 const rolesGet = async (req, res = response) => {
 
     const { email } = req.params;
@@ -433,10 +445,10 @@ const rolesGet = async (req, res = response) => {
         a.nombre, 
         c.role_name
         from usuarios_smapac a
-        inner join 
+        left join 
         roles_usuarios b
         on a.id= b.usuario_id
-        inner join
+        left join
         roles c
         on c.id= b.role_id WHERE a.email = '${email}' `);
 
@@ -450,11 +462,33 @@ const rolesGet = async (req, res = response) => {
     res.status(200).json(result.recordset[0]);
 }
 
+const renewToken = async(req, res = response) => {
+
+    try {
+
+        const id = req.id;
+
+    // Generar el TOKEN - JWT
+    const token = await generarJWT( id );
+
+
+    res.json({
+        ok: true,
+        token
+    });
+        
+    } catch (error) {
+        console.log(error);
+    }
+
+}
+
 module.exports = {
     login,
     forgotPassword,
     newPassword,
     googleSignin,
     loginIntranet,
-    rolesGet
+    rolesGet,
+    renewToken
 }

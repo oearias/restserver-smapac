@@ -1,10 +1,11 @@
 const { Router } = require('express');
 const { check } = require('express-validator');
-const { login, forgotPassword, newPassword, googleSignin, rolesGet, loginIntranet } = require('../controllers/auth');
+const { login, forgotPassword, newPassword, googleSignin, rolesGet, loginIntranet, renewToken } = require('../controllers/auth');
 const { emailExists } = require('../helpers/db-validators');
 const { googleVerify } = require('../helpers/google-verify');
 
 const { validarCampos } = require('../middlewares/validar-campos');
+const { validarJWT } = require('../middlewares/validar-jwt');
 
 const router = Router();
 
@@ -39,5 +40,10 @@ router.post('/intranet/login', [
 ], loginIntranet);
 
 router.get('/roles/:email', rolesGet);
+
+router.get( '/renew',
+    validarJWT,
+    renewToken
+)
 
 module.exports = router;
