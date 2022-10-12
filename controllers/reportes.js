@@ -95,7 +95,59 @@ const reporteGet = async (req, res = response) => {
     }
 }
 
-const reporteGetByFolio = async (req, res = response) => {
+const reporteGetByCriterio = async (req, res = response) => {
+    
+    const { id, criterio } = req.params;
+
+    const pool = await getConnection();
+
+    try {
+
+        const result = await pool.request()
+            .input('folio', id)
+            .query(`SELECT  
+                a.id, a.contrato, a.folio, 
+                a.fecha_reporte as fecha_reporte2, 
+                FORMAT(a.fecha_reporte, 'yyyy-MM-dd') as fecha_reporte, 
+                a.fecha_realizacion as fecha_realizacion2, 
+                FORMAT(a.fecha_realizacion, 'yyyy-MM-dd') as fecha_realizacion, 
+                a.campo_aux1, a.inspectores, 
+                a.descripcion, 
+                d.id as reporte_tipo_id, 
+                d.nombre as reporte_tipo, 
+                e.id as estatus_id, 
+                e.nombre as estatus, 
+                c.id as inspector_id, 
+                c.nombre as inspector 
+                FROM reportes a 
+                LEFT JOIN reporte_inspectores b 
+                on a.id =b.reporte_id 
+                LEFT JOIN inspectores c 
+                on c.id = b.inspector_id 
+                LEFT JOIN 
+                reporte_tipo d 
+                on a.tipo_orden = d.id 
+                LEFT JOIN 
+                reporte_estatus e 
+                on e.id = a.reporte_estatus 
+                WHERE a.${criterio} = ${id} 
+                order by a.id desc`);
+
+        if (result.recordset.length == 0) {
+            return res.status(500).json({
+                msg: "No hay registros en la tabla"
+            });
+        }
+
+        res.status(200).json(result.recordset);
+    } catch (error) {
+        return res.json(
+            error.message
+        )
+    }
+}
+
+const reporteGetByContrato = async (req, res = response) => {
     
     const { id } = req.params;
     const pool = await getConnection();
@@ -103,7 +155,7 @@ const reporteGetByFolio = async (req, res = response) => {
     try {
 
         const result = await pool.request()
-            .input('folio', id)
+            .input('contrato', id)
             .query("SELECT " +
                 "a.id, a.contrato, a.folio, " +
                 "a.fecha_reporte as fecha_reporte2, " +
@@ -129,7 +181,7 @@ const reporteGetByFolio = async (req, res = response) => {
                 "LEFT JOIN " +
                 "reporte_estatus e " +
                 "on e.id = a.reporte_estatus " +
-                "WHERE a.folio = @folio " +
+                "WHERE a.contrato = @contrato " +
                 "order by a.id desc");
 
         if (result.recordset.length == 0) {
@@ -386,7 +438,8 @@ const uploadFoto = async (req, res = response) => {
 module.exports = {
     reportesGet,
     reporteGet,
-    reporteGetByFolio,
+    reporteGetByCriterio,
+    reporteGetByContrato,
     reportesPost,
     reportesPatch,
     reportesDelete,
