@@ -12,4 +12,5 @@ router.put('/:id',inspectorPut);
 
 router.delete('/:id',InspectorDelete);
 
+
 module.exports = router;

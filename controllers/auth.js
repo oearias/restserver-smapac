@@ -38,6 +38,7 @@ const login = async (req, res = response) => {
                 msg: 'Usuario o Contraseña son incorrectos'
             })
         }
+        
 
         //Generar el JWT
         const token = await generarJWT(id);

@@ -9,6 +9,7 @@ try {
     const result = await pool.request().query('SELECT * FROM reporte_tipo order by nombre');
 
     res.json(result.recordset);
+    
 }
 catch (error) {
     res.json(error.message)

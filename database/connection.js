@@ -37,6 +37,7 @@ const sql = require('mssql');
     },
 };*/
 
+
 //Servidor TELMEX
 const dbSettings = {
     user: process.env.DB_USER,

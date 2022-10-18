@@ -8,6 +8,7 @@ const reportesFotoGet = async (req, res = response) => {
         const result = await pool.request().query('SELECT * FROM reportes_foto ');
 
         res.json(result.recordset);
+        
     }
     catch (error) {
         res.json(error.message)

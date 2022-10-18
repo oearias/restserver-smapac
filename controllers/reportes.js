@@ -149,6 +149,7 @@ const reporteGetByCriterio = async (req, res = response) => {
 
 const reporteGetByContrato = async (req, res = response) => {
     
+    
     const { id } = req.params;
     const pool = await getConnection();
 

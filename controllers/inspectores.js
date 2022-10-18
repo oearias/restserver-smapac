@@ -10,6 +10,7 @@ const inspectoresGet = async (req, res = response) => {
 
     res.json(result.recordset);
   } catch (error) {
+    
     console.log(error);
   }
 };

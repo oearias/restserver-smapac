@@ -28,6 +28,6 @@ router.patch('/:id', reportesPatch);
 router.delete('/:id', reportesDelete);
 router.post('/uploadFoto/:folio', uploadFoto);
 
-router.get('/inspectores/:id', inspectoresGetByReporteId)
+router.get('/inspectores/:id', inspectoresGetByReporteId);
 
 module.exports = router;

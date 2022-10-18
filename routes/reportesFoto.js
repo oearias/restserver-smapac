@@ -7,4 +7,5 @@ router.get('/:id', reporteFotoGet);
 router.get('/fotos/:id', reporteFotoGetByReporteId);
 router.delete('/:id', reportesFotoDelete);
 
+
 module.exports = router;

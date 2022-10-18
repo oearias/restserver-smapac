@@ -9,6 +9,7 @@ const reporteStatusGet = async (req, res = response) => {
     const result = await pool.request().query('SELECT * FROM reporte_estatus ');
 
     res.json(result.recordset);
+    
  }
 catch (error) {
     return res.status(500).json({
