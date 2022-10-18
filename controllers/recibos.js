@@ -60,6 +60,7 @@ const reciboGet = async (req, res = response) => {
 
         if (result.recordset.length < 1) {
 
+            
             //Pregunto si existe el contrato, si existe inserto el log
             const res = await pool.request()
             .input("contrato", id)
