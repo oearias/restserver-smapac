@@ -7,41 +7,41 @@ const queries = {
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, a.adeudo as adeuda, '+
     'b.region, b.sector, b.estatus, b.tarifa, b.medidor, b.reparto, '+
     'dbo.sum_pagado(@id, @fecha_pagado_inf, @fecha_pagado_sup) as pagado, '+
-    'dbo.lectura_mes_anterior(@id, 2022, 10, 1) as lectura_ant1, '+  //TODO: Aqui el mes_Actual lo cambiamos a 13 en la facturacion de Enero
-    'dbo.lectura_mes_anterior(@id, 2022, 9, 1) as lectura_ant2, '+
-    'dbo.lectura_mes_anterior(@id, 2022, 8, 1) as lectura_ant3, '+
-    'dbo.lectura_mes_anterior(@id, 2022, 7, 1) as lectura_ant4, '+
-    'dbo.lectura_mes_anterior(@id, 2022, 6, 1) as lectura_ant5, '+
-    'dbo.lectura_mes_anterior(@id, 2022, 5, 1) as lectura_ant6, '+
-    'dbo.mes_anterior(@id, 2022, 10, 1) as lectura1, '+
-    'dbo.mes_anterior(@id, 2022, 9, 1) as lectura2, '+
-    'dbo.mes_anterior(@id, 2022, 8, 1) as lectura3, '+
-    'dbo.mes_anterior(@id, 2022, 7, 1) as lectura4, '+
-    'dbo.mes_anterior(@id, 2022, 6, 1) as lectura5, '+
-    'dbo.mes_anterior(@id, 2022, 5, 1) as lectura6, '+
-    'dbo.mes_anterior(@id, 2022, 4, 1) as lectura7, '+
-    'dbo.mes_anterior(@id, 2022, 3, 1) as lectura8, '+  
-    'dbo.adeudo(@id, 2022, 10, 1) as adeudo1, '+    
-    'dbo.adeudo(@id, 2022, 9, 1) as adeudo2, '+     //Mar2022     4 - 1 = 3
-    'dbo.adeudo(@id, 2022, 8, 1) as adeudo3, '+    //Feb2022     3 - 1 = 2
-    'dbo.adeudo(@id, 2022, 7, 1) as adeudo4, '+    //Ene2022    2 - 1 = 1
-    'dbo.adeudo(@id, 2022, 6, 1) as adeudo5, '+
-    'dbo.adeudo(@id, 2022, 4, 1) as adeudo6, '+
-    'dbo.adeudo(@id, 2022, 4, 1) as adeudo7, '+
-    'dbo.fecha_emision(@id, 2022, 10, 1) as fecha_emision1, '+   //febrero 2022
-    'dbo.fecha_emision(@id, 2022, 9, 1) as fecha_emision2, '+   //marzo 2022
-    'dbo.fecha_emision(@id, 2022, 8, 1) as fecha_emision3, '+
-    'dbo.fecha_emision(@id, 2022, 7, 1) as fecha_emision4, '+
-    'dbo.fecha_emision(@id, 2022, 6, 1) as fecha_emision5, '+
-    'dbo.fecha_emision(@id, 2022, 5, 1) as fecha_emision6, '+
-    'dbo.fecha_emision(@id, 2022, 4, 1) as fecha_emision7, '+
-    'dbo.mes_facturado(@id, 2022, 10, 1) as mes_facturado1, '+
-    'dbo.mes_facturado(@id, 2022, 9, 1) as mes_facturado2, '+
-    'dbo.mes_facturado(@id, 2022, 8, 1) as mes_facturado3, '+
-    'dbo.mes_facturado(@id, 2022, 7, 1) as mes_facturado4, '+
-    'dbo.mes_facturado(@id, 2022, 6, 1) as mes_facturado5, '+
-    'dbo.mes_facturado(@id, 2022, 5, 1) as mes_facturado6, '+
-    'dbo.mes_facturado(@id, 2022, 4, 1) as mes_facturado7 '+
+    'dbo.lectura_mes_anterior(@id, 2022, 11, 1) as lectura_ant1, '+  //TODO: Aqui el mes_Actual lo cambiamos a 13 en la facturacion de Enero
+    'dbo.lectura_mes_anterior(@id, 2022, 10, 1) as lectura_ant2, '+
+    'dbo.lectura_mes_anterior(@id, 2022, 9, 1) as lectura_ant3, '+
+    'dbo.lectura_mes_anterior(@id, 2022, 8, 1) as lectura_ant4, '+
+    'dbo.lectura_mes_anterior(@id, 2022, 7, 1) as lectura_ant5, '+
+    'dbo.lectura_mes_anterior(@id, 2022, 6, 1) as lectura_ant6, '+
+    'dbo.mes_anterior(@id, 2022, 11, 1) as lectura1, '+
+    'dbo.mes_anterior(@id, 2022, 10, 1) as lectura2, '+
+    'dbo.mes_anterior(@id, 2022, 9, 1) as lectura3, '+
+    'dbo.mes_anterior(@id, 2022, 8, 1) as lectura4, '+
+    'dbo.mes_anterior(@id, 2022, 7, 1) as lectura5, '+
+    'dbo.mes_anterior(@id, 2022, 6, 1) as lectura6, '+
+    'dbo.mes_anterior(@id, 2022, 5, 1) as lectura7, '+
+    'dbo.mes_anterior(@id, 2022, 4, 1) as lectura8, '+  
+    'dbo.adeudo(@id, 2022, 11, 1) as adeudo1, '+    
+    'dbo.adeudo(@id, 2022, 10, 1) as adeudo2, '+     //Mar2022     4 - 1 = 3
+    'dbo.adeudo(@id, 2022, 9, 1) as adeudo3, '+    //Feb2022     3 - 1 = 2
+    'dbo.adeudo(@id, 2022, 8, 1) as adeudo4, '+    //Ene2022    2 - 1 = 1
+    'dbo.adeudo(@id, 2022, 7, 1) as adeudo5, '+
+    'dbo.adeudo(@id, 2022, 6, 1) as adeudo6, '+
+    'dbo.adeudo(@id, 2022, 5, 1) as adeudo7, '+
+    'dbo.fecha_emision(@id, 2022, 11, 1) as fecha_emision1, '+   //febrero 2022
+    'dbo.fecha_emision(@id, 2022, 10, 1) as fecha_emision2, '+   //marzo 2022
+    'dbo.fecha_emision(@id, 2022, 9, 1) as fecha_emision3, '+
+    'dbo.fecha_emision(@id, 2022, 8, 1) as fecha_emision4, '+
+    'dbo.fecha_emision(@id, 2022, 7, 1) as fecha_emision5, '+
+    'dbo.fecha_emision(@id, 2022, 6, 1) as fecha_emision6, '+
+    'dbo.fecha_emision(@id, 2022, 5, 1) as fecha_emision7, '+
+    'dbo.mes_facturado(@id, 2022, 11, 1) as mes_facturado1, '+
+    'dbo.mes_facturado(@id, 2022, 10, 1) as mes_facturado2, '+
+    'dbo.mes_facturado(@id, 2022, 9, 1) as mes_facturado3, '+
+    'dbo.mes_facturado(@id, 2022, 8, 1) as mes_facturado4, '+
+    'dbo.mes_facturado(@id, 2022, 7, 1) as mes_facturado5, '+
+    'dbo.mes_facturado(@id, 2022, 6, 1) as mes_facturado6, '+
+    'dbo.mes_facturado(@id, 2022, 5, 1) as mes_facturado7 '+
     'FROM facthist a '+
     'RIGHT JOIN '+
     'padron b '+
