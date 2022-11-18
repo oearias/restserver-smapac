@@ -303,6 +303,7 @@ const respMulti = async (req, res = response) => {
                                                 .input("contrato", contrato)
                                                 .query(consulta);
 
+
                     console.log(resultado);
 
                 } catch (error) {
@@ -334,7 +335,6 @@ const respMulti = async (req, res = response) => {
             mensaje
         });
     }
-
 
 
 }

@@ -61,6 +61,7 @@ const contratoGet = async (req, res = response) => {
       default: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL";
       break;
     }
+    
 
     // region == 2
     //   ? (querie =

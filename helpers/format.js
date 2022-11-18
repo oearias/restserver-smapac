@@ -21,7 +21,6 @@ const truncateD = ( valor = 0 ) => {
 }
 
 
-
 module.exports = {
     formatNumber,
     truncateD

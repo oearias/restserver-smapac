@@ -34,8 +34,10 @@ const periodoGet = async (req, res = response) => {
 
     } catch (error) {
         res.status(500).send(error.message);
+        
     }finally{
         pool.close();
+
     }
 }
 

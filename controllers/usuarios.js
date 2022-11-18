@@ -25,7 +25,7 @@ const usuariosPost = async (req, res = response) => {
     // Valido datos
     if ((email == null) || (password == null) || (nombre == null)) {
         return res.json({
-            msg: 'Bad Request, Por favor complete todos los datos'
+            msg: 'Bad Request, Por favor complete todos los datos' 
         })
     }
 

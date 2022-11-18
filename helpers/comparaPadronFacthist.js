@@ -34,6 +34,7 @@ const comparaTablas = (result = []) => {
 
     result.recordset[0]["aux"] ? truncateD(result.recordset[0]["aux"]) : null;
 
+    
     return result.recordset[0];
 }
 

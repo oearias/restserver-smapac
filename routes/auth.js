@@ -32,7 +32,6 @@ router.post('/google',[
 //Este register existe actualmente en la ruta de usuarios
 //router.post('/register', )
 
-
 //INTRANET
 router.post('/intranet/login', [
     check('email', 'El email es obligatorio').isEmail(),

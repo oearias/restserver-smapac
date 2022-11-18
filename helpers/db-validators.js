@@ -16,6 +16,7 @@ const emailExists = async (email = '') => {
     }
 }
 
+
 module.exports = {
     emailExists
 }

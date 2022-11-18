@@ -54,6 +54,7 @@ const getTokenPassword = ( resetToken='' ) => {
     } )
 }
 
+
 module.exports = {
     
     generarJWT,

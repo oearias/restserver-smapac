@@ -11,7 +11,6 @@ const googleVerify = async( id_token=' ' ) => {
 
     // cambiamos el nombre en la desestructuración
     const { name: nombre, email, picture:img } = ticket.getPayload();
-
     
     console.log(ticket.getPayload());
     

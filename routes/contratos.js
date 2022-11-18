@@ -18,9 +18,5 @@ router.delete('/delete/:id', deleteContratoUser);
 
 router.get('/test/:email', contratoEmail);
 
-/*
-
-router.put('/:id', usuariosPut);
-*/
 
 module.exports = router;

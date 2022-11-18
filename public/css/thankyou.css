@@ -198,18 +198,9 @@
       }
   }
   
-  /* other styles */
-  /* .svg svg {
-      display: none
-  }
-   */
   .inlinesvg .svg svg {
       display: inline
   }
-  
-  /* .svg img {
-      display: none
-  } */
   
   
   .icon--order-success svg polyline {
