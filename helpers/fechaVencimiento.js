@@ -15,7 +15,6 @@ formatFechaVencimiento = ( consulta = [] ) => {
     fecha_vencimiento = dia + "/" + mes + "/" + anio;
 
     return fecha_vencimiento;
-
 }
 
 module.exports = {

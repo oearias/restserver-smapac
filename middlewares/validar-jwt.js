@@ -12,7 +12,6 @@ const validarJWT = async (req, res = response, next) => {
             msg: 'No existe token en la petición'
         })
     }
-
     
     try {
         const id = jwt.verify(token, process.env.SECRETORPRIVATEKEY);

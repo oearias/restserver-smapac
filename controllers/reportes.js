@@ -436,6 +436,7 @@ const uploadFoto = async (req, res = response) => {
 
 }
 
+
 module.exports = {
     reportesGet,
     reporteGet,

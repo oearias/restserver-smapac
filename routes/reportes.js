@@ -24,6 +24,7 @@ router.post('/', [
     validarCampos 
 ], reportesPost);
 
+
 router.patch('/:id', reportesPatch);
 router.delete('/:id', reportesDelete);
 router.post('/uploadFoto/:folio', uploadFoto);

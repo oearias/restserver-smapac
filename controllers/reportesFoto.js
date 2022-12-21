@@ -15,6 +15,7 @@ const reportesFotoGet = async (req, res = response) => {
     }
 }
 
+
 const reporteFotoGet = async (req, res = response) => {
     try {
 

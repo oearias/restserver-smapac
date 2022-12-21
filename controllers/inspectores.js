@@ -15,6 +15,7 @@ const inspectoresGet = async (req, res = response) => {
   }
 };
 
+
 const inspectoresGetByReporteId = async (req, res = response) => {
   try {
     const { id } = req.params;

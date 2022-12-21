@@ -51,7 +51,7 @@ const getTokenPassword = ( resetToken='' ) => {
             }
         } );
 
-    } )
+    })
 }
 
 

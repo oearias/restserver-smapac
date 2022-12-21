@@ -16,6 +16,7 @@ catch (error) {
     }
 }
 
+
 const tipoReporteGet = async (req, res = response) => {
     try {
     const { id } = req.params;

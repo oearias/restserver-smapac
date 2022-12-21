@@ -376,3 +376,4 @@ module.exports = {
   deleteContratoUser,
   contratoEmail,
 };
+

@@ -17,6 +17,7 @@ const googleVerify = async( id_token=' ' ) => {
     return { nombre, email, img };
 }
 
+
 module.exports = {
     googleVerify
 }

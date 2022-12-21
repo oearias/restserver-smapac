@@ -18,6 +18,7 @@ const usuariosGet = async (req, res = response) => {
     });
 }
 
+
 const usuariosPost = async (req, res = response) => {
 
     const { email, password, nombre } = req.body;

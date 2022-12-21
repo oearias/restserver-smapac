@@ -16,6 +16,7 @@ const calculaReconex = (result = []) => {
             let comercial_localidad = ['O','Z 8'];
             let test                = ['PPP'];
 
+            
             if(domestica.includes(tarifa)){
                 tarifa = 'Domestica';
             }else if(comercial.includes(tarifa)){

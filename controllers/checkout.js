@@ -255,7 +255,6 @@ const respMulti = async (req, res = response) => {
 
     const { codigo, mensaje, autorizacion, referencia, importe, mediopago, financiado, plazos, s_transm, signature, tarjetahabiente, cveTipoPago, fechapago, tarjeta, banco } = req.body;
 
-
     const idExpress = "2328";
     //Iniciamos con las decisiones
 

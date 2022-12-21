@@ -38,6 +38,7 @@ const comparaTablas = (result = []) => {
     return result.recordset[0];
 }
 
+
 module.exports = {
     comparaTablas
 }

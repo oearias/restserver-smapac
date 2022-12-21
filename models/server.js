@@ -63,6 +63,7 @@ class Server {
         this.app.use(express.urlencoded({ extended: true }));
 
     }
+    
 
     routes() {
 

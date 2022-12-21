@@ -56,6 +56,7 @@ const queries = {
     'b.nombre, b.direccion, b.colonia, b.cp, b.giro, b.adeuda, '+
     'b.region, b.sector, b.reparto, b.estatus, b.tarifa, b.medidor',
 
+    
     //GetContrato con JOINS
     getContrato: 'SELECT b.contrato, b.nombre, b.direccion, b.colonia, b.cp, '+
     'b.giro, '+ 

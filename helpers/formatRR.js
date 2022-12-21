@@ -43,6 +43,7 @@ const formatResultRecordset = (result = []) => {
             result.recordset[0]['label_favor'] = 'a favor';
         }
 
+        
         //Formateamos a dos decimales y comas por miles los valores
         result.recordset[0]['consumo_actual'] ? result.recordset[0]['consumo_actual'] = '$' + formatNumber(result.recordset[0]['consumo_actual']) : '';
         result.recordset[0]['consumo_vencido'] ? result.recordset[0]['consumo_vencido'] = '$' + formatNumber(result.recordset[0]['consumo_vencido']) : '';

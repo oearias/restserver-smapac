@@ -23,7 +23,7 @@ const periodoGet = async (req, res = response) => {
         let anio = fecha.getFullYear();
         let dia = fecha.getDate();
 
-        fecha_vencimiento = dia +'/'+ mes + '/' + anio
+        fecha_vencimiento = dia +'/'+ mes + '/' + anio;
   
         res.json(
             {

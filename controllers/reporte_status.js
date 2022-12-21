@@ -10,6 +10,7 @@ const reporteStatusGet = async (req, res = response) => {
 
     res.json(result.recordset);
     
+    
  }
 catch (error) {
     return res.status(500).json({

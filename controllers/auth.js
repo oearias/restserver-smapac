@@ -22,6 +22,7 @@ const login = async (req, res = response) => {
 
         const exist = resul.recordset.length;
 
+        
         if (exist < 1) {
             return res.json({ msg: 'El correo no existe en la base de datos' })
         }
