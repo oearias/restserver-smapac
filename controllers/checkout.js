@@ -327,6 +327,9 @@ const respMulti = async (req, res = response) => {
     console.log("Autorizacion: " + autorizacion);
     console.log("Contrato: ", contrato);
 
+    console.log(result);
+    console.log(consulta);
+
     //Inserto datos en la tabla
 
     if (codigo != 0) {
