@@ -270,12 +270,15 @@ const respMulti = async (req, res = response) => {
     const contrato = cadenaAux[1];
     const esReconexion = cadenaAux[0];
 
+    console.log('Cadena Aux: ',cadenaAux);
+    console.log('Contrato: ',contrato);
+
     let consulta;
 
     if( esReconexion == 'RECONEX' ){
         consulta = "UPDATE padron SET adeuda = 0, estatus = 'En proceso de Reconexión' WHERE contrato = @contrato"
     }else{
-        consulta = "UPDATE padron SET adeuda = 0 WHERE contrato = @contrato";
+        consulta = `UPDATE padron SET adeuda = 0 WHERE contrato = ${contrato}`;
     }
 
     if (codigo == 1) {
@@ -327,7 +330,6 @@ const respMulti = async (req, res = response) => {
     console.log("Autorizacion: " + autorizacion);
     console.log("Contrato: ", contrato);
 
-    console.log(result);
     console.log(consulta);
 
     //Inserto datos en la tabla
