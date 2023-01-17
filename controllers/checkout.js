@@ -270,9 +270,6 @@ const respMulti = async (req, res = response) => {
     const contrato = cadenaAux[1];
     const esReconexion = cadenaAux[0];
 
-    console.log('Cadena Aux: ',cadenaAux);
-    console.log('Contrato: ',contrato);
-
     let consulta;
 
     if( esReconexion == 'RECONEX' ){
@@ -293,9 +290,10 @@ const respMulti = async (req, res = response) => {
             result = "Error en los datos del pago. No se ha podido concluir la transacción."
         } else {
             if (codigo == 3) {
-                result = "El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, "
-                    + " si el cobro no se realiza en este tiempo favor de comunicarse."
+                result = `El pago se realizó por CLABE, el cobro se realizará dentro de 1 o 2 días hábiles, 
+                si el cobro no se realiza en este tiempo favor de comunicarse.`
             } else {
+                
                 result = "El pago se realizó correctamente, número de autorización: " + autorizacion;
 
                 try {

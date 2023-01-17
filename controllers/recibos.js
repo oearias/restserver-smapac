@@ -136,9 +136,10 @@ const reciboGet = async (req, res = response) => {
 
         res.json(error.message);
         
-    } finally { 
-        pool.close();
-    }
+    } 
+    // finally { 
+    //     pool.close();
+    // }
 
 }
 
