@@ -2,6 +2,7 @@ const queries = {
     //dbo.lectura_mes_anterior(@id, 2022, 13, 1) as lectura_ant1,   //TODO: Aqui el mes_Actual lo cambiamos a 13 en la facturacion de Enero
     //AND a.año = 2023 '+    //TODO: Este debe cambiar a 2022 con la facturacion de Enero
     
+    
     getRecibo: `SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, 
     a.consumo_vencido, 
     a.favor, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, 
