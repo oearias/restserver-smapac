@@ -30,6 +30,7 @@ const reciboGet = async (req, res = response) => {
 
         //Obtenemos el Periodo
         let consulta;
+        
 
         switch(region){
 
