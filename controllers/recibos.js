@@ -31,19 +31,46 @@ const reciboGet = async (req, res = response) => {
         //Obtenemos el Periodo
         let consulta;
 
-        if(region == 2){
-            consulta = await pool.request()
-            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
-        }else{
-            consulta = await pool.request()
-            .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+        switch(region){
+
+            case 1:     console.log('Es region 1');
+                        consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+            break;
+
+            case 2:     console.log('Es region 2');
+                        consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
+            break;
+
+            case 3:     console.log('Es region 3');
+                        consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 3');
+            break;
+
+            default:    console.log('Region NULL, o región 1');
+                        consulta = await pool.request()
+                        .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+            break;
+
         }
+
+        // if(region == 2){
+        //     consulta = await pool.request()
+        //     .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2');
+        // }else{
+        //     consulta = await pool.request()
+        //     .query('SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL');
+        // }
         
 
         const fecha_pagado_inf = consulta.recordset[0]['fecha_inf'];
         const fecha_pagado_sup = consulta.recordset[0]['fecha_sup'];
         const mes_facturado = consulta.recordset[0]['mes_facturado'];
         const mes = consulta.recordset[0]['mes'];
+
+        console.log(fecha_pagado_inf);
+        console.log(fecha_pagado_sup);
 
         const mes_actual = 13;
         const anio = 2021;
