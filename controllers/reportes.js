@@ -269,6 +269,7 @@ const reportesPost = async (req, res = response) => {
 
 }
 
+
 const reportesPatch = async (req, res = response) => {
 
     const { id } = req.params;

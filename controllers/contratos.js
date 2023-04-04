@@ -16,7 +16,6 @@ const contratosGet = async (req, res = response) => {
       total: 6,
       contratos,
     });
-    
   } catch (error) {
     res.status(500).send(error.message);
   } finally {
@@ -50,24 +49,22 @@ const contratoGet = async (req, res = response) => {
 
     //Obtenemos el Periodofacturac
 
-    switch(region){
+    switch (region) {
+      case 2:
+        querie =
+          "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2";
+        break;
 
-      case 2: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2";
-      break;
+      case 3:
+        querie =
+          "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 3";
+        break;
 
-      case 3: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 3";
-      break;
-
-      default: querie = "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL";
-      break;
+      default:
+        querie =
+          "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL";
+        break;
     }
-    
-
-    // region == 2
-    //   ? (querie =
-    //       "SELECT * from periodo_facturac WHERE estatus = 1 AND region = 2")
-    //   : (querie =
-    //       "SELECT * from periodo_facturac WHERE estatus = 1 AND region is NULL");
 
     consulta = await pool.request().query(querie);
 
@@ -107,8 +104,6 @@ const contratoGet = async (req, res = response) => {
     result.recordset[0]["mes_facturado"] =
       consulta.recordset[0]["mes_facturado_c"];
 
-    console.log(result.recordset[0]);
-
     res.json(result.recordset[0]);
   } catch (error) {
     res.json(error.message);
@@ -116,9 +111,6 @@ const contratoGet = async (req, res = response) => {
 };
 
 const contratoGetByUserEmail = async (req, res = response) => {
-
-  console.log("entramos");
-  
   try {
     const { email } = req.params;
     const pool = await getConnection();
@@ -173,7 +165,7 @@ const contratoGetByUserEmail = async (req, res = response) => {
     console.log(contratos);
 
     res.json({
-      contratos
+      contratos,
     });
   } catch (error) {
     res.json(error.message);
@@ -181,11 +173,9 @@ const contratoGetByUserEmail = async (req, res = response) => {
 };
 
 const contratoEmail = (req, res = response) => {
-  
   const { email } = req.params;
 
-  try{
-  
+  try {
     dbConfig = {
       user: process.env.DB_USER,
       password: process.env.DB_PASS,
@@ -202,13 +192,12 @@ const contratoEmail = (req, res = response) => {
     };
 
     let connection = new sql.ConnectionPool(dbConfig);
-  
+
     connection.connect((err) => {
       if (err) {
         console.log("Error connecting ", err);
         res.send(err);
       } else {
-
         let request = new sql.Request(connection);
 
         request.query(
@@ -217,7 +206,6 @@ const contratoEmail = (req, res = response) => {
             if (err) {
               res.send(err);
             } else {
-
               let consulta = recordset;
 
               const anio = consulta.recordset[0]["año"];
@@ -266,23 +254,19 @@ const contratoEmail = (req, res = response) => {
                     console.log(contratos);
 
                     res.json(contratos);
-
                   } else {
                     res.send(err);
                   }
-              });
+                });
             }
           }
         );
       }
     });
-
-  }catch(err){
+  } catch (err) {
     console.log(err);
-    res.send(err)
+    res.send(err);
   }
-
-
 };
 
 const addContratoUser = async (req, res = response) => {
@@ -327,11 +311,118 @@ const addContratoUser = async (req, res = response) => {
   }
 };
 
-const deleteContratoUser = async (req, res = response) => {
+const addContratoByEmail = async (req, res = response) => {
+
   try {
+
+    const { email } = req.params;
+    const { contrato } = req.body;
+
+    const pool = await getConnection();
+
+    const result = await pool
+      .request()
+      .input("email", email)
+      .query(
+        "SELECT id FROM usuario WHERE email = @email"
+      );
+
+      const {id} = result.recordset[0];
+
+      //preguntamos si ya exite el contrato añadido
+      const consulta = await pool.request()
+        .input('id', id)
+        .input('contrato', contrato)
+        .query('SELECT * FROM usuario_padron WHERE contrato = @contrato AND usuario_id = @id');
+
+      if(consulta.recordset[0]){
+        
+        //retornamos mensaje de que no se puede vincular el contrato
+        return res.status(200).json({
+          msg: 'El contrato ya se encuentra vinculado'
+        })
+
+      }
+
+      const resultado = await pool.request()
+        .input('id', id)
+        .input('contrato', contrato)
+        .query('INSERT INTO usuario_padron (usuario_id, contrato) VALUES (@id, @contrato) ');
+
+
+      if(resultado.rowsAffected[0] === 1){
+        
+        res.status(200).json({
+          msg: 'Contrato añadido correctamente',
+        });
+      }
+
+
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const deleteContratoUser = async (req, res = response) => {
+
+  console.log('entramos al controller');
+
+  try {
+
     const { id } = req.params;
     const { email } = req.body;
     const pool = await getConnection();
+
+    console.log(id);
+    console.log(req.body);
+
+    const consulta = await pool
+      .request()
+      .input("contrato", id)
+      .input("email", email)
+      .query(
+        "SELECT b.id FROM usuario_padron a " +
+          "INNER JOIN " +
+          "USUARIO B " +
+          "ON (a.usuario_id = b.id " +
+          "AND b.email = @email AND a.contrato = @contrato )"
+      );
+
+    if (consulta.recordset.length > 0) {
+      const usuario_id = consulta.recordset[0]["id"];
+      //Procedemos a borrar el contrato
+
+      await pool
+        .request()
+        .input("contrato", id)
+        .input("usuario_id", usuario_id)
+        .query(
+          "DELETE usuario_padron " +
+            "where contrato =  @contrato " +
+            "AND usuario_id = @usuario_id"
+        );
+
+      res.json({
+        msg: "Contrato desvinculado correctamente",
+      });
+    }
+  } catch (error) {
+    res.json(error.message);
+  }
+};
+
+const deleteContratoUserFromWeb = async (req, res = response) => {
+
+  console.log('entramos al controller');
+
+  try {
+    
+    const { id } = req.params;
+    const { email } = req.body;
+    const pool = await getConnection();
+
+    console.log(id);
+    console.log(req.body);
 
     const consulta = await pool
       .request()
@@ -373,7 +464,8 @@ module.exports = {
   contratosGet,
   contratoGetByUserEmail,
   addContratoUser,
+  addContratoByEmail,
   deleteContratoUser,
+  deleteContratoUserFromWeb,
   contratoEmail,
 };
-

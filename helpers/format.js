@@ -8,6 +8,7 @@ const formatNumber = (valor = 0) => {
     format = format.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
     return format;
+    
 }
 
 const truncateD = ( valor = 0 ) => {

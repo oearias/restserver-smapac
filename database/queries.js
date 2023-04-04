@@ -4,6 +4,7 @@ const queries = {
 
     //HEROKU SMAPAC
     
+    
     getRecibo: `SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, 
     a.consumo_vencido, 
     a.favor, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, 

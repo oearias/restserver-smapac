@@ -53,7 +53,8 @@ const usuariosPost = async (req, res = response) => {
         });
 
     } catch (error) {
-        res.status(500).json(error.message)
+        res.status(500).json(error.message);
+        
     } 
 }
 

@@ -271,6 +271,7 @@ const respMulti = async (req, res = response) => {
     const esReconexion = cadenaAux[0];
 
     let consulta;
+    
 
     if( esReconexion == 'RECONEX' ){
         consulta = "UPDATE padron SET adeuda = 0, estatus = 'En proceso de Reconexión' WHERE contrato = @contrato"

@@ -1,4 +1,5 @@
 const queries = {
+    
     getRecibo: 'SELECT a.contrato, a.mes_facturado, a.recargo_actual, a.consumo_actual, '+
     'a.consumo_vencido, a.recargo_vencido, a.fecha_vencimiento, a.lectura_anterior, a.lectura_actual, '+
     'a.drenaje, a.drenaje_vencido, a.iva, a.iva_vencido, a.pipas, a.pipas_vencido, '+

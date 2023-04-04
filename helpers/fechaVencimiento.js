@@ -1,4 +1,5 @@
 formatFechaVencimiento = ( consulta = [] ) => {
+    
 
     //Fecha de vencimiento para el periodo, esto se hizo ya que por medio de las APIS del periodo había que enviar el numero de contrato y cambiar el frontend
     let fecha = new Date(consulta.recordset[0]["fecha_sup"]);

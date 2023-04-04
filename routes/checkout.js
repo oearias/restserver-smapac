@@ -22,6 +22,7 @@ router.post('/respuestaMovil.html', respMultiMovil)
 router.get('/recibo', (req, res)=>{
 
     res.render('thankyou');
+    
 
     
 })

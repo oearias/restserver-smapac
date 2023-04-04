@@ -25,6 +25,7 @@ const comparaTablas = (result = []) => {
         if (result.recordset[0]["adeuda"] < 0) {
           result.recordset[0]["adeuda"] = 0;
         }
+        
       }
 
     //Formatea el adeuda y aux a dos decimales, esto corrige el importe invalido en multipagos

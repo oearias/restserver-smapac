@@ -9,6 +9,7 @@ const reportesFotoGet = async (req, res = response) => {
 
         res.json(result.recordset);
         
+        
     }
     catch (error) {
         res.json(error.message)

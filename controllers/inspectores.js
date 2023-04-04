@@ -12,6 +12,7 @@ const inspectoresGet = async (req, res = response) => {
   } catch (error) {
     
     console.log(error);
+    
   }
 };
 

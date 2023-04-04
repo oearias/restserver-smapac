@@ -5,6 +5,7 @@ const calculaReconex = (result = []) => {
 
     try {
         
+        
         if( result.recordset[0]["estatus"] == "Suspendido" )
         {
             let tarifa = result.recordset[0]['tarifa'];

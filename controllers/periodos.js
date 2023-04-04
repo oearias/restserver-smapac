@@ -19,6 +19,7 @@ const periodoGet = async (req, res = response) => {
         // const monthNames = ['Enero', 'Febrero', 'Marzo', 'Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
         const month = ['01','02','03','04','05','06','07','08','09','10','11','12'];
 
+        
         let mes = month[fecha.getMonth()];
         let anio = fecha.getFullYear();
         let dia = fecha.getDate();

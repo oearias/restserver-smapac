@@ -17,7 +17,6 @@ const validarJWT = async (req, res = response, next) => {
         const id = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
 
         const pool = await getConnection();
-        
 
         const result = await pool.request()
             .input('id', id)

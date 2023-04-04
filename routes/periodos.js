@@ -6,5 +6,4 @@ const router = Router();
 
 router.get('/', periodoGet);
 
-
 module.exports = router;

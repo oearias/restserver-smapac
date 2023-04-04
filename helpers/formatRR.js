@@ -57,6 +57,7 @@ const formatResultRecordset = (result = []) => {
         result.recordset[0]['pipas_vencido'] ? result.recordset[0]['pipas_vencido'] = '$' + formatNumber(result.recordset[0]['pipas_vencido']) : '';
         result.recordset[0]['favor'] ? result.recordset[0]['favor'] = '$' + formatNumber(result.recordset[0]['favor']) : '';
 
+        
         //Desaparecemos los valores que sean = a 0
         (result.recordset[0]['consumo_vencido'] == 0) ? result.recordset[0]['consumo_vencido'] = '' : result.recordset[0]['consumo_vencido'];
         (result.recordset[0]['recargo_actual'] == 0) ? result.recordset[0]['recargo_actual'] = '' : result.recordset[0]['recargo_actual'];

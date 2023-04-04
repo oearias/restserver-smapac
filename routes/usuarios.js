@@ -11,7 +11,6 @@ const router = Router();
 
 router.get('/:id', usuarioGet);
 
-
 //Buscamos por email
 router.get('/email/:email', usuarioGetByEmail);
 

@@ -12,6 +12,7 @@ const { queries } = require('../database/queries');
 const { formatResultRecordset } = require('../helpers/formatRR');
 
 
+
 const reciboGet = async (req, res = response) => {
 
     const { id } = req.params;

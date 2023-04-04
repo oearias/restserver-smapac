@@ -8,5 +8,4 @@ router.post('/', tipoReportePost);
 router.put('/:id', tipoReportePut);
 router.delete('/:id', tipoReporteDelete);
 
-
 module.exports = router;

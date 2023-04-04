@@ -13,6 +13,7 @@ router.get('/criterio/:criterio/id/:id', reporteGetByCriterio);
 
 router.get('/contrato/:id', reporteGetByContrato);
 
+
 router.post('/', [
     check('contrato', 'Es necesario capturar el contrato' ).not().isEmpty(),
     check('folio', 'Es necesario capturar el Folio' ).not().isEmpty(),

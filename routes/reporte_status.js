@@ -8,5 +8,4 @@ router.post('/', reportStatusPost);
 router.put('/:id', reportStatusPut);
 router.delete('/:id',reportStatusDelete);
 
-
 module.exports = router;

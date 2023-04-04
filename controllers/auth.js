@@ -114,9 +114,10 @@ const forgotPassword = async (req, res = response) => {
 
     } catch (error) {
         return res.json(message)
-    } finally {
-        pool.close();
-    }
+    } 
+    // finally {
+    //     pool.close();
+    // }
 
 
     //SendEmail

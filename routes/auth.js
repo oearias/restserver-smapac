@@ -27,7 +27,8 @@ router.put('/new-password', newPassword);
 router.post('/google',[
     check('id_token', 'id_token es necesario').not().isEmpty(),
     validarCampos
-], googleSignin)
+], googleSignin);
+
 
 //Este register existe actualmente en la ruta de usuarios
 //router.post('/register', )

@@ -50,6 +50,7 @@ const getTokenPassword = ( resetToken='' ) => {
                 resolve(verificado)
             }
         } );
+        
 
     })
 }
